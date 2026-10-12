@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>遠行與日常・旅途分帳</title>
+  <title>遠行時光・旅途分帳與公費小幫手</title>
 
   <!-- Firebase 相容版本 SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -11,18 +11,18 @@
 
   <style>
     :root {
-      --bg-main: #F7F8F6;
+      --bg-warm: #F9F7F4;
       --card-bg: #FFFFFF;
-      --text-main: #2C3531;
-      --text-muted: #75827D;
-      --text-light: #9CA8A3;
-      --sage-dark: #3F5E52;
-      --sage-mid: #5E7A6E;
-      --sage-light: #EBF1EE;
-      --sage-border: #D3DED9;
-      --rose-accent: #B2535B;
-      --rose-light: #FDF2F3;
-      --border-soft: #E8ECE9;
+      --text-main: #332B25;
+      --text-muted: #7A6F66;
+      --text-light: #A89E96;
+      --amber-dark: #5E3922;
+      --amber-main: #7C4A2D;
+      --amber-soft: #A36A44;
+      --warm-cream: #F5EFEB;
+      --warm-border: #EADBCE;
+      --border-soft: #EDE6DF;
+      --rose-subtle: #B05353;
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
@@ -32,12 +32,12 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Hiragino Sans TC", "Noto Serif TC", serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "Noto Serif TC", serif;
       -webkit-font-smoothing: antialiased;
     }
 
     body {
-      background-color: var(--bg-main);
+      background-color: var(--bg-warm);
       color: var(--text-main);
       padding-bottom: 96px;
       -webkit-tap-highlight-color: transparent;
@@ -46,7 +46,7 @@
 
     /* 頂部導航 */
     .header {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border-soft);
       padding: 14px 20px;
@@ -64,15 +64,15 @@
     }
     .brand-leaf {
       display: inline-block;
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: var(--sage-mid);
+      background: var(--amber-soft);
     }
     .header h1 {
       font-size: 15px;
-      font-weight: 500;
-      letter-spacing: 1.5px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
       color: var(--text-main);
     }
     .role-badge {
@@ -80,16 +80,16 @@
       padding: 2px 8px;
       border-radius: 12px;
       letter-spacing: 0.5px;
-      font-weight: 400;
+      font-weight: 500;
       white-space: nowrap;
     }
     .role-admin {
-      background: var(--sage-light);
-      color: var(--sage-dark);
-      border: 1px solid var(--sage-border);
+      background: var(--warm-cream);
+      color: var(--amber-dark);
+      border: 1px solid var(--warm-border);
     }
     .role-viewer {
-      background: #F1F3F2;
+      background: #F2EFEB;
       color: var(--text-muted);
       border: 1px solid var(--border-soft);
     }
@@ -101,9 +101,9 @@
     }
     .btn-header-link {
       font-size: 12px;
-      color: var(--sage-dark);
-      background: var(--sage-light);
-      border: 1px solid var(--sage-border);
+      color: var(--amber-dark);
+      background: var(--warm-cream);
+      border: 1px solid var(--warm-border);
       padding: 5px 12px;
       border-radius: 20px;
       cursor: pointer;
@@ -111,7 +111,7 @@
       transition: all 0.2s;
     }
     .btn-header-link:hover {
-      background: #E0EAE5;
+      background: #EDE3DC;
     }
     .btn-reset-all {
       font-size: 11px;
@@ -123,7 +123,7 @@
       transition: color 0.2s;
     }
     .btn-reset-all:hover {
-      color: var(--rose-accent);
+      color: var(--rose-subtle);
     }
 
     .container {
@@ -141,25 +141,25 @@
       border-radius: var(--radius-lg);
       border: 1px solid var(--border-soft);
       padding: 34px 24px;
-      box-shadow: 0 4px 20px rgba(44, 53, 49, 0.03);
+      box-shadow: 0 4px 20px rgba(74, 53, 38, 0.03);
       text-align: center;
       margin-top: 10px;
     }
     .room-lobby-title {
       font-size: 19px;
-      font-weight: 500;
-      letter-spacing: 2px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
       color: var(--text-main);
       margin-bottom: 8px;
     }
     .room-lobby-sub {
       font-size: 12px;
       color: var(--text-muted);
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
       margin-bottom: 28px;
     }
     .lobby-box {
-      background: #FAFBFA;
+      background: #FDFBF9;
       border: 1px solid var(--border-soft);
       padding: 18px 16px;
       border-radius: var(--radius-md);
@@ -168,9 +168,9 @@
     }
     .lobby-box-title {
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: 1px;
-      color: var(--sage-dark);
+      color: var(--amber-dark);
       display: block;
       margin-bottom: 10px;
     }
@@ -181,7 +181,7 @@
       border-radius: var(--radius-md);
       border: 1px solid var(--border-soft);
       padding: 16px 18px;
-      box-shadow: 0 2px 12px rgba(44, 53, 49, 0.02);
+      box-shadow: 0 2px 10px rgba(51, 43, 37, 0.02);
     }
     .card-header {
       display: flex;
@@ -191,9 +191,9 @@
     }
     .card-title {
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--text-muted);
-      letter-spacing: 1.5px;
+      letter-spacing: 1.2px;
       white-space: nowrap;
     }
     .card-action-btn {
@@ -208,12 +208,12 @@
       transition: color 0.2s;
     }
     .card-action-btn:hover {
-      color: var(--rose-accent);
+      color: var(--rose-subtle);
     }
 
-    /* 優雅公費卡片 */
+    /* 溫暖沉穩公費卡片 */
     .kitty-compact-card {
-      background: linear-gradient(145deg, #425B50, #31473E);
+      background: linear-gradient(145deg, #6A4026, #4E2C17);
       color: #FFFFFF;
       border: none;
       padding: 16px 18px;
@@ -232,13 +232,13 @@
     }
     .kitty-label {
       font-size: 11px;
-      opacity: 0.85;
+      opacity: 0.88;
       letter-spacing: 1px;
       white-space: nowrap;
     }
     .kitty-amount {
       font-size: 22px;
-      font-weight: 400;
+      font-weight: 500;
       font-family: "SF Mono", Menlo, Consolas, monospace;
       letter-spacing: 0.5px;
       line-height: 1;
@@ -251,8 +251,8 @@
       flex-shrink: 0;
     }
     .btn-kitty-sm {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.28);
       color: #FFFFFF;
       font-size: 11px;
       padding: 5px 11px;
@@ -263,17 +263,17 @@
       transition: background 0.2s;
     }
     .btn-kitty-sm:hover {
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.26);
     }
     .kitty-custodian-bar {
       margin-top: 10px;
       padding-top: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 11px;
-      opacity: 0.9;
+      opacity: 0.92;
       letter-spacing: 0.5px;
     }
     .custodian-select {
@@ -293,7 +293,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(30, 39, 35, 0.45);
+      background: rgba(43, 34, 28, 0.45);
       backdrop-filter: blur(4px);
       display: flex;
       justify-content: center;
@@ -307,17 +307,17 @@
       padding: 24px 22px;
       width: 100%;
       max-width: 330px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1);
     }
     .modal-title {
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: 1px;
       color: var(--text-main);
       margin-bottom: 14px;
     }
 
-    /* 旅伴花費小記清單 */
+    /* 旅伴收支小記清單 (僅花費、代墊兩項，回歸直覺) */
     .stats-grid {
       display: flex;
       flex-direction: column;
@@ -327,7 +327,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #FAFBFA;
+      background: #FDFBF9;
       border: 1px solid var(--border-soft);
       border-radius: var(--radius-sm);
       padding: 9px 12px;
@@ -340,18 +340,17 @@
     }
     .stats-details {
       display: flex;
-      gap: 10px;
+      gap: 14px;
       align-items: center;
       font-size: 11px;
-      font-family: monospace;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
     }
-    .stats-badge-green {
-      color: var(--sage-dark);
-      font-weight: 500;
+    .stats-spent {
+      color: var(--text-muted);
     }
-    .stats-badge-red {
-      color: var(--rose-accent);
-      font-weight: 500;
+    .stats-paid {
+      color: var(--amber-dark);
+      font-weight: 600;
     }
 
     /* 輸入元件 */
@@ -364,7 +363,7 @@
       flex: 1;
       min-width: 0;
       border: 1px solid var(--border-soft);
-      background: #FAFBFA;
+      background: #FDFBF9;
       border-radius: var(--radius-sm);
       padding: 9px 12px;
       font-size: 13px;
@@ -373,19 +372,19 @@
       transition: border-color 0.2s, background 0.2s;
     }
     .input-text:focus {
-      border-color: var(--sage-mid);
+      border-color: var(--amber-soft);
       background: #FFFFFF;
     }
     
     .btn-add {
-      background: var(--sage-dark);
+      background: var(--amber-main);
       color: #FFFFFF;
       border: none;
       padding: 9px 18px;
       border-radius: var(--radius-sm);
       font-size: 12px;
       letter-spacing: 1px;
-      font-weight: 400;
+      font-weight: 500;
       cursor: pointer;
       white-space: nowrap;
       flex-shrink: 0;
@@ -394,7 +393,7 @@
       transition: background 0.2s;
     }
     .btn-add:hover {
-      background: #314A40;
+      background: var(--amber-dark);
     }
 
     .chips-box {
@@ -409,12 +408,12 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: var(--sage-light);
-      border: 1px solid var(--sage-border);
+      background: var(--warm-cream);
+      border: 1px solid var(--warm-border);
       padding: 4px 11px;
       border-radius: 16px;
       font-size: 12px;
-      color: var(--sage-dark);
+      color: var(--amber-dark);
       letter-spacing: 0.5px;
       white-space: nowrap;
     }
@@ -427,7 +426,7 @@
       line-height: 1;
     }
     .chip-del:hover {
-      color: var(--rose-accent);
+      color: var(--rose-subtle);
     }
 
     /* 表單區 */
@@ -445,7 +444,7 @@
     .form-select {
       width: 100%;
       border: 1px solid var(--border-soft);
-      background: #FAFBFA;
+      background: #FDFBF9;
       border-radius: var(--radius-sm);
       padding: 9px 10px;
       font-size: 13px;
@@ -460,7 +459,7 @@
 
     /* 自費設定區 */
     .custom-box {
-      background: #FAFBFA;
+      background: #FDFBF9;
       border: 1px solid var(--border-soft);
       border-radius: var(--radius-sm);
       padding: 10px 12px;
@@ -474,9 +473,10 @@
     .btn-toggle-custom {
       background: none;
       border: none;
-      color: var(--sage-dark);
+      color: var(--amber-dark);
       font-size: 11px;
       letter-spacing: 0.5px;
+      font-weight: 500;
       cursor: pointer;
       white-space: nowrap;
     }
@@ -487,24 +487,25 @@
       margin-top: 6px;
     }
 
-    /* 平攤旅伴標籤 */
+    /* 分攤旅伴按鈕：極簡日系膠囊設計 */
     .split-chip {
       border: 1px solid var(--border-soft);
-      background: #FAFBFA;
+      background: #FDFBF9;
       color: var(--text-muted);
-      font-size: 11px;
-      padding: 6px 12px;
-      border-radius: 16px;
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 18px;
       cursor: pointer;
       letter-spacing: 0.5px;
       white-space: nowrap;
       transition: all 0.2s;
+      outline: none;
     }
     .split-chip.active {
-      background: var(--sage-light);
-      border-color: var(--sage-border);
-      color: var(--sage-dark);
-      font-weight: 500;
+      background: var(--warm-cream);
+      border-color: var(--warm-border);
+      color: var(--amber-dark);
+      font-weight: 600;
     }
 
     /* 操作按鈕組 */
@@ -515,7 +516,7 @@
       margin-top: 10px;
     }
     .btn-clear-form {
-      background: #F1F3F2;
+      background: #F4EFEB;
       border: 1px solid var(--border-soft);
       color: var(--text-muted);
       padding: 10px 0;
@@ -527,20 +528,21 @@
       white-space: nowrap;
     }
     .btn-save-expense {
-      background: var(--sage-dark);
+      background: var(--amber-main);
       color: #FFFFFF;
       border: none;
       padding: 10px 0;
       border-radius: var(--radius-sm);
       font-size: 13px;
       letter-spacing: 1px;
+      font-weight: 500;
       cursor: pointer;
       text-align: center;
       white-space: nowrap;
       transition: background 0.2s;
     }
     .btn-save-expense:hover {
-      background: #314A40;
+      background: var(--amber-dark);
     }
 
     /* 消費明細 */
@@ -560,14 +562,14 @@
     .btn-del-expense {
       background: none;
       border: none;
-      color: var(--rose-accent);
+      color: var(--rose-subtle);
       font-size: 11px;
       cursor: pointer;
       white-space: nowrap;
       margin-left: 8px;
     }
     .expense-detail-drawer {
-      background: #FAFBFA;
+      background: #FDFBF9;
       border: 1px solid var(--border-soft);
       border-radius: var(--radius-sm);
       padding: 8px 11px;
@@ -578,7 +580,7 @@
 
     /* 結算明細卡片 */
     .settle-card {
-      background: #FAFBFA;
+      background: #FDFBF9;
       border: 1px solid var(--border-soft);
       padding: 11px 14px;
       border-radius: var(--radius-sm);
@@ -588,16 +590,16 @@
       align-items: center;
     }
     .settle-amount {
-      color: var(--sage-dark);
+      color: var(--amber-dark);
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       font-family: "SF Mono", Menlo, Consolas, monospace;
       white-space: nowrap;
     }
 
     /* 收款帳號專區 (防爆版設計) */
     .account-card {
-      background: #FAFBFA;
+      background: #FDFBF9;
       border: 1px solid var(--border-soft);
       border-radius: var(--radius-sm);
       padding: 11px 13px;
@@ -634,11 +636,12 @@
     .btn-copy-sm {
       flex-shrink: 0;
       background: #FFFFFF;
-      border: 1px solid var(--sage-border);
-      color: var(--sage-dark);
+      border: 1px solid var(--warm-border);
+      color: var(--amber-dark);
       padding: 7px 11px;
       border-radius: 6px;
       font-size: 11px;
+      font-weight: 500;
       cursor: pointer;
       white-space: nowrap;
     }
@@ -658,12 +661,12 @@
   <header class="header">
     <div class="header-brand">
       <span class="brand-leaf"></span>
-      <h1 id="tripTitleDisplay">遠行分帳</h1>
-      <span id="roleBadge" class="role-badge role-viewer">閱覽</span>
+      <h1 id="tripTitleDisplay">遠行時光</h1>
+      <span id="roleBadge" class="role-badge role-viewer">旅伴檢視</span>
     </div>
     <div class="header-actions">
       <button type="button" id="btnShareTrip" class="btn-header-link" onclick="shareTripLinks()" style="display:none;">分享旅程</button>
-      <button type="button" id="btnResetTrip" class="btn-reset-all" onclick="resetEntireTrip()" style="display:none;">清空</button>
+      <button type="button" id="btnResetTrip" class="btn-reset-all" onclick="resetEntireTrip()" style="display:none;">清空紀錄</button>
     </div>
   </header>
 
@@ -679,7 +682,7 @@
         <span class="lobby-box-title">開啟新旅程</span>
         <div style="display:flex; gap:6px; margin-bottom:10px;">
           <input type="text" id="customRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo-autumn)" style="font-family:monospace; text-transform:lowercase;">
-          <button type="button" class="btn-clear-form" style="padding:0 12px; font-size:11px; flex-shrink:0;" onclick="generateRandomRoomCode()">隨機</button>
+          <button type="button" class="btn-clear-form" style="padding:0 12px; font-size:11px; flex-shrink:0;" onclick="generateRandomRoomCode()">隨機產生</button>
         </div>
         <button type="button" class="btn-save-expense" style="width:100%; font-size:12px;" onclick="createNewTripRoom()">啟程記帳</button>
       </div>
@@ -705,11 +708,11 @@
           </div>
           <div class="kitty-actions">
             <button type="button" id="btnOpenKittyDeposit" class="btn-kitty-sm" onclick="openKittyModal()">繳存</button>
-            <button type="button" class="btn-kitty-sm" onclick="toggleKittyDrawer()">明細 ▾</button>
+            <button type="button" class="btn-kitty-sm" onclick="toggleKittyDrawer()">紀錄 ▾</button>
           </div>
         </div>
         <div class="kitty-custodian-bar">
-          <span>公費保管：</span>
+          <span>公費保管（總務）：</span>
           <select id="custodianSelect" class="custodian-select" onchange="changeCustodian(this.value)">
             <option value="">未指定</option>
           </select>
@@ -719,22 +722,22 @@
         </div>
       </div>
 
-      <!-- 2. 旅伴收支概況 (唯讀與管帳皆可見) -->
+      <!-- 2. 旅伴收支小記 (只保留花費與代墊，回歸直覺) -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">旅伴收支小記</span>
-          <span style="font-size:10px; color:var(--text-light); letter-spacing:0.5px;">即時試算</span>
+          <span style="font-size:10px; color:var(--text-light); letter-spacing:0.5px;">即時統計</span>
         </div>
         <div id="memberStatsContainer" class="stats-grid">
           <p class="empty-hint">尚未加入同行旅伴</p>
         </div>
       </div>
 
-      <!-- 3. 同行旅伴名單 (管帳管理專用) -->
+      <!-- 3. 同行旅伴名單 (總務管理專用) -->
       <div class="card admin-only" id="memberManageCard">
         <div class="card-header">
           <span class="card-title">同行旅伴 (<span id="memberCountBadge">0</span>)</span>
-          <button type="button" class="card-action-btn" onclick="clearAllMembers()">清空</button>
+          <button type="button" class="card-action-btn" onclick="clearAllMembers()">清空旅伴</button>
         </div>
         <div class="input-row">
           <input id="memberNameInput" type="text" class="input-text" placeholder="旅伴姓名 (例如：阿信)">
@@ -743,20 +746,20 @@
         <div id="membersContainer" class="chips-box"></div>
       </div>
 
-      <!-- 4. 記錄花費 (管帳管理專用) -->
+      <!-- 4. 記錄花費 (總務管理專用) -->
       <div class="card admin-only" id="expenseFormCard">
         <div class="card-header">
           <span class="card-title">記錄花費</span>
         </div>
 
         <div class="form-group">
-          <label class="form-label">支出項目</label>
+          <label class="form-label">支出品項</label>
           <input id="itemTitle" type="text" class="input-text" style="width:100%;" placeholder="例如：林間茶屋、電車通票">
         </div>
 
         <div class="form-grid-2 form-group">
           <div>
-            <label class="form-label">金額 (TWD)</label>
+            <label class="form-label">金額</label>
             <input id="itemAmount" type="number" class="input-text" style="width:100%;" placeholder="0">
           </div>
           <div>
@@ -777,18 +780,18 @@
           </div>
         </div>
 
-        <!-- 平攤旅伴 -->
+        <!-- 分攤旅伴 -->
         <div class="form-group">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <label class="form-label" style="margin-bottom:0;">分攤成員</label>
-            <button type="button" onclick="toggleAllSplitters()" style="background:none; border:none; color:var(--sage-dark); font-size:11px; letter-spacing:0.5px; cursor:pointer;">全選 / 反選</button>
+            <label class="form-label" style="margin-bottom:0;">分攤旅伴</label>
+            <button type="button" onclick="toggleAllSplitters()" style="background:none; border:none; color:var(--amber-dark); font-size:11px; letter-spacing:0.5px; font-weight:500; cursor:pointer;">全選 / 反選</button>
           </div>
           <div id="splitButtonsContainer" class="chips-box" style="margin-top:0;"></div>
         </div>
 
         <!-- 按鈕 -->
         <div class="btn-submit-row">
-          <button type="button" class="btn-clear-form" onclick="clearExpenseForm()">重填</button>
+          <button type="button" class="btn-clear-form" onclick="clearExpenseForm()">清除重填</button>
           <button type="button" class="btn-save-expense" onclick="addExpense()">儲存花費</button>
         </div>
       </div>
@@ -798,18 +801,18 @@
         <div class="card-header">
           <span class="card-title">花費動態</span>
           <div style="display:flex; gap:8px; align-items:center;">
-            <span id="totalCostDisplay" style="color:var(--sage-dark); font-family:monospace; font-size:11px; font-weight:500;">累計：$0</span>
-            <button type="button" id="btnClearExpenses" class="card-action-btn admin-only" onclick="clearAllExpenses()">清空</button>
+            <span id="totalCostDisplay" style="color:var(--amber-dark); font-family:monospace; font-size:11px; font-weight:600;">累計：$0</span>
+            <button type="button" id="btnClearExpenses" class="card-action-btn admin-only" onclick="clearAllExpenses()">清空花費</button>
           </div>
         </div>
         <div id="expenseList"></div>
       </div>
 
-      <!-- 6. 結算明細 (先路徑，後帳號) -->
+      <!-- 6. 結算明細 (清楚列出誰該給誰多少錢) -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">結算明細</span>
-          <button type="button" onclick="copySettlementSummary()" style="background:#FAFBFA; border:1px solid var(--border-soft); padding:3px 9px; border-radius:4px; font-size:10px; cursor:pointer; color:var(--text-muted);">複製清單</button>
+          <button type="button" onclick="copySettlementSummary()" style="background:#FDFBF9; border:1px solid var(--border-soft); padding:3px 9px; border-radius:4px; font-size:10px; cursor:pointer; color:var(--text-muted);">複製清單</button>
         </div>
         <div id="settlementList"></div>
 
@@ -831,7 +834,7 @@
       <div class="form-group">
         <label class="form-label">繳存方式</label>
         <select id="kittyDepositType" class="form-select" onchange="switchDepositType(this.value)">
-          <option value="all">全員均分出資</option>
+          <option value="all">全員平均繳存</option>
           <option value="single">單一旅伴補繳</option>
           <option value="custom">自訂存入金額</option>
         </select>
@@ -841,12 +844,12 @@
         <select id="kittySingleTarget" class="form-select"></select>
       </div>
       <div class="form-group">
-        <label class="form-label" id="kittyAmountLabel">每人金額 (TWD)</label>
+        <label class="form-label" id="kittyAmountLabel">每人金額</label>
         <input id="kittyAmountInput" type="number" class="input-text" style="width:100%;" placeholder="例如: 1000">
       </div>
       <div style="display:flex; gap:8px; margin-top:16px;">
         <button type="button" class="btn-clear-form" style="flex:1;" onclick="closeKittyModal()">取消</button>
-        <button type="button" class="btn-save-expense" style="flex:1;" onclick="submitKittyDeposit()">確認</button>
+        <button type="button" class="btn-save-expense" style="flex:1;" onclick="submitKittyDeposit()">確認存入</button>
       </div>
     </div>
   </div>
@@ -910,7 +913,7 @@
     function createNewTripRoom() {
       let code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
       if (!code) {
-        alert('請填寫自訂旅程代碼，或點選「隨機」');
+        alert('請填寫自訂旅程代碼，或點選「隨機產生」');
         return;
       }
       if (!/^[a-z0-9_-]+$/.test(code)) {
@@ -921,7 +924,7 @@
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (snap.exists() && snap.val() && snap.val().createdAt) {
-            if (!confirm(`旅程代碼「${code}」已存在，是否直接進入？`)) {
+            if (!confirm(`旅程代碼「${code}」已存在，是否直接以總務身分進入？`)) {
               return;
             }
           } else {
@@ -951,7 +954,7 @@
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
-            alert(`找不到代碼為「${code}」的旅程，請確認代碼是否正確。`);
+            alert(`找不到代碼為「${code}」的旅程，請確認代碼是否輸入正確。`);
             return;
           }
           window.location.href = `${window.location.pathname}?trip=${code}`;
@@ -966,7 +969,7 @@
       const viewerUrl = `${baseUrl}?trip=${currentTripId}`;
       const adminUrl = `${baseUrl}?trip=${currentTripId}&admin=1`;
 
-      const msg = `【旅途分帳】\n旅程代碼：${currentTripId}\n\n旅伴查看連結：\n${viewerUrl}\n\n管理記帳連結：\n${adminUrl}`;
+      const msg = `【遠行時光・旅程分帳】\n旅程代碼：${currentTripId}\n\n👉 旅伴查看連結（傳到 LINE 群）：\n${viewerUrl}\n\n🔑 總務管理連結（自己保存）：\n${adminUrl}`;
       copyToClipboard(msg, '已複製旅程連結');
     }
 
@@ -987,7 +990,7 @@
         db.ref('trips/' + currentTripId).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
             if (!isAdmin) {
-              alert(`找不到代碼為「${currentTripId}」的旅程，返回大廳。`);
+              alert(`找不到代碼為「${currentTripId}」的旅程，將返回大廳。`);
               window.location.href = window.location.pathname;
               return;
             }
@@ -1002,14 +1005,14 @@
 
       const roleBadge = document.getElementById('roleBadge');
       if (isAdmin) {
-        roleBadge.innerText = '管理';
+        roleBadge.innerText = '總務管理';
         roleBadge.className = 'role-badge role-admin';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
         document.getElementById('btnResetTrip').style.display = '';
         document.getElementById('btnOpenKittyDeposit').style.display = '';
         document.getElementById('custodianSelect').disabled = false;
       } else {
-        roleBadge.innerText = '閱覽';
+        roleBadge.innerText = '旅伴檢視';
         roleBadge.className = 'role-badge role-viewer';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
         document.getElementById('btnResetTrip').style.display = 'none';
@@ -1098,13 +1101,13 @@
       if (type === 'single') {
         targetGroup.style.display = 'block';
         targetSelect.innerHTML = state.members.map(m => `<option value="${m}">${m}</option>`).join('');
-        label.innerText = '補繳金額 (TWD)';
+        label.innerText = '補繳金額';
       } else if (type === 'custom') {
         targetGroup.style.display = 'none';
-        label.innerText = '存入金額 (TWD)';
+        label.innerText = '存入總額';
       } else {
         targetGroup.style.display = 'none';
-        label.innerText = '每人金額 (TWD)';
+        label.innerText = '每人金額';
       }
     }
 
@@ -1230,7 +1233,7 @@
           <span style="font-size:11px; white-space:nowrap; color:var(--text-muted);">自費</span>
           <input type="number" value="${row.amount || ''}" oninput="customSplits[${idx}].amount=parseFloat(this.value)||0" placeholder="金額" class="input-text" style="width:75px; padding:5px 8px; font-size:12px;">
           <span style="font-size:11px; white-space:nowrap; color:var(--text-muted);">元</span>
-          <button type="button" onclick="removeCustomRow(${idx})" style="background:none; border:none; color:var(--rose-accent); font-size:14px; cursor:pointer;">&times;</button>
+          <button type="button" onclick="removeCustomRow(${idx})" style="background:none; border:none; color:var(--rose-subtle); font-size:14px; cursor:pointer;">&times;</button>
         </div>
       `).join('');
     }
@@ -1248,6 +1251,7 @@
       renderSplitButtons();
     }
 
+    /* 渲染極簡膠囊按鈕：徹底移除生硬符號 */
     function renderSplitButtons() {
       const c = document.getElementById('splitButtonsContainer');
       if (state.members.length === 0) {
@@ -1258,7 +1262,7 @@
         const active = selectedSplitters.includes(m);
         return `
           <button type="button" class="split-chip ${active ? 'active' : ''}" onclick="toggleSplitterAction('${m}')">
-            ${active ? '✓ ' : ''}${m}
+            ${m}
           </button>
         `;
       }).join('');
@@ -1288,13 +1292,13 @@
       const amount = parseFloat(amountInput.value);
       const payer = payerSelect.value;
 
-      if (!title) return alert('請填寫支出項目');
+      if (!title) return alert('請填寫支出品項');
       if (isNaN(amount) || amount <= 0) return alert('請輸入有效金額');
       if (!payer) return alert('請選擇付款人');
 
       const customSum = customSplits.reduce((acc, c) => acc + (Number(c.amount) || 0), 0);
       if (customSum > amount) return alert('自費總和不能大於支出金額');
-      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return alert('請至少勾選一位平攤成員');
+      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return alert('請至少勾選一位分攤旅伴');
 
       let kittyDeduction = 0;
       let personalPaid = amount;
@@ -1338,12 +1342,12 @@
     }
 
     // ==========================================
-    // 8. 旅伴收支統計邏輯
+    // 8. 旅伴收支統計 (僅統計純花費與個人代墊)
     // ==========================================
     function computeMemberStatistics() {
       const stats = {};
       state.members.forEach(m => {
-        stats[m] = { totalSpent: 0, totalPaid: 0, net: 0 };
+        stats[m] = { totalSpent: 0, totalPaid: 0 };
       });
 
       state.expenses.forEach(exp => {
@@ -1369,29 +1373,17 @@
         }
       });
 
-      state.members.forEach(m => {
-        stats[m].net = stats[m].totalPaid - stats[m].totalSpent;
-      });
-
       return stats;
     }
 
     // ==========================================
-    // 9. 結算演算法 (保管人剩餘現鈔自動合併抵銷)
+    // 9. 結算演算法 (計算誰該給誰多少錢)
     // ==========================================
     function computeSettlement() {
       const balance = {};
       state.members.forEach(m => balance[m] = 0);
 
-      const kittyBal = getKittyBalance();
-      if (state.members.length > 0 && kittyBal > 0) {
-        const refundPerPerson = kittyBal / state.members.length;
-        state.members.forEach(m => balance[m] += refundPerPerson);
-        if (state.custodian && balance[state.custodian] !== undefined) {
-          balance[state.custodian] -= kittyBal;
-        }
-      }
-
+      // 個人代墊增加餘額，個人花費扣除餘額
       state.expenses.forEach(exp => {
         if (balance[exp.payer] !== undefined) {
           balance[exp.payer] += (Number(exp.personalPaid) || 0);
@@ -1415,6 +1407,17 @@
         }
       });
 
+      // 公費剩餘現鈔處理：公費剩餘平分退回，總務保管人手上的現鈔直接扣減其應收額
+      const kittyBal = getKittyBalance();
+      if (state.members.length > 0 && kittyBal > 0) {
+        const refundPerPerson = kittyBal / state.members.length;
+        state.members.forEach(m => balance[m] += refundPerPerson);
+        if (state.custodian && balance[state.custodian] !== undefined) {
+          balance[state.custodian] -= kittyBal;
+        }
+      }
+
+      // 建立債務與債權清單
       const debtors = [];
       const creditors = [];
       for (const [person, net] of Object.entries(balance)) {
@@ -1428,9 +1431,12 @@
 
       const transactions = [];
       let i = 0, j = 0;
-      while (i < debtors.length && j < creditors.length) {
-        const d = debtors[i];
-        const cr = creditors[j];
+      const debtorsCopy = debtors.map(d => ({ ...d }));
+      const creditorsCopy = creditors.map(c => ({ ...c }));
+
+      while (i < debtorsCopy.length && j < creditorsCopy.length) {
+        const d = debtorsCopy[i];
+        const cr = creditorsCopy[j];
         const amt = Math.min(d.amount, cr.amount);
 
         transactions.push({ from: d.person, to: cr.person, amount: amt });
@@ -1473,34 +1479,29 @@
         kLogs.innerHTML = state.kittyDeposits.map(k => `
           <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0;">
             <span>${k.time} · ${k.payer} · $${k.totalAmount.toLocaleString()}</span>
-            ${isAdmin ? `<button type="button" onclick="deleteKittyDeposit('${k.id}')" style="background:none; border:none; color:var(--rose-accent); cursor:pointer;">&times;</button>` : ''}
+            ${isAdmin ? `<button type="button" onclick="deleteKittyDeposit('${k.id}')" style="background:none; border:none; color:var(--rose-subtle); cursor:pointer;">&times;</button>` : ''}
           </div>
         `).join('');
       }
 
-      // 旅伴收支小記
+      // 旅伴收支小記 (只顯示花費、代墊兩項)
       const stats = computeMemberStatistics();
       const statsBox = document.getElementById('memberStatsContainer');
       if (state.members.length === 0) {
         statsBox.innerHTML = '<p class="empty-hint">尚未加入同行旅伴</p>';
       } else {
         statsBox.innerHTML = state.members.map(m => {
-          const item = stats[m] || { totalSpent: 0, totalPaid: 0, net: 0 };
-          const netRound = Math.round(item.net);
-          let netBadge = `<span style="color:var(--text-light);">±$0</span>`;
-          if (netRound > 0) netBadge = `<span class="stats-badge-green">+ $${netRound.toLocaleString()}</span>`;
-          else if (netRound < 0) netBadge = `<span class="stats-badge-red">- $${Math.abs(netRound).toLocaleString()}</span>`;
+          const item = stats[m] || { totalSpent: 0, totalPaid: 0 };
 
           return `
             <div class="stats-item">
               <div>
                 <span class="stats-name">${m}</span>
-                ${m === state.custodian ? '<span style="font-size:10px; background:var(--sage-light); color:var(--sage-dark); padding:1px 5px; border-radius:3px; margin-left:4px;">保管</span>' : ''}
+                ${m === state.custodian ? '<span style="font-size:10px; background:var(--warm-cream); color:var(--amber-dark); padding:1px 5px; border-radius:3px; margin-left:4px;">總務</span>' : ''}
               </div>
               <div class="stats-details">
-                <span style="color:var(--text-muted);">花費: $${Math.round(item.totalSpent).toLocaleString()}</span>
-                <span style="color:var(--text-muted);">代墊: $${Math.round(item.totalPaid).toLocaleString()}</span>
-                ${netBadge}
+                <span class="stats-spent">花費 $${Math.round(item.totalSpent).toLocaleString()}</span>
+                <span class="stats-paid">代墊 $${Math.round(item.totalPaid).toLocaleString()}</span>
               </div>
             </div>
           `;
@@ -1515,13 +1516,13 @@
           ${m}
           ${isAdmin ? `<button type="button" class="chip-del" onclick="removeMember('${m}')">&times;</button>` : ''}
         </span>
-      `).join('') || '<span class="empty-hint" style="padding:0;">尚未加入任何成員</span>';
+      `).join('') || '<span class="empty-hint" style="padding:0;">尚未加入任何旅伴</span>';
 
       // 付款人下拉選單
       const pSelect = document.getElementById('payerSelect');
       const curPayer = pSelect.value;
       pSelect.innerHTML = state.members.map(m => 
-        `<option value="${m}" ${(curPayer === m || (!curPayer && m === state.custodian)) ? 'selected' : ''}>${m}${m === state.custodian ? ' (公費優先抵扣)' : ''}</option>`
+        `<option value="${m}" ${(curPayer === m || (!curPayer && m === state.custodian)) ? 'selected' : ''}>${m}${m === state.custodian ? ' (公費優先扣抵)' : ''}</option>`
       ).join('');
 
       renderSplitButtons();
@@ -1543,22 +1544,22 @@
               <div class="expense-main-row">
                 <div>
                   <span style="font-weight:500; color:var(--text-main);">${e.title}</span>
-                  <span style="color:var(--sage-dark); font-weight:500; font-family:monospace; margin-left:4px;">$${Math.round(e.amount).toLocaleString()}</span>
+                  <span style="color:var(--amber-dark); font-weight:600; font-family:monospace; margin-left:4px;">$${Math.round(e.amount).toLocaleString()}</span>
                 </div>
                 <div style="display:flex; align-items:center;">
-                  <button type="button" onclick="toggleExpandExpense('${e.id}')" style="background:none; border:none; color:var(--sage-dark); font-size:11px; cursor:pointer;">
+                  <button type="button" onclick="toggleExpandExpense('${e.id}')" style="background:none; border:none; color:var(--amber-dark); font-size:11px; cursor:pointer;">
                     ${isExpanded ? '收合 ▴' : '明細 ▾'}
                   </button>
                   ${isAdmin ? `<button type="button" class="btn-del-expense" onclick="deleteExpense('${e.id}')">刪除</button>` : ''}
                 </div>
               </div>
               <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">
-                ${e.payer} 付 · ${(e.splitWith || []).length} 人平攤
-                ${hasKitty ? ` · <span style="color:var(--sage-dark);">(公費抵 $${Math.round(e.kittyDeduction).toLocaleString()}${e.personalPaid > 0 ? ` + 個人代墊 $${Math.round(e.personalPaid).toLocaleString()}` : ''})</span>` : ''}
+                ${e.payer} 付 · ${(e.splitWith || []).length} 人分攤
+                ${hasKitty ? ` · <span style="color:var(--amber-dark);">(公費扣抵 $${Math.round(e.kittyDeduction).toLocaleString()}${e.personalPaid > 0 ? ` + 個人代墊 $${Math.round(e.personalPaid).toLocaleString()}` : ''})</span>` : ''}
               </div>
               ${isExpanded ? `
                 <div class="expense-detail-drawer">
-                  <div style="margin-bottom:4px;"><strong>平攤成員：</strong>${(e.splitWith || []).join('、 ')}</div>
+                  <div style="margin-bottom:4px;"><strong>分攤旅伴：</strong>${(e.splitWith || []).join('、 ')}</div>
                   ${(e.customSplits && e.customSplits.length) ? `<div><strong>特定自費：</strong>${e.customSplits.map(c=>`${c.person}$${c.amount}`).join('、 ')}</div>` : ''}
                 </div>
               ` : ''}
@@ -1568,11 +1569,11 @@
       }
       document.getElementById('totalCostDisplay').innerText = `累計：$${Math.round(total).toLocaleString()}`;
 
-      // 結算轉帳清單 (優先置頂)
+      // 結算轉帳清單
       const setList = document.getElementById('settlementList');
       const { transactions, creditors } = computeSettlement();
       if (transactions.length === 0) {
-        setList.innerHTML = '<p class="empty-hint">目前帳目已平衡</p>';
+        setList.innerHTML = '<p class="empty-hint">目前帳目已平衡，無須轉帳</p>';
       } else {
         setList.innerHTML = transactions.map(t => `
           <div class="settle-card">
@@ -1582,7 +1583,7 @@
         `).join('');
       }
 
-      // 收款人帳號專區 (置底選填，防爆版寬度)
+      // 收款人帳號專區 (僅顯示真正需要收款的人，數值精準對齊)
       const accList = document.getElementById('accountList');
       if (creditors.length === 0) {
         accList.innerHTML = '<span style="font-size:11px; color:var(--text-light);">尚無收款需求</span>';
@@ -1592,8 +1593,8 @@
           return `
             <div class="account-card">
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:12px; font-weight:500; color:var(--text-main);">${c.person}</span>
-                <span style="font-size:11px; color:var(--sage-dark); font-weight:500;">應收: $${c.amount.toLocaleString()}</span>
+                <span style="font-size:12px; font-weight:600; color:var(--text-main);">${c.person}</span>
+                <span style="font-size:11px; color:var(--amber-dark); font-weight:600;">應收：$${c.amount.toLocaleString()}</span>
               </div>
               <div class="account-row">
                 <input type="text" maxlength="3" class="bank-code-input" placeholder="代碼" value="${bankData.code || ''}" 
@@ -1637,27 +1638,27 @@
       const { transactions, creditors, kittyLeftover } = computeSettlement();
       if (transactions.length === 0) return alert('目前無須轉帳');
 
-      let out = '【旅途結算清單】\n';
+      let out = '🌾【旅途結算清單】\n';
       transactions.forEach(t => {
-        out += `・${t.from} ➔ ${t.to}：$${t.amount.toLocaleString()}\n`;
+        out += `👉 ${t.from} 應轉給 ${t.to}：$${t.amount.toLocaleString()} 元\n`;
       });
 
       if (kittyLeftover > 0 && state.custodian) {
-        out += `\n備註：公費剩餘現鈔 $${Math.round(kittyLeftover).toLocaleString()} 已由保管人【${state.custodian}】直接抵銷。\n`;
+        out += `\n💡 備註：公費剩餘現鈔 $${Math.round(kittyLeftover).toLocaleString()} 已由總務【${state.custodian}】直接抵銷。\n`;
       }
 
-      out += '\n【收款帳號】\n';
+      out += '\n【收款人帳號】\n';
       creditors.forEach(c => {
         const b = state.memberBanks[c.person] || { code: "", account: "" };
-        out += `・${c.person}：銀行代碼 ${b.code || '未填'} 帳號 ${b.account || '未填'}\n`;
+        out += `🏦 ${c.person}：銀行代碼 ${b.code || '未填'} 帳號 ${b.account || '未填'}\n`;
       });
 
-      copyToClipboard(out, '已複製結算清單');
+      copyToClipboard(out, '已複製結算清單，可直接貼至 LINE 群組！');
     }
 
     function resetEntireTrip() {
       if (!isAdmin) return;
-      if (confirm('確定清空這趟旅程的所有紀錄？')) {
+      if (confirm('確定要清空這趟旅程的所有紀錄（人員、公費、帳目）嗎？')) {
         state = { createdAt: Date.now(), members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
         selectedSplitters = [];
         customSplits = [];
