@@ -26,7 +26,7 @@
       --danger-bg: #FEF2F2;
       --radius-sm: 8px;
       --radius: 14px;
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
     }
 
     * {
@@ -94,6 +94,27 @@
       border: 1px solid #CBD5E1;
     }
 
+    .nav-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .btn-nav-share {
+      font-size: 11px;
+      color: var(--primary);
+      background: var(--primary-light);
+      border: 1px solid var(--primary-border);
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+    .btn-nav-share:active {
+      background: #D1FAE5;
+    }
+
     .btn-text-danger {
       background: none;
       border: none;
@@ -120,7 +141,7 @@
       gap: 10px;
     }
 
-    /* 房間入口大卡片 (Room Gateway) */
+    /* 房間入口大卡片 (Room Lobby Gateway) */
     .gateway-card {
       background: #FFFFFF;
       border: 1px solid var(--border);
@@ -128,7 +149,7 @@
       padding: 24px 18px;
       text-align: center;
       box-shadow: var(--shadow-sm);
-      margin-top: 15px;
+      margin-top: 10px;
     }
     .gateway-title {
       font-size: 18px;
@@ -141,40 +162,40 @@
       color: var(--text-muted);
       margin-bottom: 20px;
     }
+    .lobby-box {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+      text-align: left;
+    }
+    .lobby-box-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .lobby-box-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
     .gateway-btn-main {
       width: 100%;
-      height: 44px;
+      height: 42px;
       background: var(--primary);
       color: #FFFFFF;
       border: none;
       border-radius: var(--radius-sm);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      margin-bottom: 12px;
+      white-space: nowrap;
     }
     .gateway-btn-main:active {
       background: var(--primary-hover);
-    }
-    .gateway-divider {
-      position: relative;
-      margin: 20px 0;
-      text-align: center;
-    }
-    .gateway-divider::before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      border-top: 1px solid var(--border);
-    }
-    .gateway-divider span {
-      position: relative;
-      background: #FFFFFF;
-      padding: 0 10px;
-      font-size: 11px;
-      color: var(--text-light);
     }
 
     /* 房間控制列 (Room Bar) */
@@ -911,42 +932,54 @@
   <header class="top-navbar">
     <div class="brand-title">
       <div class="brand-dot"></div>
-      <span>出遊分帳與公費小幫手</span>
+      <span id="navTitleText">出遊分帳與公費小幫手</span>
       <span id="roleBadge" class="role-badge role-viewer">唯讀模式</span>
     </div>
-    <button type="button" id="btnResetAll" class="btn-text-danger" onclick="resetWholeTrip()">清空全旅程</button>
+    <div class="nav-actions">
+      <button type="button" id="btnNavShare" class="btn-nav-share" onclick="shareTripLinks()" style="display:none;">🔗 分享連結</button>
+      <button type="button" id="btnResetAll" class="btn-text-danger" onclick="resetWholeTrip()" style="display:none;">清空全旅程</button>
+    </div>
   </header>
-
   <main class="app-viewport">
 
-    <!-- 房間入口大卡片 (當網址未指定旅程房間時顯示) -->
+    <!-- 房間大廳畫面 (當網址未指定旅程房間時顯示) -->
     <div id="roomGatewayScreen" class="gateway-card" style="display:none;">
       <div class="gateway-title">✈️ 開始你的旅程分帳</div>
       <div class="gateway-desc">支援多人即時同步・旅伴免安裝即可線上查看</div>
       
-      <button type="button" class="gateway-btn-main" onclick="createNewRoom()">＋ 建立新旅程房間</button>
-      
-      <div class="gateway-divider">
-        <span>或者加入現有旅程</span>
+      <!-- 建立新房間 (支援自訂代碼或隨機產生) -->
+      <div class="lobby-box">
+        <div class="lobby-box-title">✨ 建立新旅程房間</div>
+        <div class="lobby-box-sub">可自訂好記的英文/數字代碼，或隨機產生</div>
+        <div style="display:flex; gap:6px; margin-bottom:8px;">
+          <input type="text" id="customRoomInput" class="form-input" placeholder="例如: tokyo2026" style="text-transform:lowercase; font-family:monospace;">
+          <button type="button" class="btn-room-action" style="padding:0 10px; font-size:12px;" onclick="generateRandomLobbyCode()">🎲 隨機</button>
+        </div>
+        <button type="button" class="gateway-btn-main" onclick="createNewRoomAction()">建立並進入 (總務身分)</button>
       </div>
 
-      <div style="display:flex; gap:6px;">
-        <input type="text" id="joinRoomInput" class="form-input" placeholder="請輸入 6 碼房間代碼 (如: TOKYO2)" style="text-transform:uppercase;">
-        <button type="button" class="btn-add-member" onclick="joinExistingRoom()">加入</button>
+      <!-- 加入現有房間 -->
+      <div class="lobby-box">
+        <div class="lobby-box-title">🔑 加入現有旅程房間</div>
+        <div class="lobby-box-sub">輸入朋友分享給你的房間代碼</div>
+        <div style="display:flex; gap:6px;">
+          <input type="text" id="joinRoomInput" class="form-input" placeholder="請輸入代碼 (如: tokyo2026)" style="text-transform:lowercase; font-family:monospace;">
+          <button type="button" class="btn-add-member" onclick="joinExistingRoomAction()">加入</button>
+        </div>
       </div>
     </div>
 
     <!-- 主應用內容區 (當進入特定房間時顯示) -->
     <div id="mainTripApp" style="display:none; display:flex; flex-direction:column; gap:10px;">
 
-      <!-- 房間控制列與邀請分享按鈕 -->
+      <!-- 房間控制列 -->
       <section class="room-header-card">
         <div class="room-tag">
           <span>房間：</span>
           <span id="currentRoomDisplay" class="room-code-badge">------</span>
         </div>
         <div class="room-btn-group">
-          <button type="button" class="btn-room-action" onclick="copyViewerInviteLink()">🔗 複製旅伴連結</button>
+          <button type="button" class="btn-room-action" onclick="copyViewerInviteLink()">🔗 旅伴連結</button>
           <button type="button" class="btn-room-action" id="btnCopyAdminLink" onclick="copyAdminInviteLink()">🔑 總務連結</button>
           <button type="button" class="btn-room-action" onclick="switchRoomAction()">換房</button>
         </div>
@@ -1006,7 +1039,7 @@
         <div id="membersChipCluster" class="chips-cluster"></div>
       </section>
 
-      <!-- 4. 記錄支出 (僅管理員可見，付款人純成員名單，總務自動優先抵公費) -->
+      <!-- 4. 記錄支出 (僅管理員可見，付款人為總務時優先扣抵公費) -->
       <section class="card admin-only" id="expenseFormSection">
         <div class="card-header">
           <span class="card-title">記錄消費支出</span>
@@ -1070,7 +1103,7 @@
         <div id="expenseListCluster"></div>
       </section>
 
-      <!-- 6. 結算建議 (轉帳路徑置頂，銀行帳號置底選填) -->
+      <!-- 6. 結算建議 (最簡轉帳路徑置頂) -->
       <section class="card">
         <div class="card-header">
           <span class="card-title">結算建議 (最簡轉帳)</span>
@@ -1095,7 +1128,6 @@
     </div>
 
   </main>
-
   <!-- 繳存公費 Modal 對話框 -->
   <div id="kittyDepositModal" class="modal-overlay" style="display:none;">
     <div class="modal-dialog">
@@ -1113,7 +1145,7 @@
       <div id="modalBodyAll">
         <label class="form-label">每位成員繳交金額 (TWD)</label>
         <input type="number" id="kittyAmtPerPerson" class="form-input" placeholder="例如：1000" min="1">
-        <p style="font-size:11px; color:#64748B; margin-top:6px;" id="kittyAllHint">目前成員 X 人，將共計存入 $0</p>
+        <p style="font-size:11px; color:#64748B; margin-top:6px;" id="kittyAllHint">目前成員 0 人，將共計存入 $0</p>
       </div>
 
       <div id="modalBodySingle" style="display:none;">
@@ -1141,7 +1173,7 @@
 
   <script>
     // ==============================================================
-    // 1. Firebase 金鑰與多房間系統配置
+    // 1. Firebase 金鑰配置與本機離線容錯
     // ==============================================================
     const firebaseConfig = {
       apiKey: "AIzaSyDZEhQNAmZLDa-VRclvFLqUL7cZkvUKUjs",
@@ -1160,15 +1192,15 @@
       firebase.initializeApp(firebaseConfig);
       firebaseDb = firebase.database();
     } catch (e) {
-      console.warn("Firebase 初始化異常，進入本機隔離模式:", e);
+      console.warn("Firebase 啟動離線模式:", e);
     }
 
     // 解析網址參數
     const urlParams = new URLSearchParams(window.location.search);
-    let currentRoomId = (urlParams.get('trip') || urlParams.get('room') || '').toUpperCase().trim();
+    let currentRoomId = (urlParams.get('trip') || urlParams.get('room') || '').toLowerCase().trim();
     const isAdmin = urlParams.get('admin') === '1';
 
-    // 核心資料狀態 (初始絕對純淨空白)
+    // 核心資料狀態模型
     let appState = {
       members: [],
       kittyKeeper: "",
@@ -1184,45 +1216,106 @@
     let currentKittyTab = 'all';
 
     // ==============================================================
-    // 2. 多房間路由與資料連線
+    // 2. 房間大廳與路由控制
+    // ==============================================================
+    function generateRandomLobbyCode() {
+      const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
+      let code = '';
+      for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      document.getElementById('customRoomInput').value = code;
+    }
+
+    function createNewRoomAction() {
+      let code = document.getElementById('customRoomInput').value.trim().toLowerCase();
+      if (!code) {
+        showToast("請輸入自訂代碼或點擊隨機產生！");
+        return;
+      }
+      if (!/^[a-z0-9_-]+$/.test(code)) {
+        showToast("代碼僅能包含英文字母、數字或連字號！");
+        return;
+      }
+      window.location.search = `?trip=${code}&admin=1`;
+    }
+
+    function joinExistingRoomAction() {
+      const code = document.getElementById('joinRoomInput').value.trim().toLowerCase();
+      if (!code) {
+        showToast("請輸入欲加入的房間代碼！");
+        return;
+      }
+      window.location.search = `?trip=${code}`;
+    }
+
+    function switchRoomAction() {
+      window.location.search = "";
+    }
+
+    function shareTripLinks() {
+      const origin = window.location.origin + window.location.pathname;
+      const viewer = `${origin}?trip=${currentRoomId}`;
+      const admin = `${origin}?trip=${currentRoomId}&admin=1`;
+      const msg = `🎒 旅程房間：${currentRoomId}\n👉 旅伴唯讀連結：\n${viewer}\n🔑 總務管理連結：\n${admin}`;
+      copyToClipboard(msg, "已複製旅伴與總務專屬連結！");
+    }
+
+    function copyViewerInviteLink() {
+      const origin = window.location.origin + window.location.pathname;
+      copyToClipboard(`${origin}?trip=${currentRoomId}`, "已複製旅伴唯讀連結！");
+    }
+
+    function copyAdminInviteLink() {
+      const origin = window.location.origin + window.location.pathname;
+      copyToClipboard(`${origin}?trip=${currentRoomId}&admin=1`, "已複製總務管理連結！請妥善保存。");
+    }
+
+    // ==============================================================
+    // 3. 資料同步與初始化
     // ==============================================================
     function initRoomRouting() {
       const gatewayEl = document.getElementById('roomGatewayScreen');
       const appEl = document.getElementById('mainTripApp');
       const roleBadge = document.getElementById('roleBadge');
+      const navTitle = document.getElementById('navTitleText');
+      const btnShare = document.getElementById('btnNavShare');
+      const btnReset = document.getElementById('btnResetAll');
 
       if (!currentRoomId) {
-        // 未指定房間：顯示房間選擇/建立頁面
         gatewayEl.style.display = 'block';
         appEl.style.display = 'none';
-        roleBadge.innerText = '房間選擇';
-        document.getElementById('btnResetAll').style.display = 'none';
+        roleBadge.innerText = '房間大廳';
+        roleBadge.className = 'role-badge role-viewer';
+        btnShare.style.display = 'none';
+        btnReset.style.display = 'none';
+        navTitle.innerText = '出遊分帳與公費小幫手';
+        generateRandomLobbyCode();
         return;
       }
 
-      // 已進入指定房間
       gatewayEl.style.display = 'none';
       appEl.style.display = 'flex';
+      btnShare.style.display = 'block';
+      navTitle.innerText = `房間：${currentRoomId}`;
       document.getElementById('currentRoomDisplay').innerText = currentRoomId;
 
-      // 角色權限 UI 控制
       if (isAdmin) {
         roleBadge.innerText = '總務管理員';
         roleBadge.className = 'role-badge role-admin';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
-        document.getElementById('btnResetAll').style.display = '';
+        btnReset.style.display = '';
         document.getElementById('kittyKeeperSelect').disabled = false;
         document.getElementById('btnCopyAdminLink').style.display = '';
       } else {
         roleBadge.innerText = '旅伴唯讀模式';
         roleBadge.className = 'role-badge role-viewer';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-        document.getElementById('btnResetAll').style.display = 'none';
+        btnReset.style.display = 'none';
         document.getElementById('kittyKeeperSelect').disabled = true;
         document.getElementById('btnCopyAdminLink').style.display = 'none';
       }
 
-      // 監聽此房間之 Firebase 節點: trips/{currentRoomId}
       if (firebaseDb) {
         currentRoomRef = firebaseDb.ref('trips/' + currentRoomId);
         currentRoomRef.on('value', (snapshot) => {
@@ -1235,7 +1328,6 @@
             appState.kittyDeposits = Array.isArray(val.kittyDeposits) ? val.kittyDeposits : [];
             appState.expenses = Array.isArray(val.expenses) ? val.expenses : [];
           } else {
-            // 新房間初始空白
             appState = {
               members: [],
               kittyKeeper: "",
@@ -1249,16 +1341,14 @@
           renderAllViews();
         });
       } else {
-        // 本機備援
         loadLocalFallback();
       }
     }
-
     function saveAppState() {
       if (currentRoomRef && isAdmin) {
         currentRoomRef.set(appState);
       } else {
-        localStorage.setItem(`trip_split_${currentRoomId}`, JSON.stringify(appState));
+        localStorage.setItem(`godutch_trip_${currentRoomId}`, JSON.stringify(appState));
       }
       renderAllViews();
     }
@@ -1268,13 +1358,13 @@
         currentRoomRef.child('memberBankCodes').set(appState.memberBankCodes);
         currentRoomRef.child('memberBankAccounts').set(appState.memberBankAccounts);
       } else {
-        localStorage.setItem(`trip_split_${currentRoomId}`, JSON.stringify(appState));
+        localStorage.setItem(`godutch_trip_${currentRoomId}`, JSON.stringify(appState));
       }
     }
 
     function loadLocalFallback() {
       try {
-        const raw = localStorage.getItem(`trip_split_${currentRoomId}`);
+        const raw = localStorage.getItem(`godutch_trip_${currentRoomId}`);
         if (raw) {
           const parsed = JSON.parse(raw);
           if (Array.isArray(parsed.members)) appState.members = parsed.members;
@@ -1289,46 +1379,8 @@
       renderAllViews();
     }
 
-    // 建立隨機 6 碼英數房間或自訂代碼
-    window.createNewRoom = function() {
-      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-      let code = "";
-      for (let i = 0; i < 6; i++) {
-        code += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      // 建立者預設獲取 admin=1 管理員身分
-      window.location.search = `?trip=${code}&admin=1`;
-    };
-
-    window.joinExistingRoom = function() {
-      const input = document.getElementById('joinRoomInput');
-      const code = input ? input.value.trim().toUpperCase() : '';
-      if (!code) {
-        showToast("請輸入房間代碼！");
-        return;
-      }
-      // 加入現有房間預設為旅伴唯讀模式
-      window.location.search = `?trip=${code}`;
-    };
-
-    window.switchRoomAction = function() {
-      window.location.search = "";
-    };
-
-    window.copyViewerInviteLink = function() {
-      const origin = window.location.origin + window.location.pathname;
-      const link = `${origin}?trip=${currentRoomId}`;
-      copyToClipboard(link, "已複製旅伴唯讀連結！直接傳到 LINE 群即可使用。");
-    };
-
-    window.copyAdminInviteLink = function() {
-      const origin = window.location.origin + window.location.pathname;
-      const link = `${origin}?trip=${currentRoomId}&admin=1`;
-      copyToClipboard(link, "已複製總務管理連結！請妥善保存於個人記事本。");
-    };
-
     // ==============================================================
-    // 3. 公積金 (Trip Kitty) 核心運算
+    // 4. 公積金 (Trip Kitty) 核心運算
     // ==============================================================
     function getKittyTotals() {
       const deposited = appState.kittyDeposits.reduce((sum, item) => sum + (Number(item.totalAmount) || 0), 0);
@@ -1340,17 +1392,17 @@
       };
     }
 
-    window.updateKittyKeeper = function(val) {
+    function updateKittyKeeper(val) {
       if (!isAdmin) return;
       appState.kittyKeeper = val;
       recalcAllExpenseKittyOffsets();
       saveAppState();
-    };
+    }
 
-    window.openKittyModal = function() {
+    function openKittyModal() {
       if (!isAdmin) return;
       if (appState.members.length === 0) {
-        showToast("請先在下方「旅伴名單」加入成員！");
+        showToast("請先加入旅伴成員！");
         return;
       }
       document.getElementById('kittyDepositModal').style.display = 'flex';
@@ -1367,13 +1419,13 @@
         document.getElementById('kittyAllHint').innerText = `目前成員 ${count} 人，將共計存入 $${(per * count).toLocaleString()}`;
       };
       document.getElementById('kittyAllHint').innerText = `目前成員 ${appState.members.length} 人，輸入每人金額將自動乘算總額`;
-    };
+    }
 
-    window.closeKittyModal = function() {
+    function closeKittyModal() {
       document.getElementById('kittyDepositModal').style.display = 'none';
-    };
+    }
 
-    window.switchKittyTab = function(tab) {
+    function switchKittyTab(tab) {
       currentKittyTab = tab;
       document.getElementById('tabModeAll').className = tab === 'all' ? 'tab-btn active' : 'tab-btn';
       document.getElementById('tabModeSingle').className = tab === 'single' ? 'tab-btn active' : 'tab-btn';
@@ -1382,9 +1434,9 @@
       document.getElementById('modalBodyAll').style.display = tab === 'all' ? 'block' : 'none';
       document.getElementById('modalBodySingle').style.display = tab === 'single' ? 'block' : 'none';
       document.getElementById('modalBodyCustom').style.display = tab === 'custom' ? 'block' : 'none';
-    };
+    }
 
-    window.confirmKittyDeposit = function() {
+    function confirmKittyDeposit() {
       if (!isAdmin) return;
       const now = new Date();
       const timeStr = `${now.getMonth() + 1}/${now.getDate()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
@@ -1439,18 +1491,16 @@
       closeKittyModal();
       recalcAllExpenseKittyOffsets();
       saveAppState();
-    };
+    }
 
-    window.deleteKittyDeposit = function(id) {
+    function deleteKittyDeposit(id) {
       if (!isAdmin) return;
-      if (confirm("確定要刪除這筆公費存入紀錄嗎？")) {
-        appState.kittyDeposits = appState.kittyDeposits.filter(k => k.id !== id);
-        recalcAllExpenseKittyOffsets();
-        saveAppState();
-      }
-    };
+      appState.kittyDeposits = appState.kittyDeposits.filter(k => k.id !== id);
+      recalcAllExpenseKittyOffsets();
+      saveAppState();
+    }
 
-    window.toggleKittyHistory = function() {
+    function toggleKittyHistory() {
       const area = document.getElementById('kittyHistoryArea');
       const btn = document.getElementById('kittyHistoryToggleBtn');
       if (area.style.display === 'none') {
@@ -1460,12 +1510,12 @@
         area.style.display = 'none';
         btn.innerText = '紀錄 ▾';
       }
-    };
+    }
 
     // ==============================================================
-    // 4. 成員管理
+    // 5. 成員管理
     // ==============================================================
-    window.addMemberAction = function() {
+    function addMemberAction() {
       if (!isAdmin) return;
       const input = document.getElementById('memberNameInput');
       const name = input ? input.value.trim() : '';
@@ -1475,23 +1525,19 @@
         return;
       }
       if (appState.members.includes(name)) {
-        showToast("成員名稱重複囉！");
+        showToast("成員名稱已存在！");
         return;
       }
 
       appState.members.push(name);
-      if (!activeSplitters.includes(name)) {
-        activeSplitters.push(name);
-      }
-      if (!appState.kittyKeeper) {
-        appState.kittyKeeper = name;
-      }
+      if (!activeSplitters.includes(name)) activeSplitters.push(name);
+      if (!appState.kittyKeeper) appState.kittyKeeper = name;
 
       input.value = '';
       saveAppState();
-    };
+    }
 
-    window.removeSingleMember = function(name) {
+    function removeSingleMember(name) {
       if (!isAdmin) return;
       const inUse = appState.expenses.some(e => e.payer === name || (e.splitWith && e.splitWith.includes(name)));
       const hasDeposited = appState.kittyDeposits.some(k => k.person === name);
@@ -1508,29 +1554,27 @@
         appState.kittyKeeper = appState.members[0] || "";
       }
       saveAppState();
-    };
+    }
 
-    window.clearAllMembers = function() {
+    function clearAllMembers() {
       if (!isAdmin) return;
       if (appState.members.length === 0) return;
       if (appState.expenses.length > 0 || appState.kittyDeposits.length > 0) {
-        showToast("目前已有消費明細，請先清空明細後再清空成員！");
+        showToast("已有消費或公費明細，請先清空後再重設成員！");
         return;
       }
-      if (confirm("確定要清空所有旅伴成員嗎？")) {
-        appState.members = [];
-        appState.kittyKeeper = "";
-        appState.memberBankCodes = {};
-        appState.memberBankAccounts = {};
-        activeSplitters = [];
-        saveAppState();
-      }
-    };
+      appState.members = [];
+      appState.kittyKeeper = "";
+      appState.memberBankCodes = {};
+      appState.memberBankAccounts = {};
+      activeSplitters = [];
+      saveAppState();
+    }
 
     // ==============================================================
-    // 5. 特殊自費與平分設定
+    // 6. 特殊自費與平分設置
     // ==============================================================
-    window.toggleCustomSplitBox = function() {
+    function toggleCustomSplitBox() {
       const area = document.getElementById('customSplitArea');
       const btn = document.getElementById('customToggleBtn');
       if (area.style.display === 'none') {
@@ -1547,18 +1591,18 @@
         customSplitsList = [];
         renderCustomRows();
       }
-    };
+    }
 
-    window.addCustomSplitRow = function() {
+    function addCustomSplitRow() {
       if (appState.members.length === 0) return;
       customSplitsList.push({ person: appState.members[0], amount: 0 });
       renderCustomRows();
-    };
+    }
 
-    window.removeCustomSplitRow = function(idx) {
+    function removeCustomSplitRow(idx) {
       customSplitsList.splice(idx, 1);
       renderCustomRows();
-    };
+    }
 
     function renderCustomRows() {
       const container = document.getElementById('customRowsContainer');
@@ -1575,18 +1619,18 @@
       `).join('');
     }
 
-    window.toggleSplitter = function(name) {
+    function toggleSplitter(name) {
       const idx = activeSplitters.indexOf(name);
       if (idx !== -1) activeSplitters.splice(idx, 1);
       else activeSplitters.push(name);
       renderSplitterChips();
-    };
+    }
 
-    window.toggleAllSplitters = function() {
+    function toggleAllSplitters() {
       if (activeSplitters.length === appState.members.length) activeSplitters = [];
       else activeSplitters = appState.members.slice();
       renderSplitterChips();
-    };
+    }
 
     function renderSplitterChips() {
       const container = document.getElementById('splitterChipsCluster');
@@ -1604,7 +1648,7 @@
       }).join('');
     }
 
-    window.resetExpenseForm = function() {
+    function resetExpenseForm() {
       document.getElementById('expenseTitleInput').value = "";
       document.getElementById('expenseAmountInput').value = "";
       document.getElementById('expensePayerSelect').value = appState.kittyKeeper || (appState.members[0] || "");
@@ -1614,10 +1658,9 @@
       activeSplitters = appState.members.slice();
       renderCustomRows();
       renderSplitterChips();
-    };
-
+    }
     // ==============================================================
-    // 6. 智慧公費扣除與總務個人代墊轉換
+    // 7. 智慧公費扣除與總務個人代墊轉換
     // ==============================================================
     function recalcAllExpenseKittyOffsets() {
       let currentKitty = appState.kittyDeposits.reduce((sum, item) => sum + (Number(item.totalAmount) || 0), 0);
@@ -1644,7 +1687,7 @@
       });
     }
 
-    window.submitExpenseAction = function() {
+    function submitExpenseAction() {
       if (!isAdmin) return;
       if (appState.members.length === 0) {
         showToast("請先加入旅伴成員！");
@@ -1665,7 +1708,7 @@
 
       const customSum = customSplitsList.reduce((acc, c) => acc + (c.amount || 0), 0);
       if (customSum > amount) {
-        showToast("自費金額總和不能大於消費金額！");
+        showToast("自費總和不能大於消費金額！");
         return;
       }
 
@@ -1687,40 +1730,34 @@
 
       appState.expenses.push(newExpense);
       recalcAllExpenseKittyOffsets();
-
       resetExpenseForm();
       saveAppState();
-    };
+    }
 
-    window.removeSingleExpense = function(id) {
+    function removeSingleExpense(id) {
       if (!isAdmin) return;
       appState.expenses = appState.expenses.filter(e => e.id !== id);
       expandedExpenses.delete(id);
       recalcAllExpenseKittyOffsets();
       saveAppState();
-    };
+    }
 
-    window.clearAllExpenses = function() {
+    function clearAllExpenses() {
       if (!isAdmin) return;
       if (appState.expenses.length === 0) return;
-      if (confirm("確定要清空所有消費記錄嗎？")) {
-        appState.expenses = [];
-        expandedExpenses.clear();
-        saveAppState();
-      }
-    };
+      appState.expenses = [];
+      expandedExpenses.clear();
+      saveAppState();
+    }
 
-    window.toggleExpenseDetail = function(id) {
-      if (expandedExpenses.has(id)) {
-        expandedExpenses.delete(id);
-      } else {
-        expandedExpenses.add(id);
-      }
+    function toggleExpenseDetail(id) {
+      if (expandedExpenses.has(id)) expandedExpenses.delete(id);
+      else expandedExpenses.add(id);
       renderAllViews();
-    };
+    }
 
     // ==============================================================
-    // 7. 旅伴個人財務統計儀表板 (Stats Calculation)
+    // 8. 旅伴個人財務統計與零和結算演算法
     // ==============================================================
     function computeMemberStatistics() {
       const stats = {};
@@ -1729,12 +1766,10 @@
       });
 
       appState.expenses.forEach(exp => {
-        // 代墊累計
         if (stats[exp.payer]) {
           stats[exp.payer].totalPaid += (Number(exp.personalAdvanceAmount) || 0);
         }
 
-        // 自費累計
         let remainder = exp.amount;
         if (Array.isArray(exp.customSplits)) {
           exp.customSplits.forEach(cs => {
@@ -1745,7 +1780,6 @@
           });
         }
 
-        // 平分累計
         if (exp.splitWith && exp.splitWith.length > 0 && remainder > 0) {
           const unit = remainder / exp.splitWith.length;
           exp.splitWith.forEach(person => {
@@ -1754,7 +1788,6 @@
         }
       });
 
-      // 淨額試算
       appState.members.forEach(m => {
         stats[m].net = stats[m].totalPaid - stats[m].totalSpent;
       });
@@ -1762,9 +1795,6 @@
       return stats;
     }
 
-    // ==============================================================
-    // 8. 最終結算演算法 (總務剩餘現鈔自動合併抵銷)
-    // ==============================================================
     function computeSettlement() {
       const balance = {};
       appState.members.forEach(m => balance[m] = 0);
@@ -1780,16 +1810,12 @@
         } else if (deposit.contributors && deposit.contributors.length > 0) {
           const perShare = deposit.totalAmount / deposit.contributors.length;
           deposit.contributors.forEach(person => {
-            if (kittyContrib[person] !== undefined) {
-              kittyContrib[person] += perShare;
-            }
+            if (kittyContrib[person] !== undefined) kittyContrib[person] += perShare;
           });
         } else if (appState.members.length > 0) {
           const perShare = deposit.totalAmount / appState.members.length;
           appState.members.forEach(person => {
-            if (kittyContrib[person] !== undefined) {
-              kittyContrib[person] += perShare;
-            }
+            if (kittyContrib[person] !== undefined) kittyContrib[person] += perShare;
           });
         }
       });
@@ -1812,7 +1838,7 @@
         }
       }
 
-      // 總務手中持有實體剩餘現鈔：在演算法中抵銷其個人應收帳目
+      // 總務實體剩餘現鈔抵銷：在演算法中自動充抵總務應收
       const hasKeeper = appState.kittyKeeper && appState.members.includes(appState.kittyKeeper);
       if (hasKeeper && kittyLeftover > 0) {
         balance[appState.kittyKeeper] -= kittyLeftover;
@@ -1853,6 +1879,7 @@
       debtors.sort((a, b) => b.amount - a.amount);
       creditors.sort((a, b) => b.amount - a.amount);
 
+      // 調平四捨五入誤差
       const totalDeb = debtors.reduce((sum, d) => sum + d.amount, 0);
       const totalCre = creditors.reduce((sum, c) => sum + c.amount, 0);
       const diff = totalDeb - totalCre;
@@ -1895,23 +1922,22 @@
         keeperName: appState.kittyKeeper
       };
     }
-
     // ==============================================================
-    // 9. 銀行代碼/帳號管理與 LINE 結算複製
+    // 9. 銀行代碼/帳號管理與剪貼簿
     // ==============================================================
-    window.updateMemberBankCode = function(name, val) {
+    function updateMemberBankCode(name, val) {
       if (!appState.memberBankCodes) appState.memberBankCodes = {};
       appState.memberBankCodes[name] = val.trim();
       saveAppStateQuietly();
-    };
+    }
 
-    window.updateMemberBankAccount = function(name, val) {
+    function updateMemberBankAccount(name, val) {
       if (!appState.memberBankAccounts) appState.memberBankAccounts = {};
       appState.memberBankAccounts[name] = val.trim();
       saveAppStateQuietly();
-    };
+    }
 
-    window.copyPureAccountOnly = function(name) {
+    function copyPureAccountOnly(name) {
       const acc = (appState.memberBankAccounts && appState.memberBankAccounts[name]) ? appState.memberBankAccounts[name] : '';
       const cleanAcc = acc.replace(/[^0-9]/g, '');
       if (!cleanAcc) {
@@ -1919,7 +1945,7 @@
         return;
       }
       copyToClipboard(cleanAcc, `已複製 ${name} 的帳號：${cleanAcc}`);
-    };
+    }
 
     function copyToClipboard(text, successMsg) {
       if (!text) return;
@@ -1936,7 +1962,7 @@
       document.body.removeChild(ta);
     }
 
-    window.copyFullSettlementSummary = function() {
+    function copyFullSettlementSummary() {
       const { transactions, kittyLeftover, hasKeeper, keeperName } = computeSettlement();
       if (transactions.length === 0) {
         showToast("目前帳目皆已平，無須轉帳！");
@@ -1971,24 +1997,22 @@
       }
 
       copyToClipboard(text, "已複製完整結算清單！可直接貼至 LINE 群組。");
-    };
+    }
 
-    window.resetWholeTrip = function() {
+    function resetWholeTrip() {
       if (!isAdmin) return;
-      if (confirm(`⚠️ 確定要清空房間【${currentRoomId}】的所有資料嗎？此動作無法復原。`)) {
-        appState = {
-          members: [],
-          kittyKeeper: "",
-          memberBankCodes: {},
-          memberBankAccounts: {},
-          kittyDeposits: [],
-          expenses: []
-        };
-        expandedExpenses.clear();
-        resetExpenseForm();
-        saveAppState();
-      }
-    };
+      appState = {
+        members: [],
+        kittyKeeper: "",
+        memberBankCodes: {},
+        memberBankAccounts: {},
+        kittyDeposits: [],
+        expenses: []
+      };
+      expandedExpenses.clear();
+      resetExpenseForm();
+      saveAppState();
+    }
 
     function showToast(msg) {
       const t = document.getElementById('toastBox');
@@ -2000,7 +2024,7 @@
     }
 
     // ==============================================================
-    // 10. 畫面渲染引擎
+    // 10. 畫面渲染
     // ==============================================================
     function renderAllViews() {
       if (!currentRoomId) return;
@@ -2016,7 +2040,6 @@
       });
       keeperSelect.innerHTML = keeperOpts;
 
-      // 公費紀錄抽屜
       const historyList = document.getElementById('kittyHistoryList');
       if (appState.kittyDeposits.length === 0) {
         historyList.innerHTML = `<span style="font-size:11px; color:#94A3B8;">尚無任何存入紀錄</span>`;
@@ -2064,7 +2087,7 @@
         }).join('');
       }
 
-      // 3. 成員徽章清單
+      // 3. 成員名單徽章
       document.getElementById('memberCountBadge').innerText = appState.members.length;
       const chipContainer = document.getElementById('membersChipCluster');
       if (appState.members.length === 0) {
@@ -2078,7 +2101,7 @@
         `).join('');
       }
 
-      // 4. 付款人選單：純成員名單，標註總務 (無公費支出選項)
+      // 4. 付款人選單
       const payerSel = document.getElementById('expensePayerSelect');
       const curPayer = payerSel.value;
       let pOptions = `<option value="" disabled ${!curPayer ? 'selected' : ''}>請選擇付款人</option>`;
@@ -2089,10 +2112,9 @@
       });
       payerSel.innerHTML = pOptions;
 
-      // 5. 平攤人選取晶片
       renderSplitterChips();
 
-      // 6. 消費明細清單 (含公費扣抵與代墊備註)
+      // 5. 消費明細清單
       const expContainer = document.getElementById('expenseListCluster');
       const totalExpense = appState.expenses.reduce((acc, e) => acc + (Number(e.amount) || 0), 0);
       document.getElementById('totalCostSumDisplay').innerText = `累計：$${Math.round(totalExpense).toLocaleString()}`;
@@ -2166,7 +2188,7 @@
         }).join('');
       }
 
-      // 7. 結算結果 (轉帳路徑置頂，銀行帳號置底選填)
+      // 6. 結算清單 (轉帳路徑置頂)
       const setList = document.getElementById('settlementList');
       const bankSection = document.getElementById('creditorAccountsSection');
       const bankList = document.getElementById('creditorAccountsList');
@@ -2235,7 +2257,7 @@
       }
     }
 
-    // 啟動路由與資料同步
+    // 啟動路由與連線
     initRoomRouting();
   </script>
 </body>
