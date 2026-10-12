@@ -3,54 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>小旅行・智慧分帳與公費助理</title>
+  <title>出遊分帳與公費小幫手</title>
 
-  <!-- 引入 Firebase SDK (純原生環境適用之相容版本) -->
+  <!-- 引入官方穩定相容版 Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <style>
+    :root {
+      --bg: #F8F9FA;
+      --surface: #FFFFFF;
+      --primary: #059669;
+      --primary-hover: #047857;
+      --primary-dark: #065F46;
+      --primary-light: #ECFDF5;
+      --primary-border: #A7F3D0;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --text-light: #94A3B8;
+      --border: #E2E8F0;
+      --danger: #EF4444;
+      --danger-bg: #FEF2F2;
+      --radius-sm: 8px;
+      --radius: 14px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
-    body {
-      background-color: #F8F9FA;
-      color: #2D3748;
-      padding-bottom: 90px;
       -webkit-tap-highlight-color: transparent;
     }
 
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding-bottom: 90px;
+      line-height: 1.5;
+    }
+
     /* 頂部導航列 */
-    .header {
-      background: #FFFFFF;
-      border-bottom: 1px solid #E2E8F0;
-      padding: 12px 16px;
+    .top-navbar {
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
-      z-index: 20;
+      z-index: 40;
+      padding: 10px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: var(--shadow-sm);
     }
-    .header h1 {
-      font-size: 15px;
+
+    .brand-title {
+      font-size: 14px;
       font-weight: 700;
+      color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 6px;
-      color: #1E293B;
       white-space: nowrap;
     }
-    .status-dot {
+
+    .brand-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #10B981;
+      background-color: var(--primary);
       flex-shrink: 0;
     }
+
     .role-badge {
       font-size: 10px;
       padding: 2px 6px;
@@ -69,1121 +94,1754 @@
       border: 1px solid #CBD5E1;
     }
 
-    .btn-reset-all {
-      font-size: 11px;
-      color: #94A3B8;
+    .btn-text-danger {
       background: none;
       border: none;
-      padding: 4px 8px;
+      color: var(--text-light);
+      font-size: 11px;
+      font-weight: 600;
       cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 6px;
       white-space: nowrap;
       flex-shrink: 0;
     }
-    .btn-reset-all:hover {
-      color: #EF4444;
+    .btn-text-danger:hover {
+      color: var(--danger);
+      background-color: var(--danger-bg);
     }
 
-    .container {
+    .app-viewport {
       max-width: 440px;
       margin: 0 auto;
-      padding: 12px;
+      padding: 10px 12px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
-    /* 卡片共用樣式 */
-    .card {
+    /* 房間入口大卡片 (Room Gateway) */
+    .gateway-card {
       background: #FFFFFF;
-      border-radius: 14px;
-      border: 1px solid #E2E8F0;
-      padding: 14px 16px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 18px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      margin-top: 15px;
     }
+    .gateway-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .gateway-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .gateway-btn-main {
+      width: 100%;
+      height: 44px;
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    .gateway-btn-main:active {
+      background: var(--primary-hover);
+    }
+    .gateway-divider {
+      position: relative;
+      margin: 20px 0;
+      text-align: center;
+    }
+    .gateway-divider::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      border-top: 1px solid var(--border);
+    }
+    .gateway-divider span {
+      position: relative;
+      background: #FFFFFF;
+      padding: 0 10px;
+      font-size: 11px;
+      color: var(--text-light);
+    }
+
+    /* 房間控制列 (Room Bar) */
+    .room-header-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .room-tag {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+    .room-code-badge {
+      background: #F1F5F9;
+      color: var(--primary-dark);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: ui-monospace, monospace;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .room-btn-group {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .btn-room-action {
+      background: #F1F5F9;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 4px 7px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-room-action:active {
+      background: #E2E8F0;
+    }
+
+    /* 核心卡片容器 */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
+
     .card-title {
       font-size: 12px;
       font-weight: 700;
-      color: #64748B;
-      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
       white-space: nowrap;
-    }
-    .card-action-btn {
-      font-size: 11px;
-      color: #94A3B8;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 2px 4px;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .card-action-btn:hover {
-      color: #EF4444;
     }
 
-    /* 迷你單列公積金卡片 */
+    /* 迷你單列公積金狀態列 (Compact Kitty Bar) */
     .kitty-compact-card {
-      background: linear-gradient(135deg, #065F46, #0D9488);
-      color: #FFFFFF;
-      border: none;
-      padding: 12px 14px;
+      background: #FFFFFF;
+      border: 1px solid var(--primary-border);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      box-shadow: 0 1px 3px rgba(5, 150, 105, 0.05);
     }
-    .kitty-row {
+
+    .kitty-compact-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
     }
-    .kitty-left {
+
+    .kitty-info-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .kitty-balance-line {
       display: flex;
       align-items: baseline;
       gap: 6px;
-      min-width: 0;
     }
-    .kitty-label {
+
+    .kitty-badge-label {
       font-size: 11px;
-      opacity: 0.9;
+      font-weight: 700;
+      color: var(--primary);
       white-space: nowrap;
     }
-    .kitty-amount {
-      font-size: 22px;
-      font-weight: bold;
-      font-family: monospace;
-      line-height: 1;
+
+    .kitty-balance-num {
+      font-size: 20px;
+      font-weight: 800;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #065F46;
+      line-height: 1.1;
       white-space: nowrap;
     }
-    .kitty-actions {
+
+    .kitty-keeper-subline {
+      font-size: 11px;
+      color: var(--text-muted);
       display: flex;
-      gap: 5px;
       align-items: center;
+      gap: 4px;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+
+    .kitty-keeper-inline-select {
+      background: #F1F5F9;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-main);
+      padding: 1px 4px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .kitty-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       flex-shrink: 0;
     }
-    .btn-kitty-sm {
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.35);
+
+    .btn-kitty-compact-add {
+      background: var(--primary);
       color: #FFFFFF;
-      font-size: 11px;
-      padding: 5px 9px;
+      border: none;
+      padding: 7px 12px;
       border-radius: 7px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 0 1px 2px rgba(5, 150, 105, 0.2);
+    }
+    .btn-kitty-compact-add:active {
+      background: var(--primary-hover);
+      transform: scale(0.97);
+    }
+
+    .btn-kitty-compact-toggle {
+      background: #F1F5F9;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      border-radius: 7px;
+      font-size: 11px;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
+      flex-shrink: 0;
     }
-    .btn-kitty-sm:active {
-      background: rgba(255, 255, 255, 0.3);
-    }
-    .kitty-custodian-bar {
+
+    .kitty-drawer-container {
       margin-top: 8px;
       padding-top: 8px;
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      opacity: 0.95;
-    }
-    .custodian-select {
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #FFFFFF;
-      padding: 2px 6px;
-      border-radius: 6px;
-      font-size: 11px;
-      outline: none;
-    }
-    .custodian-select option {
-      color: #1E293B;
+      border-top: 1px dashed var(--border);
     }
 
-    /* 彈窗樣式 */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 50;
-      padding: 16px;
-    }
-    .modal-box {
-      background: #FFFFFF;
-      border-radius: 14px;
-      padding: 18px;
-      width: 100%;
-      max-width: 340px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
-    .modal-title {
-      font-size: 14px;
-      font-weight: bold;
-      color: #1E293B;
-      margin-bottom: 12px;
-    }
-
-    /* 旅伴個人財務統計清單 */
-    .stats-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .stats-item {
+    .kitty-history-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: 8px;
+      border: 1px solid #EDF2F7;
+      padding: 5px 8px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+      font-size: 11px;
+    }
+
+    .btn-kitty-del-sub {
+      background: none;
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 0 4px;
+    }
+    .btn-kitty-del-sub:hover {
+      color: var(--danger);
+    }
+
+    /* 旅伴個人財務統計儀表板 (Stats Cards) */
+    .stats-card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .stats-card-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
       padding: 8px 10px;
       font-size: 12px;
     }
-    .stats-name {
-      font-weight: 600;
-      color: #1E293B;
+    .stats-item-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .stats-details {
+    .stats-person-name {
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .stats-person-tag {
+      font-size: 10px;
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .stats-item-right {
       display: flex;
       gap: 8px;
       align-items: center;
       font-size: 11px;
-      font-family: monospace;
+      font-family: ui-monospace, monospace;
     }
     .stats-badge-green {
-      color: #059669;
-      font-weight: bold;
+      color: var(--primary);
+      font-weight: 800;
     }
     .stats-badge-red {
-      color: #DC2626;
-      font-weight: bold;
+      color: var(--danger);
+      font-weight: 800;
     }
 
-    /* 輸入區元件 */
-    .input-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .input-text {
-      flex: 1;
-      min-width: 0;
-      border: 1px solid #CBD5E1;
-      background: #FFFFFF;
-      border-radius: 9px;
-      padding: 9px 12px;
-      font-size: 14px;
-      color: #1E293B;
-      outline: none;
-    }
-    .input-text:focus {
-      border-color: #059669;
-    }
-    
-    .btn-add {
-      background: #1E293B;
-      color: #FFFFFF;
-      border: none;
-      padding: 9px 18px;
-      border-radius: 9px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-      min-width: 64px;
-      text-align: center;
-    }
-
-    .chips-box {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-      min-height: 28px;
-      align-items: center;
-    }
-    .member-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: #F1F5F9;
-      border: 1px solid #E2E8F0;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      color: #334155;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-    .chip-del {
-      background: none;
-      border: none;
-      color: #94A3B8;
-      font-size: 14px;
-      cursor: pointer;
-      line-height: 1;
-    }
-    .chip-del:hover {
-      color: #EF4444;
-    }
-
-    /* 表單項目 */
+    /* 表單元件樣式 */
     .form-group {
       margin-bottom: 10px;
     }
+
     .form-label {
       display: block;
       font-size: 11px;
       font-weight: 600;
-      color: #475569;
-      margin-bottom: 5px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
       white-space: nowrap;
     }
-    .form-select {
+
+    .form-input, .form-select {
       width: 100%;
-      border: 1px solid #CBD5E1;
-      background: #FFFFFF;
-      border-radius: 9px;
-      padding: 9px 10px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0 10px;
       font-size: 14px;
-      color: #1E293B;
+      color: var(--text-main);
+      background-color: var(--surface);
       outline: none;
     }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--primary);
+    }
+
     .form-grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
     }
 
-    /* 自費區 */
-    .custom-box {
+    .member-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .member-input-field {
+      flex: 1 1 auto;
+      min-width: 0;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0 10px;
+      font-size: 14px;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    .member-input-field:focus {
+      border-color: var(--primary);
+    }
+
+    .btn-add-member {
+      flex: 0 0 auto;
+      min-width: 64px;
+      height: 40px;
+      background-color: #1E293B;
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0 16px;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .btn-add-member:active {
+      background-color: #334155;
+    }
+
+    .chips-cluster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+      min-height: 26px;
+      align-items: center;
+    }
+
+    .member-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background-color: #F1F5F9;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 4px 9px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-badge-remove {
+      background: none;
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      padding: 0 1px;
+    }
+    .btn-badge-remove:hover {
+      color: var(--danger);
+    }
+
+    .split-chip-btn {
+      border: 1px solid var(--border);
       background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: 9px;
-      padding: 9px 11px;
+      color: var(--text-muted);
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .split-chip-btn.is-active {
+      background: var(--primary-light);
+      border-color: var(--primary-border);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .custom-split-box {
+      background-color: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
       margin-bottom: 10px;
     }
-    .custom-header {
+
+    .custom-split-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .btn-toggle-custom {
+
+    .btn-link-action {
       background: none;
       border: none;
-      color: #059669;
+      color: var(--primary);
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
+      flex-shrink: 0;
     }
-    .custom-row {
+
+    .custom-row-item {
       display: flex;
-      gap: 6px;
       align-items: center;
+      gap: 6px;
       margin-top: 6px;
     }
 
-    /* 平攤成員標籤 */
-    .split-chip {
-      border: 1px solid #CBD5E1;
-      background: #F8FAFC;
-      color: #64748B;
-      font-size: 11px;
-      padding: 6px 11px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: 500;
-      white-space: nowrap;
-    }
-    .split-chip.active {
-      background: #ECFDF5;
-      border-color: #6EE7B7;
-      color: #065F46;
-      font-weight: 700;
+    .custom-row-item select, .custom-row-item input {
+      height: 34px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0 6px;
+      outline: none;
+      background: #FFF;
     }
 
-    /* 按鈕排版 */
-    .btn-submit-row {
+    .form-btn-actions {
       display: grid;
       grid-template-columns: 1fr 2fr;
       gap: 8px;
       margin-top: 8px;
     }
-    .btn-clear-form {
+
+    .btn-action-clear {
+      height: 42px;
       background: #F1F5F9;
-      border: 1px solid #CBD5E1;
+      border: 1px solid var(--border);
       color: #475569;
-      padding: 11px 0;
-      border-radius: 9px;
+      border-radius: var(--radius-sm);
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-      text-align: center;
-      white-space: nowrap;
-    }
-    .btn-save-expense {
-      background: #059669;
-      color: #FFFFFF;
-      border: none;
-      padding: 11px 0;
-      border-radius: 9px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      text-align: center;
       white-space: nowrap;
     }
 
-    /* 消費明細 */
-    .expense-item {
-      padding: 10px 0;
+    .btn-action-save {
+      height: 42px;
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-action-save:active {
+      background: var(--primary-hover);
+    }
+
+    .expense-row-item {
+      padding: 9px 0;
       border-bottom: 1px solid #F1F5F9;
       font-size: 12px;
     }
-    .expense-item:last-child {
+    .expense-row-item:last-child {
       border-bottom: none;
     }
-    .expense-main-row {
+
+    .expense-main-line {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .btn-del-expense {
-      background: none;
-      border: none;
-      color: #EF4444;
+
+    .expense-item-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .expense-item-cost {
+      font-family: ui-monospace, monospace;
+      font-weight: 700;
+      color: var(--primary);
+      margin-left: 4px;
+      white-space: nowrap;
+    }
+
+    .expense-item-sub {
       font-size: 11px;
+      color: var(--text-light);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn-detail-toggle {
+      background: #F1F5F9;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
       cursor: pointer;
       white-space: nowrap;
-      margin-left: 8px;
     }
-    .expense-detail-drawer {
+
+    .expense-expanded-card {
       background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
       padding: 8px 10px;
       margin-top: 6px;
       font-size: 11px;
       color: #475569;
     }
 
-    /* 結算卡片 */
+    .expanded-tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .expanded-tag {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 10px;
+    }
+
     .settle-card {
       background: #F8FAFC;
       border: 1px solid #E2E8F0;
       padding: 10px 12px;
-      border-radius: 9px;
-      margin-bottom: 8px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+    }
+
+    .settle-main {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
+
     .settle-amount {
-      color: #059669;
+      color: var(--primary);
       font-size: 14px;
       font-weight: bold;
       font-family: monospace;
       white-space: nowrap;
     }
 
-    /* 收款人帳號專區 (防爆版設計) */
-    .account-card {
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: 10px;
-      padding: 10px 12px;
+    .settle-keeper-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #F1F5F9;
+      border-left: 3px solid var(--primary);
+      padding: 6px 9px;
+      border-radius: 0 6px 6px 0;
       margin-bottom: 8px;
+      line-height: 1.4;
     }
-    .account-row {
+
+    .bank-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+    }
+
+    .bank-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    /* 銀行帳號輸入列：緊湊3碼代碼 + 彈性寬度帳號 + 精簡複製按鈕 */
+    .bank-input-row {
       display: flex;
       gap: 6px;
       align-items: center;
-      margin-top: 6px;
       width: 100%;
     }
-    .bank-code-input {
+
+    .bank-code-field {
       width: 72px;
-      flex-shrink: 0;
-      text-align: center;
+      flex: 0 0 72px;
       border: 1px solid #CBD5E1;
-      background: #FFFFFF;
+      background: #F8FAFC;
       border-radius: 6px;
       padding: 6px 4px;
       font-size: 12px;
+      color: #1E293B;
+      text-align: center;
       outline: none;
     }
-    .bank-account-input {
+
+    .bank-account-field {
       flex: 1 1 auto;
       min-width: 0;
       border: 1px solid #CBD5E1;
-      background: #FFFFFF;
+      background: #F8FAFC;
       border-radius: 6px;
       padding: 6px 8px;
       font-size: 12px;
+      color: #1E293B;
       outline: none;
     }
-    .btn-copy-sm {
-      flex-shrink: 0;
+
+    .bank-code-field:focus,
+    .bank-account-field:focus {
       background: #FFFFFF;
+      border-color: var(--primary);
+    }
+
+    .btn-copy-sm {
+      flex: 0 0 auto;
+      background: #F1F5F9;
       border: 1px solid #CBD5E1;
       color: #334155;
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 6px;
       font-size: 11px;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
     }
+    .btn-copy-sm:active {
+      background: #E2E8F0;
+    }
 
     .empty-hint {
       text-align: center;
       font-size: 11px;
       color: #94A3B8;
-      padding: 12px 0;
+      padding: 10px 0;
+    }
+
+    /* 對話框彈窗 (Modal) */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .modal-dialog {
+      background: #FFFFFF;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 380px;
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .tab-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 4px;
+      background: #F1F5F9;
+      padding: 3px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: none;
+      padding: 6px 2px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748B;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: #FFFFFF;
+      color: var(--primary);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    /* 浮動提示 Toast */
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: none;
+      white-space: nowrap;
     }
   </style>
 </head>
 <body>
 
   <!-- 頂部導航列 -->
-  <header class="header">
-    <h1>
-      <span class="status-dot"></span>旅程分帳小幫手
-      <span id="roleBadge" class="role-badge role-viewer">旅伴唯讀模式</span>
-    </h1>
-    <button type="button" id="btnResetTrip" class="btn-reset-all" onclick="resetEntireTrip()">清空全旅程</button>
+  <header class="top-navbar">
+    <div class="brand-title">
+      <div class="brand-dot"></div>
+      <span>出遊分帳與公費小幫手</span>
+      <span id="roleBadge" class="role-badge role-viewer">唯讀模式</span>
+    </div>
+    <button type="button" id="btnResetAll" class="btn-text-danger" onclick="resetWholeTrip()">清空全旅程</button>
   </header>
 
-  <div class="container">
+  <main class="app-viewport">
 
-    <!-- 1. 迷你公積金卡片 -->
-    <div class="card kitty-compact-card">
-      <div class="kitty-row">
-        <div class="kitty-left">
-          <span class="kitty-label">💰 公費剩餘</span>
-          <span class="kitty-amount" id="kittyBalanceDisplay">$0</span>
+    <!-- 房間入口大卡片 (當網址未指定旅程房間時顯示) -->
+    <div id="roomGatewayScreen" class="gateway-card" style="display:none;">
+      <div class="gateway-title">✈️ 開始你的旅程分帳</div>
+      <div class="gateway-desc">支援多人即時同步・旅伴免安裝即可線上查看</div>
+      
+      <button type="button" class="gateway-btn-main" onclick="createNewRoom()">＋ 建立新旅程房間</button>
+      
+      <div class="gateway-divider">
+        <span>或者加入現有旅程</span>
+      </div>
+
+      <div style="display:flex; gap:6px;">
+        <input type="text" id="joinRoomInput" class="form-input" placeholder="請輸入 6 碼房間代碼 (如: TOKYO2)" style="text-transform:uppercase;">
+        <button type="button" class="btn-add-member" onclick="joinExistingRoom()">加入</button>
+      </div>
+    </div>
+
+    <!-- 主應用內容區 (當進入特定房間時顯示) -->
+    <div id="mainTripApp" style="display:none; display:flex; flex-direction:column; gap:10px;">
+
+      <!-- 房間控制列與邀請分享按鈕 -->
+      <section class="room-header-card">
+        <div class="room-tag">
+          <span>房間：</span>
+          <span id="currentRoomDisplay" class="room-code-badge">------</span>
         </div>
-        <div class="kitty-actions">
-          <button type="button" id="btnOpenKittyDeposit" class="btn-kitty-sm" onclick="openKittyModal()">＋ 繳存</button>
-          <button type="button" class="btn-kitty-sm" onclick="toggleKittyDrawer()">紀錄 ▾</button>
+        <div class="room-btn-group">
+          <button type="button" class="btn-room-action" onclick="copyViewerInviteLink()">🔗 複製旅伴連結</button>
+          <button type="button" class="btn-room-action" id="btnCopyAdminLink" onclick="copyAdminInviteLink()">🔑 總務連結</button>
+          <button type="button" class="btn-room-action" onclick="switchRoomAction()">換房</button>
         </div>
-      </div>
-      <div class="kitty-custodian-bar">
-        <span>公費保管人 (總務)：</span>
-        <select id="custodianSelect" class="custodian-select" onchange="changeCustodian(this.value)">
-          <option value="">未指定</option>
-        </select>
-      </div>
-      <div id="kittyDrawer" style="display:none; margin-top:8px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.2); font-size:11px;">
-        <div id="kittyDepositLogs"></div>
-      </div>
-    </div>
+      </section>
 
-    <!-- 2. 旅伴個人財務統計清單 (全員唯讀與管理員皆可見) -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">旅伴個人消費與收支統計</span>
-        <span style="font-size:10px; color:#94A3B8;">即時試算</span>
-      </div>
-      <div id="memberStatsContainer" class="stats-grid">
-        <p class="empty-hint">尚未加入成員</p>
-      </div>
-    </div>
+      <!-- 1. 迷你公積金狀態列 (Compact Kitty Bar) -->
+      <section class="kitty-compact-card">
+        <div class="kitty-compact-row">
+          <div class="kitty-info-group">
+            <div class="kitty-balance-line">
+              <span class="kitty-badge-label">💰 公費剩餘</span>
+              <span class="kitty-balance-num" id="kittyBalanceDisplay">$0</span>
+            </div>
+            <div class="kitty-keeper-subline">
+              <span>總務(公費保管)：</span>
+              <select id="kittyKeeperSelect" class="kitty-keeper-inline-select" onchange="updateKittyKeeper(this.value)">
+                <option value="">未指定</option>
+              </select>
+            </div>
+          </div>
 
-    <!-- 3. 成員管理 (僅管理員可見) -->
-    <div class="card admin-only" id="memberManageCard">
-      <div class="card-header">
-        <span class="card-title">旅伴名單 (<span id="memberCountBadge">0</span>人)</span>
-        <button type="button" class="card-action-btn" onclick="clearAllMembers()">清空人員</button>
-      </div>
-      <div class="input-row">
-        <input id="memberNameInput" type="text" class="input-text" placeholder="輸入成員姓名 (如: 阿信)">
-        <button type="button" class="btn-add" onclick="addMember()">加入</button>
-      </div>
-      <div id="membersContainer" class="chips-box"></div>
-    </div>
+          <div class="kitty-actions-group">
+            <button type="button" id="btnOpenKittyDeposit" class="btn-kitty-compact-add admin-only" onclick="openKittyModal()">＋ 繳存</button>
+            <button type="button" class="btn-kitty-compact-toggle" id="kittyHistoryToggleBtn" onclick="toggleKittyHistory()">紀錄 ▾</button>
+          </div>
+        </div>
 
-    <!-- 4. 記錄支出 (僅管理員可見) -->
-    <div class="card admin-only" id="expenseFormCard">
-      <div class="card-header">
-        <span class="card-title">記錄支出</span>
-      </div>
+        <!-- 折疊展開的公費歷史流水帳 -->
+        <div id="kittyHistoryArea" class="kitty-drawer-container" style="display:none;">
+          <div id="kittyHistoryList"></div>
+        </div>
+      </section>
 
-      <div class="form-group">
-        <label class="form-label">消費項目</label>
-        <input id="itemTitle" type="text" class="input-text" style="width:100%;" placeholder="例如：居酒屋晚餐、計程車">
-      </div>
+      <!-- 2. 旅伴個人財務統計儀表板 (全員唯讀與管理員皆可見) -->
+      <section class="card">
+        <div class="card-header">
+          <span class="card-title">旅伴個人花費與收支統計</span>
+          <span style="font-size:10px; color:var(--text-light);">即時自動試算</span>
+        </div>
+        <div id="memberStatsContainer" class="stats-card-list">
+          <p class="empty-hint">尚未加入成員</p>
+        </div>
+      </section>
 
-      <div class="form-grid-2 form-group">
+      <!-- 3. 成員管理 (僅管理員可見) -->
+      <section class="card admin-only" id="memberManageSection">
+        <div class="card-header">
+          <span class="card-title">旅伴名單 (<span id="memberCountBadge">0</span>人)</span>
+          <button type="button" class="btn-text-danger" onclick="clearAllMembers()">清空人員</button>
+        </div>
+
+        <div class="member-input-row">
+          <input id="memberNameInput" type="text" class="member-input-field" placeholder="輸入姓名 (如: 阿信)" onkeydown="if(event.key==='Enter') addMemberAction()">
+          <button type="button" class="btn-add-member" onclick="addMemberAction()">加入</button>
+        </div>
+
+        <div id="membersChipCluster" class="chips-cluster"></div>
+      </section>
+
+      <!-- 4. 記錄支出 (僅管理員可見，付款人純成員名單，總務自動優先抵公費) -->
+      <section class="card admin-only" id="expenseFormSection">
+        <div class="card-header">
+          <span class="card-title">記錄消費支出</span>
+        </div>
+
         <div>
-          <label class="form-label">金額 (TWD)</label>
-          <input id="itemAmount" type="number" class="input-text" style="width:100%;" placeholder="0">
-        </div>
-        <div>
-          <label class="form-label">付款人</label>
-          <select id="payerSelect" class="form-select"></select>
-        </div>
-      </div>
+          <div class="form-group">
+            <label class="form-label">消費項目</label>
+            <input id="expenseTitleInput" type="text" class="form-input" placeholder="例如：居酒屋晚餐、計程車">
+          </div>
 
-      <!-- 特殊自費 -->
-      <div class="custom-box">
-        <div class="custom-header">
-          <span class="form-label" style="margin-bottom:0;">包含特定個人自費？</span>
-          <button type="button" id="customToggleBtn" class="btn-toggle-custom" onclick="toggleCustomSection()">＋ 新增自費</button>
-        </div>
-        <div id="customArea" style="display:none; margin-top:6px; border-top:1px solid #E2E8F0; padding-top:6px;">
-          <div id="customList"></div>
-          <button type="button" onclick="addCustomRow()" style="margin-top:6px; background:#FFF; border:1px solid #CBD5E1; padding:4px 8px; font-size:11px; border-radius:5px; cursor:pointer;">＋ 增加自費人</button>
-        </div>
-      </div>
+          <div class="form-grid-2 form-group">
+            <div>
+              <label class="form-label">金額 (TWD)</label>
+              <input id="expenseAmountInput" type="number" class="form-input" placeholder="0" min="1">
+            </div>
+            <div>
+              <label class="form-label">付款人</label>
+              <select id="expensePayerSelect" class="form-select"></select>
+            </div>
+          </div>
 
-      <!-- 平攤成員 -->
-      <div class="form-group">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-          <label class="form-label" style="margin-bottom:0;">其餘平攤成員</label>
-          <button type="button" onclick="toggleAllSplitters()" style="background:none; border:none; color:#059669; font-size:11px; font-weight:700; cursor:pointer;">全選 / 反選</button>
-        </div>
-        <div id="splitButtonsContainer" class="chips-box" style="margin-top:0;"></div>
-      </div>
+          <!-- 特殊自費折疊區 -->
+          <div class="custom-split-box">
+            <div class="custom-split-head">
+              <span style="font-size:11px; font-weight:600; color:var(--text-muted);">扣除特殊自費 (例如某人單獨點牛排)</span>
+              <button type="button" class="btn-link-action" id="customToggleBtn" onclick="toggleCustomSplitBox()">＋ 新增自費</button>
+            </div>
+            <div id="customSplitArea" style="display:none; margin-top:6px; border-top:1px solid var(--border); padding-top:6px;">
+              <div id="customRowsContainer"></div>
+              <button type="button" class="btn-link-action" style="margin-top:6px;" onclick="addCustomSplitRow()">＋ 增加自費人</button>
+            </div>
+          </div>
 
-      <!-- 雙按鈕 -->
-      <div class="btn-submit-row">
-        <button type="button" class="btn-clear-form" onclick="clearExpenseForm()">重新填寫</button>
-        <button type="button" class="btn-save-expense" onclick="addExpense()">儲存這筆費用</button>
-      </div>
+          <!-- 其餘平攤成員選取 -->
+          <div class="form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <label class="form-label" style="margin-bottom:0;">其餘平攤成員</label>
+              <button type="button" class="btn-link-action" onclick="toggleAllSplitters()">全選 / 反選</button>
+            </div>
+            <div id="splitterChipsCluster" class="chips-cluster" style="margin-top:0;"></div>
+          </div>
+
+          <!-- 雙按鈕：重新填寫 + 儲存 -->
+          <div class="form-btn-actions">
+            <button type="button" class="btn-action-clear" onclick="resetExpenseForm()">重新填寫</button>
+            <button type="button" class="btn-action-save" onclick="submitExpenseAction()">儲存這筆費用</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. 消費明細動態 -->
+      <section class="card">
+        <div class="card-header">
+          <span class="card-title">消費明細動態</span>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <span id="totalCostSumDisplay" style="color:var(--primary); font-family:monospace; font-size:11px; font-weight:bold; white-space:nowrap;">累計：$0</span>
+            <button type="button" id="btnClearAllExpenses" class="btn-text-danger admin-only" onclick="clearAllExpenses()">清空消費</button>
+          </div>
+        </div>
+        <div id="expenseListCluster"></div>
+      </section>
+
+      <!-- 6. 結算建議 (轉帳路徑置頂，銀行帳號置底選填) -->
+      <section class="card">
+        <div class="card-header">
+          <span class="card-title">結算建議 (最簡轉帳)</span>
+          <button type="button" onclick="copyFullSettlementSummary()" style="background:#F1F5F9; border:1px solid #CBD5E1; padding:3px 8px; border-radius:5px; font-size:10px; cursor:pointer; font-weight:600; white-space:nowrap;">複製 LINE 結算清單</button>
+        </div>
+
+        <!-- 總務保管人現鈔抵銷提示條 -->
+        <div id="keeperOffsetBanner" class="settle-keeper-note" style="display:none;"></div>
+
+        <!-- 轉帳路徑清單 -->
+        <div id="settlementList"></div>
+
+        <!-- 收款人帳號專區 (置底選填) -->
+        <div id="creditorAccountsSection" style="display:none; margin-top:10px;">
+          <div style="font-size:11px; font-weight:700; color:#64748B; margin-bottom:6px;">
+            🏦 收款人帳號專區 (僅需收款者填寫一次)
+          </div>
+          <div id="creditorAccountsList"></div>
+        </div>
+      </section>
+
     </div>
 
-    <!-- 5. 消費明細 -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">消費明細動態</span>
-        <div style="display:flex; gap:8px; align-items:center;">
-          <span id="totalCostDisplay" style="color:#059669; font-family:monospace; font-size:11px; font-weight:bold;">累計：$0</span>
-          <button type="button" id="btnClearExpenses" class="card-action-btn admin-only" onclick="clearAllExpenses()">清空消費</button>
-        </div>
+  </main>
+
+  <!-- 繳存公費 Modal 對話框 -->
+  <div id="kittyDepositModal" class="modal-overlay" style="display:none;">
+    <div class="modal-dialog">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h3 style="font-size:14px; font-weight:700; color:#1E293B;">💰 繳存公費</h3>
+        <button type="button" onclick="closeKittyModal()" style="background:none; border:none; font-size:16px; color:#94A3B8; cursor:pointer;">&times;</button>
       </div>
-      <div id="expenseList"></div>
+      
+      <div class="tab-switch">
+        <button type="button" class="tab-btn active" id="tabModeAll" onclick="switchKittyTab('all')">全員均攤</button>
+        <button type="button" class="tab-btn" id="tabModeSingle" onclick="switchKittyTab('single')">單人補繳</button>
+        <button type="button" class="tab-btn" id="tabModeCustom" onclick="switchKittyTab('custom')">自由湊存</button>
+      </div>
+
+      <div id="modalBodyAll">
+        <label class="form-label">每位成員繳交金額 (TWD)</label>
+        <input type="number" id="kittyAmtPerPerson" class="form-input" placeholder="例如：1000" min="1">
+        <p style="font-size:11px; color:#64748B; margin-top:6px;" id="kittyAllHint">目前成員 X 人，將共計存入 $0</p>
+      </div>
+
+      <div id="modalBodySingle" style="display:none;">
+        <label class="form-label">選擇補繳成員 (如中途加入的新人)</label>
+        <select id="kittySingleMemberSelect" class="form-select" style="margin-bottom:8px;"></select>
+        <label class="form-label">補繳金額 (TWD)</label>
+        <input type="number" id="kittySingleAmount" class="form-input" placeholder="例如：1000" min="1">
+      </div>
+
+      <div id="modalBodyCustom" style="display:none;">
+        <label class="form-label">本次存入公費包總金額 (TWD)</label>
+        <input type="number" id="kittyCustomTotal" class="form-input" placeholder="例如：3000" min="1">
+        <p style="font-size:11px; color:#64748B; margin-top:6px;">結算時由當前全員平分負擔此筆資金來源。</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1.5fr; gap:8px; margin-top:14px;">
+        <button type="button" class="btn-action-clear" style="height:38px;" onclick="closeKittyModal()">取消</button>
+        <button type="button" class="btn-action-save" style="height:38px;" onclick="confirmKittyDeposit()">確認存入</button>
+      </div>
     </div>
-
-    <!-- 6. 結算建議 (先條列轉帳路徑，置底銀行帳號專區) -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">結算建議 (最簡轉帳路徑)</span>
-        <button type="button" onclick="copySettlementSummary()" style="background:#F1F5F9; border:1px solid #CBD5E1; padding:3px 8px; border-radius:5px; font-size:10px; cursor:pointer; font-weight:600;">複製 LINE 清單</button>
-      </div>
-      <div id="settlementList"></div>
-
-      <!-- 置底收款人帳號專區 -->
-      <div id="accountSection" style="margin-top:14px; padding-top:12px; border-top:1px dashed #CBD5E1;">
-        <span class="card-title" style="display:block; margin-bottom:8px;">🏦 收款人帳號專區 (收款者填寫一次即可)</span>
-        <div id="accountList"></div>
-      </div>
-    </div>
-
   </div>
 
-  <!-- 繳存公費彈窗 -->
-  <div id="kittyModal" class="modal-overlay" style="display:none;">
-    <div class="modal-box">
-      <div class="modal-title">繳存公費</div>
-      <div class="form-group">
-        <label class="form-label">存入模式</label>
-        <select id="kittyDepositType" class="form-select" onchange="switchDepositType(this.value)">
-          <option value="all">全員等額繳存 (每人出資相同)</option>
-          <option value="single">單一成員補繳 (新人中途加入)</option>
-          <option value="custom">湊整自由存入 (零錢/找零)</option>
-        </select>
-      </div>
-      <div id="kittySingleTargetGroup" class="form-group" style="display:none;">
-        <label class="form-label">補繳成員</label>
-        <select id="kittySingleTarget" class="form-select"></select>
-      </div>
-      <div class="form-group">
-        <label class="form-label" id="kittyAmountLabel">每人繳納金額 (TWD)</label>
-        <input id="kittyAmountInput" type="number" class="input-text" style="width:100%;" placeholder="例如: 1000">
-      </div>
-      <div style="display:flex; gap:8px; margin-top:14px;">
-        <button type="button" class="btn-clear-form" style="flex:1;" onclick="closeKittyModal()">取消</button>
-        <button type="button" class="btn-save-expense" style="flex:1;" onclick="submitKittyDeposit()">確認存入</button>
-      </div>
-    </div>
-  </div>
+  <!-- 浮動提示 Toast -->
+  <div id="toastBox" class="toast-box"></div>
 
   <script>
-    // ==========================================
-    // 1. Firebase 連線設定 (請替換為你的 Firebase 專案 Config)
-    // ==========================================
-	const firebaseConfig = {
-	  apiKey: "AIzaSyDZEhQNAmZLDa-VRclvFLqUL7cZkvUKUjs",
-	  authDomain: "godutch-2026.firebaseapp.com",
-	  databaseURL: "https://godutch-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
-	  projectId: "godutch-2026",
-	  storageBucket: "godutch-2026.firebasestorage.app",
-	  messagingSenderId: "233149985381",
-	  appId: "1:233149985381:web:640fa0fb87f30b9b414c8c"
-	};
+    // ==============================================================
+    // 1. Firebase 金鑰與多房間系統配置
+    // ==============================================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZEhQNAmZLDa-VRclvFLqUL7cZkvUKUjs",
+      authDomain: "godutch-2026.firebaseapp.com",
+      databaseURL: "https://godutch-2026-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "godutch-2026",
+      storageBucket: "godutch-2026.firebasestorage.app",
+      messagingSenderId: "233149985381",
+      appId: "1:233149985381:web:640fa0fb87f30b9b414c8c"
+    };
 
-    let db = null;
-    let tripRef = null;
+    let firebaseDb = null;
+    let currentRoomRef = null;
 
     try {
       firebase.initializeApp(firebaseConfig);
-      db = firebase.database();
-      tripRef = db.ref('current_trip'); // 預設的旅程根節點
+      firebaseDb = firebase.database();
     } catch (e) {
-      console.warn("Firebase 未連線或金鑰尚未填寫，將使用本機 LocalStorage 運行。");
+      console.warn("Firebase 初始化異常，進入本機隔離模式:", e);
     }
 
-    // 檢查網址參數是否具有管理員身分 (?admin=1)
+    // 解析網址參數
     const urlParams = new URLSearchParams(window.location.search);
+    let currentRoomId = (urlParams.get('trip') || urlParams.get('room') || '').toUpperCase().trim();
     const isAdmin = urlParams.get('admin') === '1';
 
-    // ==========================================
-    // 2. 狀態資料模型
-    // ==========================================
-    let state = {
-      members: [],          // ["小明", "阿信"]
-      custodian: "",        // 公費保管人 (總務)
-      memberBanks: {},      // { "小明": { code: "808", account: "123456789" } }
-      kittyDeposits: [],    // [{ id, type, payer, amount, totalAmount, time }]
-      expenses: []          // [{ id, title, amount, payer, kittyDeduction, personalPaid, customSplits, splitWith }]
+    // 核心資料狀態 (初始絕對純淨空白)
+    let appState = {
+      members: [],
+      kittyKeeper: "",
+      memberBankCodes: {},
+      memberBankAccounts: {},
+      kittyDeposits: [],
+      expenses: []
     };
 
-    let selectedSplitters = [];
-    let customSplits = [];
-    let expandedExpenseId = null;
+    let activeSplitters = [];
+    let customSplitsList = [];
+    let expandedExpenses = new Set();
+    let currentKittyTab = 'all';
 
-    // ==========================================
-    // 3. 資料同步與初始化
-    // ==========================================
-    function initDataSync() {
-      // 根據角色切換介面顯示
+    // ==============================================================
+    // 2. 多房間路由與資料連線
+    // ==============================================================
+    function initRoomRouting() {
+      const gatewayEl = document.getElementById('roomGatewayScreen');
+      const appEl = document.getElementById('mainTripApp');
       const roleBadge = document.getElementById('roleBadge');
+
+      if (!currentRoomId) {
+        // 未指定房間：顯示房間選擇/建立頁面
+        gatewayEl.style.display = 'block';
+        appEl.style.display = 'none';
+        roleBadge.innerText = '房間選擇';
+        document.getElementById('btnResetAll').style.display = 'none';
+        return;
+      }
+
+      // 已進入指定房間
+      gatewayEl.style.display = 'none';
+      appEl.style.display = 'flex';
+      document.getElementById('currentRoomDisplay').innerText = currentRoomId;
+
+      // 角色權限 UI 控制
       if (isAdmin) {
-        roleBadge.innerText = '記錄者管理模式';
+        roleBadge.innerText = '總務管理員';
         roleBadge.className = 'role-badge role-admin';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
-        document.getElementById('btnResetTrip').style.display = '';
-        document.getElementById('btnOpenKittyDeposit').style.display = '';
+        document.getElementById('btnResetAll').style.display = '';
+        document.getElementById('kittyKeeperSelect').disabled = false;
+        document.getElementById('btnCopyAdminLink').style.display = '';
       } else {
         roleBadge.innerText = '旅伴唯讀模式';
         roleBadge.className = 'role-badge role-viewer';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-        document.getElementById('btnResetTrip').style.display = 'none';
-        document.getElementById('btnOpenKittyDeposit').style.display = 'none';
-        document.getElementById('custodianSelect').disabled = true;
+        document.getElementById('btnResetAll').style.display = 'none';
+        document.getElementById('kittyKeeperSelect').disabled = true;
+        document.getElementById('btnCopyAdminLink').style.display = 'none';
       }
 
-      // 監聽 Firebase 雲端資料 (若連線成功)
-      if (tripRef) {
-        tripRef.on('value', (snapshot) => {
+      // 監聽此房間之 Firebase 節點: trips/{currentRoomId}
+      if (firebaseDb) {
+        currentRoomRef = firebaseDb.ref('trips/' + currentRoomId);
+        currentRoomRef.on('value', (snapshot) => {
           const val = snapshot.val();
           if (val) {
-            state.members = Array.isArray(val.members) ? val.members : [];
-            state.custodian = val.custodian || "";
-            state.memberBanks = val.memberBanks || {};
-            state.kittyDeposits = Array.isArray(val.kittyDeposits) ? val.kittyDeposits : [];
-            state.expenses = Array.isArray(val.expenses) ? val.expenses : [];
+            appState.members = Array.isArray(val.members) ? val.members : [];
+            appState.kittyKeeper = val.kittyKeeper || "";
+            appState.memberBankCodes = (val.memberBankCodes && typeof val.memberBankCodes === 'object') ? val.memberBankCodes : {};
+            appState.memberBankAccounts = (val.memberBankAccounts && typeof val.memberBankAccounts === 'object') ? val.memberBankAccounts : {};
+            appState.kittyDeposits = Array.isArray(val.kittyDeposits) ? val.kittyDeposits : [];
+            appState.expenses = Array.isArray(val.expenses) ? val.expenses : [];
           } else {
-            // 雲端為空
-            state = { members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
+            // 新房間初始空白
+            appState = {
+              members: [],
+              kittyKeeper: "",
+              memberBankCodes: {},
+              memberBankAccounts: {},
+              kittyDeposits: [],
+              expenses: []
+            };
           }
-          selectedSplitters = state.members.slice();
-          renderAll();
+          activeSplitters = appState.members.slice();
+          renderAllViews();
         });
       } else {
-        // 本機離線模式備份
-        const saved = localStorage.getItem('trip_split_hybrid');
-        if (saved) {
-          try { state = JSON.parse(saved); } catch (e) {}
+        // 本機備援
+        loadLocalFallback();
+      }
+    }
+
+    function saveAppState() {
+      if (currentRoomRef && isAdmin) {
+        currentRoomRef.set(appState);
+      } else {
+        localStorage.setItem(`trip_split_${currentRoomId}`, JSON.stringify(appState));
+      }
+      renderAllViews();
+    }
+
+    function saveAppStateQuietly() {
+      if (currentRoomRef) {
+        currentRoomRef.child('memberBankCodes').set(appState.memberBankCodes);
+        currentRoomRef.child('memberBankAccounts').set(appState.memberBankAccounts);
+      } else {
+        localStorage.setItem(`trip_split_${currentRoomId}`, JSON.stringify(appState));
+      }
+    }
+
+    function loadLocalFallback() {
+      try {
+        const raw = localStorage.getItem(`trip_split_${currentRoomId}`);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed.members)) appState.members = parsed.members;
+          if (typeof parsed.kittyKeeper === 'string') appState.kittyKeeper = parsed.kittyKeeper;
+          if (parsed.memberBankCodes) appState.memberBankCodes = parsed.memberBankCodes;
+          if (parsed.memberBankAccounts) appState.memberBankAccounts = parsed.memberBankAccounts;
+          if (Array.isArray(parsed.kittyDeposits)) appState.kittyDeposits = parsed.kittyDeposits;
+          if (Array.isArray(parsed.expenses)) appState.expenses = parsed.expenses;
         }
-        selectedSplitters = state.members.slice();
-        renderAll();
+      } catch (e) {}
+      activeSplitters = appState.members.slice();
+      renderAllViews();
+    }
+
+    // 建立隨機 6 碼英數房間或自訂代碼
+    window.createNewRoom = function() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let code = "";
+      for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
       }
-    }
+      // 建立者預設獲取 admin=1 管理員身分
+      window.location.search = `?trip=${code}&admin=1`;
+    };
 
-    function syncState() {
-      if (tripRef && isAdmin) {
-        tripRef.set(state);
-      } else {
-        localStorage.setItem('trip_split_hybrid', JSON.stringify(state));
-      }
-      renderAll();
-    }
-
-    // ==========================================
-    // 4. 公積金計算邏輯
-    // ==========================================
-    function getKittyBalance() {
-      const inAmt = (state.kittyDeposits || []).reduce((acc, c) => acc + (Number(c.totalAmount) || 0), 0);
-      const outAmt = (state.expenses || []).reduce((acc, c) => acc + (Number(c.kittyDeduction) || 0), 0);
-      return inAmt - outAmt;
-    }
-
-    function changeCustodian(name) {
-      if (!isAdmin) return;
-      state.custodian = name;
-      syncState();
-    }
-
-    function toggleKittyDrawer() {
-      const drawer = document.getElementById('kittyDrawer');
-      drawer.style.display = (drawer.style.display === 'none') ? 'block' : 'none';
-    }
-
-    function openKittyModal() {
-      if (!isAdmin) return;
-      if (state.members.length === 0) {
-        alert('請先在下方加入旅伴成員！');
+    window.joinExistingRoom = function() {
+      const input = document.getElementById('joinRoomInput');
+      const code = input ? input.value.trim().toUpperCase() : '';
+      if (!code) {
+        showToast("請輸入房間代碼！");
         return;
       }
-      document.getElementById('kittyAmountInput').value = '';
-      switchDepositType(document.getElementById('kittyDepositType').value);
-      document.getElementById('kittyModal').style.display = 'flex';
+      // 加入現有房間預設為旅伴唯讀模式
+      window.location.search = `?trip=${code}`;
+    };
+
+    window.switchRoomAction = function() {
+      window.location.search = "";
+    };
+
+    window.copyViewerInviteLink = function() {
+      const origin = window.location.origin + window.location.pathname;
+      const link = `${origin}?trip=${currentRoomId}`;
+      copyToClipboard(link, "已複製旅伴唯讀連結！直接傳到 LINE 群即可使用。");
+    };
+
+    window.copyAdminInviteLink = function() {
+      const origin = window.location.origin + window.location.pathname;
+      const link = `${origin}?trip=${currentRoomId}&admin=1`;
+      copyToClipboard(link, "已複製總務管理連結！請妥善保存於個人記事本。");
+    };
+
+    // ==============================================================
+    // 3. 公積金 (Trip Kitty) 核心運算
+    // ==============================================================
+    function getKittyTotals() {
+      const deposited = appState.kittyDeposits.reduce((sum, item) => sum + (Number(item.totalAmount) || 0), 0);
+      const deducted = appState.expenses.reduce((sum, item) => sum + (Number(item.kittyOffsetAmount) || 0), 0);
+      return {
+        deposited: deposited,
+        deducted: deducted,
+        balance: deposited - deducted
+      };
     }
 
-    function closeKittyModal() {
-      document.getElementById('kittyModal').style.display = 'none';
-    }
-
-    function switchDepositType(type) {
-      const targetGroup = document.getElementById('kittySingleTargetGroup');
-      const targetSelect = document.getElementById('kittySingleTarget');
-      const label = document.getElementById('kittyAmountLabel');
-
-      if (type === 'single') {
-        targetGroup.style.display = 'block';
-        targetSelect.innerHTML = state.members.map(m => `<option value="${m}">${m}</option>`).join('');
-        label.innerText = '該成員補繳金額 (TWD)';
-      } else if (type === 'custom') {
-        targetGroup.style.display = 'none';
-        label.innerText = '總存入現鈔金額 (TWD)';
-      } else {
-        targetGroup.style.display = 'none';
-        label.innerText = '每人繳納金額 (TWD)';
-      }
-    }
-
-    function submitKittyDeposit() {
+    window.updateKittyKeeper = function(val) {
       if (!isAdmin) return;
-      const type = document.getElementById('kittyDepositType').value;
-      const amount = parseFloat(document.getElementById('kittyAmountInput').value);
-      if (isNaN(amount) || amount <= 0) {
-        alert('請輸入有效金額！');
+      appState.kittyKeeper = val;
+      recalcAllExpenseKittyOffsets();
+      saveAppState();
+    };
+
+    window.openKittyModal = function() {
+      if (!isAdmin) return;
+      if (appState.members.length === 0) {
+        showToast("請先在下方「旅伴名單」加入成員！");
         return;
       }
+      document.getElementById('kittyDepositModal').style.display = 'flex';
+      switchKittyTab('all');
+      
+      const singleSelect = document.getElementById('kittySingleMemberSelect');
+      singleSelect.innerHTML = appState.members.map(m => `<option value="${m}">${m}</option>`).join('');
 
-      let payer = "全員";
-      let totalAmount = amount;
+      const amtInput = document.getElementById('kittyAmtPerPerson');
+      amtInput.value = "";
+      amtInput.oninput = function() {
+        const count = appState.members.length;
+        const per = parseFloat(this.value) || 0;
+        document.getElementById('kittyAllHint').innerText = `目前成員 ${count} 人，將共計存入 $${(per * count).toLocaleString()}`;
+      };
+      document.getElementById('kittyAllHint').innerText = `目前成員 ${appState.members.length} 人，輸入每人金額將自動乘算總額`;
+    };
 
-      if (type === 'all') {
-        totalAmount = amount * state.members.length;
-      } else if (type === 'single') {
-        payer = document.getElementById('kittySingleTarget').value;
-        totalAmount = amount;
-      } else {
-        payer = "自由湊整";
-        totalAmount = amount;
+    window.closeKittyModal = function() {
+      document.getElementById('kittyDepositModal').style.display = 'none';
+    };
+
+    window.switchKittyTab = function(tab) {
+      currentKittyTab = tab;
+      document.getElementById('tabModeAll').className = tab === 'all' ? 'tab-btn active' : 'tab-btn';
+      document.getElementById('tabModeSingle').className = tab === 'single' ? 'tab-btn active' : 'tab-btn';
+      document.getElementById('tabModeCustom').className = tab === 'custom' ? 'tab-btn active' : 'tab-btn';
+
+      document.getElementById('modalBodyAll').style.display = tab === 'all' ? 'block' : 'none';
+      document.getElementById('modalBodySingle').style.display = tab === 'single' ? 'block' : 'none';
+      document.getElementById('modalBodyCustom').style.display = tab === 'custom' ? 'block' : 'none';
+    };
+
+    window.confirmKittyDeposit = function() {
+      if (!isAdmin) return;
+      const now = new Date();
+      const timeStr = `${now.getMonth() + 1}/${now.getDate()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+      if (currentKittyTab === 'all') {
+        const per = parseFloat(document.getElementById('kittyAmtPerPerson').value);
+        if (isNaN(per) || per <= 0) {
+          showToast("請輸入有效的每人金額！");
+          return;
+        }
+        const total = per * appState.members.length;
+        appState.kittyDeposits.push({
+          id: "k_" + Date.now(),
+          type: "all",
+          title: `全員繳存 (每人 $${per})`,
+          perPerson: per,
+          contributors: appState.members.slice(),
+          totalAmount: total,
+          time: timeStr
+        });
+      } else if (currentKittyTab === 'single') {
+        const person = document.getElementById('kittySingleMemberSelect').value;
+        const amt = parseFloat(document.getElementById('kittySingleAmount').value);
+        if (isNaN(amt) || amt <= 0) {
+          showToast("請輸入有效的補繳金額！");
+          return;
+        }
+        appState.kittyDeposits.push({
+          id: "k_" + Date.now(),
+          type: "single",
+          title: `${person} 單獨補繳`,
+          person: person,
+          totalAmount: amt,
+          time: timeStr
+        });
+      } else if (currentKittyTab === 'custom') {
+        const total = parseFloat(document.getElementById('kittyCustomTotal').value);
+        if (isNaN(total) || total <= 0) {
+          showToast("請輸入有效的總金額！");
+          return;
+        }
+        appState.kittyDeposits.push({
+          id: "k_" + Date.now(),
+          type: "custom",
+          title: `自由湊存`,
+          contributors: appState.members.slice(),
+          totalAmount: total,
+          time: timeStr
+        });
       }
-
-      state.kittyDeposits.push({
-        id: String(Date.now()),
-        type,
-        payer,
-        amount,
-        totalAmount,
-        time: new Date().toLocaleDateString('zh-TW', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })
-      });
 
       closeKittyModal();
-      syncState();
-    }
+      recalcAllExpenseKittyOffsets();
+      saveAppState();
+    };
 
-    function deleteKittyDeposit(id) {
+    window.deleteKittyDeposit = function(id) {
       if (!isAdmin) return;
-      state.kittyDeposits = state.kittyDeposits.filter(k => k.id !== String(id));
-      syncState();
-    }
-
-    // ==========================================
-    // 5. 成員管理
-    // ==========================================
-    function addMember() {
-      if (!isAdmin) return;
-      const input = document.getElementById('memberNameInput');
-      const name = input.value ? input.value.trim() : '';
-      if (!name) return alert('請先輸入成員姓名！');
-      if (state.members.includes(name)) return alert('成員名稱重複囉！');
-
-      state.members.push(name);
-      selectedSplitters.push(name);
-      if (!state.custodian) state.custodian = name; // 預設第一位為總務
-      input.value = '';
-      syncState();
-    }
-
-    function removeMember(name) {
-      if (!isAdmin) return;
-      const inUse = state.expenses.some(e => e.payer === name || (e.splitWith && e.splitWith.includes(name)));
-      if (inUse) return alert(`「${name}」在消費紀錄中已有帳目，請先刪除該消費才能移除。`);
-
-      state.members = state.members.filter(m => m !== name);
-      selectedSplitters = selectedSplitters.filter(n => n !== name);
-      if (state.custodian === name) state.custodian = state.members[0] || "";
-      delete state.memberBanks[name];
-      syncState();
-    }
-
-    function clearAllMembers() {
-      if (!isAdmin) return;
-      if (state.expenses.length > 0) return alert('目前已有消費紀錄，請先清空消費！');
-      if (confirm('確定清空所有人員？')) {
-        state.members = [];
-        state.custodian = "";
-        state.memberBanks = {};
-        selectedSplitters = [];
-        syncState();
+      if (confirm("確定要刪除這筆公費存入紀錄嗎？")) {
+        appState.kittyDeposits = appState.kittyDeposits.filter(k => k.id !== id);
+        recalcAllExpenseKittyOffsets();
+        saveAppState();
       }
-    }
+    };
 
-    // ==========================================
-    // 6. 記錄支出 (智慧公費扣除與總務差額轉換)
-    // ==========================================
-    function toggleCustomSection() {
-      const area = document.getElementById('customArea');
-      const btn = document.getElementById('customToggleBtn');
+    window.toggleKittyHistory = function() {
+      const area = document.getElementById('kittyHistoryArea');
+      const btn = document.getElementById('kittyHistoryToggleBtn');
       if (area.style.display === 'none') {
-        if (state.members.length === 0) return alert('請先加入旅伴！');
         area.style.display = 'block';
-        btn.innerText = '關閉自費';
-        if (customSplits.length === 0) addCustomRow();
+        btn.innerText = '收合 ▴';
       } else {
         area.style.display = 'none';
-        btn.innerText = '＋ 新增自費';
-        customSplits = [];
-        renderCustomList();
+        btn.innerText = '紀錄 ▾';
       }
-    }
+    };
 
-    function addCustomRow() {
-      if (state.members.length === 0) return;
-      customSplits.push({ person: state.members[0], amount: 0 });
-      renderCustomList();
-    }
+    // ==============================================================
+    // 4. 成員管理
+    // ==============================================================
+    window.addMemberAction = function() {
+      if (!isAdmin) return;
+      const input = document.getElementById('memberNameInput');
+      const name = input ? input.value.trim() : '';
 
-    function removeCustomRow(idx) {
-      customSplits.splice(idx, 1);
-      renderCustomList();
-    }
+      if (!name) {
+        showToast("請輸入成員姓名！");
+        return;
+      }
+      if (appState.members.includes(name)) {
+        showToast("成員名稱重複囉！");
+        return;
+      }
 
-    function renderCustomList() {
-      const c = document.getElementById('customList');
-      c.innerHTML = customSplits.map((row, idx) => `
-        <div class="custom-row">
-          <select onchange="customSplits[${idx}].person=this.value" class="form-select" style="width:auto; padding:5px 8px; font-size:12px;">
-            ${state.members.map(m => `<option value="${m}" ${m === row.person ? 'selected' : ''}>${m}</option>`).join('')}
+      appState.members.push(name);
+      if (!activeSplitters.includes(name)) {
+        activeSplitters.push(name);
+      }
+      if (!appState.kittyKeeper) {
+        appState.kittyKeeper = name;
+      }
+
+      input.value = '';
+      saveAppState();
+    };
+
+    window.removeSingleMember = function(name) {
+      if (!isAdmin) return;
+      const inUse = appState.expenses.some(e => e.payer === name || (e.splitWith && e.splitWith.includes(name)));
+      const hasDeposited = appState.kittyDeposits.some(k => k.person === name);
+      if (inUse || hasDeposited) {
+        showToast(`無法刪除「${name}」，因已有相關帳目！`);
+        return;
+      }
+      appState.members = appState.members.filter(m => m !== name);
+      activeSplitters = activeSplitters.filter(m => m !== name);
+      delete appState.memberBankCodes[name];
+      delete appState.memberBankAccounts[name];
+
+      if (appState.kittyKeeper === name) {
+        appState.kittyKeeper = appState.members[0] || "";
+      }
+      saveAppState();
+    };
+
+    window.clearAllMembers = function() {
+      if (!isAdmin) return;
+      if (appState.members.length === 0) return;
+      if (appState.expenses.length > 0 || appState.kittyDeposits.length > 0) {
+        showToast("目前已有消費明細，請先清空明細後再清空成員！");
+        return;
+      }
+      if (confirm("確定要清空所有旅伴成員嗎？")) {
+        appState.members = [];
+        appState.kittyKeeper = "";
+        appState.memberBankCodes = {};
+        appState.memberBankAccounts = {};
+        activeSplitters = [];
+        saveAppState();
+      }
+    };
+
+    // ==============================================================
+    // 5. 特殊自費與平分設定
+    // ==============================================================
+    window.toggleCustomSplitBox = function() {
+      const area = document.getElementById('customSplitArea');
+      const btn = document.getElementById('customToggleBtn');
+      if (area.style.display === 'none') {
+        if (appState.members.length === 0) {
+          showToast("請先加入旅伴成員！");
+          return;
+        }
+        area.style.display = 'block';
+        btn.innerText = "收合自費";
+        if (customSplitsList.length === 0) addCustomSplitRow();
+      } else {
+        area.style.display = 'none';
+        btn.innerText = "＋ 新增自費";
+        customSplitsList = [];
+        renderCustomRows();
+      }
+    };
+
+    window.addCustomSplitRow = function() {
+      if (appState.members.length === 0) return;
+      customSplitsList.push({ person: appState.members[0], amount: 0 });
+      renderCustomRows();
+    };
+
+    window.removeCustomSplitRow = function(idx) {
+      customSplitsList.splice(idx, 1);
+      renderCustomRows();
+    };
+
+    function renderCustomRows() {
+      const container = document.getElementById('customRowsContainer');
+      container.innerHTML = customSplitsList.map((row, i) => `
+        <div class="custom-row-item">
+          <select onchange="customSplitsList[${i}].person = this.value">
+            ${appState.members.map(m => `<option value="${m}" ${m === row.person ? 'selected' : ''}>${m}</option>`).join('')}
           </select>
-          <span style="font-size:11px; white-space:nowrap;">自費</span>
-          <input type="number" value="${row.amount || ''}" oninput="customSplits[${idx}].amount=parseFloat(this.value)||0" placeholder="金額" class="input-text" style="width:75px; padding:5px 8px; font-size:12px;">
-          <span style="font-size:11px; white-space:nowrap;">元</span>
-          <button type="button" onclick="removeCustomRow(${idx})" style="background:none; border:none; color:#EF4444; font-size:14px; font-weight:bold; cursor:pointer;">&times;</button>
+          <span style="font-size:11px; color:var(--text-muted); white-space:nowrap;">自費</span>
+          <input type="number" placeholder="金額" value="${row.amount || ''}" oninput="customSplitsList[${i}].amount = parseFloat(this.value) || 0">
+          <span style="font-size:11px; color:var(--text-muted); white-space:nowrap;">元</span>
+          <button type="button" class="btn-badge-remove" onclick="removeCustomSplitRow(${i})">&times;</button>
         </div>
       `).join('');
     }
 
-    function toggleSplitterAction(name) {
-      const idx = selectedSplitters.indexOf(name);
-      if (idx !== -1) selectedSplitters.splice(idx, 1);
-      else selectedSplitters.push(name);
-      renderSplitButtons();
-    }
+    window.toggleSplitter = function(name) {
+      const idx = activeSplitters.indexOf(name);
+      if (idx !== -1) activeSplitters.splice(idx, 1);
+      else activeSplitters.push(name);
+      renderSplitterChips();
+    };
 
-    function toggleAllSplitters() {
-      if (selectedSplitters.length === state.members.length) selectedSplitters = [];
-      else selectedSplitters = state.members.slice();
-      renderSplitButtons();
-    }
+    window.toggleAllSplitters = function() {
+      if (activeSplitters.length === appState.members.length) activeSplitters = [];
+      else activeSplitters = appState.members.slice();
+      renderSplitterChips();
+    };
 
-    function renderSplitButtons() {
-      const c = document.getElementById('splitButtonsContainer');
-      if (state.members.length === 0) {
-        c.innerHTML = '<span style="font-size:11px; color:#94A3B8;">請先在上方加入旅伴</span>';
+    function renderSplitterChips() {
+      const container = document.getElementById('splitterChipsCluster');
+      if (appState.members.length === 0) {
+        container.innerHTML = `<span class="empty-hint" style="padding:0;">請先加入成員後方可選取分攤</span>`;
         return;
       }
-      c.innerHTML = state.members.map(m => {
-        const active = selectedSplitters.includes(m);
+      container.innerHTML = appState.members.map(m => {
+        const isSel = activeSplitters.includes(m);
         return `
-          <button type="button" class="split-chip ${active ? 'active' : ''}" onclick="toggleSplitterAction('${m}')">
-            ${active ? '✓ ' : ''}${m}
+          <button type="button" class="split-chip-btn ${isSel ? 'is-active' : ''}" onclick="toggleSplitter('${m}')">
+            ${isSel ? '✓ ' : ''}${m}
           </button>
         `;
       }).join('');
     }
 
-    function clearExpenseForm() {
-      document.getElementById('itemTitle').value = '';
-      document.getElementById('itemAmount').value = '';
-      document.getElementById('payerSelect').value = state.custodian || (state.members[0] || '');
-      customSplits = [];
-      document.getElementById('customArea').style.display = 'none';
-      document.getElementById('customToggleBtn').innerText = '＋ 新增自費';
-      selectedSplitters = state.members.slice();
-      renderSplitButtons();
-      renderCustomList();
+    window.resetExpenseForm = function() {
+      document.getElementById('expenseTitleInput').value = "";
+      document.getElementById('expenseAmountInput').value = "";
+      document.getElementById('expensePayerSelect').value = appState.kittyKeeper || (appState.members[0] || "");
+      customSplitsList = [];
+      document.getElementById('customSplitArea').style.display = 'none';
+      document.getElementById('customToggleBtn').innerText = "＋ 新增自費";
+      activeSplitters = appState.members.slice();
+      renderCustomRows();
+      renderSplitterChips();
+    };
+
+    // ==============================================================
+    // 6. 智慧公費扣除與總務個人代墊轉換
+    // ==============================================================
+    function recalcAllExpenseKittyOffsets() {
+      let currentKitty = appState.kittyDeposits.reduce((sum, item) => sum + (Number(item.totalAmount) || 0), 0);
+
+      appState.expenses.forEach(exp => {
+        const isKeeper = appState.kittyKeeper && (exp.payer === appState.kittyKeeper);
+        if (isKeeper) {
+          if (currentKitty >= exp.amount) {
+            exp.kittyOffsetAmount = exp.amount;
+            exp.personalAdvanceAmount = 0;
+            currentKitty -= exp.amount;
+          } else if (currentKitty > 0) {
+            exp.kittyOffsetAmount = currentKitty;
+            exp.personalAdvanceAmount = exp.amount - currentKitty;
+            currentKitty = 0;
+          } else {
+            exp.kittyOffsetAmount = 0;
+            exp.personalAdvanceAmount = exp.amount;
+          }
+        } else {
+          exp.kittyOffsetAmount = 0;
+          exp.personalAdvanceAmount = exp.amount;
+        }
+      });
     }
 
-    function addExpense() {
+    window.submitExpenseAction = function() {
       if (!isAdmin) return;
-      if (state.members.length === 0) return alert('請先加入旅伴成員！');
+      if (appState.members.length === 0) {
+        showToast("請先加入旅伴成員！");
+        return;
+      }
 
-      const titleInput = document.getElementById('itemTitle');
-      const amountInput = document.getElementById('itemAmount');
-      const payerSelect = document.getElementById('payerSelect');
+      const titleInput = document.getElementById('expenseTitleInput');
+      const amountInput = document.getElementById('expenseAmountInput');
+      const payerSelect = document.getElementById('expensePayerSelect');
 
       const title = titleInput.value ? titleInput.value.trim() : '';
       const amount = parseFloat(amountInput.value);
       const payer = payerSelect.value;
 
-      if (!title) return alert('請填寫消費項目！');
-      if (isNaN(amount) || amount <= 0) return alert('請輸入有效金額！');
-      if (!payer) return alert('請選擇付款人！');
+      if (!title) { showToast("請填寫消費項目！"); return; }
+      if (isNaN(amount) || amount <= 0) { showToast("請輸入有效金額！"); return; }
+      if (!payer) { showToast("請選擇付款人！"); return; }
 
-      const customSum = customSplits.reduce((acc, c) => acc + (Number(c.amount) || 0), 0);
-      if (customSum > amount) return alert('自費總和不能大於消費金額！');
-      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return alert('扣除自費後仍有餘額，請至少點選一位平攤成員！');
-
-      // 核心判斷：若付款人為總務，自動由公費扣除，超出部分轉為個人代墊
-      let kittyDeduction = 0;
-      let personalPaid = amount;
-
-      if (payer === state.custodian) {
-        const currentKitty = getKittyBalance();
-        if (currentKitty > 0) {
-          kittyDeduction = Math.min(amount, currentKitty);
-          personalPaid = amount - kittyDeduction;
-        }
+      const customSum = customSplitsList.reduce((acc, c) => acc + (c.amount || 0), 0);
+      if (customSum > amount) {
+        showToast("自費金額總和不能大於消費金額！");
+        return;
       }
 
-      state.expenses.push({
-        id: String(Date.now()),
-        title,
-        amount,
-        payer,
-        kittyDeduction,
-        personalPaid,
-        customSplits: customSplits.filter(c => c.amount > 0),
-        splitWith: selectedSplitters.slice()
-      });
-
-      clearExpenseForm();
-      syncState();
-    }
-
-    function deleteExpense(id) {
-      if (!isAdmin) return;
-      state.expenses = state.expenses.filter(e => e.id !== String(id));
-      syncState();
-    }
-
-    function clearAllExpenses() {
-      if (!isAdmin) return;
-      if (state.expenses.length === 0) return;
-      if (confirm('確定清空所有消費紀錄？')) {
-        state.expenses = [];
-        syncState();
+      if (activeSplitters.length === 0 && (amount - customSum) > 0) {
+        showToast("請至少點選一位平攤成員！");
+        return;
       }
-    }
 
-    // ==========================================
-    // 7. 旅伴個人財務統計邏輯
-    // ==========================================
+      const newExpense = {
+        id: "exp_" + Date.now(),
+        title: title,
+        amount: amount,
+        payer: payer,
+        kittyOffsetAmount: 0,
+        personalAdvanceAmount: amount,
+        customSplits: JSON.parse(JSON.stringify(customSplitsList.filter(c => c.amount > 0))),
+        splitWith: activeSplitters.slice()
+      };
+
+      appState.expenses.push(newExpense);
+      recalcAllExpenseKittyOffsets();
+
+      resetExpenseForm();
+      saveAppState();
+    };
+
+    window.removeSingleExpense = function(id) {
+      if (!isAdmin) return;
+      appState.expenses = appState.expenses.filter(e => e.id !== id);
+      expandedExpenses.delete(id);
+      recalcAllExpenseKittyOffsets();
+      saveAppState();
+    };
+
+    window.clearAllExpenses = function() {
+      if (!isAdmin) return;
+      if (appState.expenses.length === 0) return;
+      if (confirm("確定要清空所有消費記錄嗎？")) {
+        appState.expenses = [];
+        expandedExpenses.clear();
+        saveAppState();
+      }
+    };
+
+    window.toggleExpenseDetail = function(id) {
+      if (expandedExpenses.has(id)) {
+        expandedExpenses.delete(id);
+      } else {
+        expandedExpenses.add(id);
+      }
+      renderAllViews();
+    };
+
+    // ==============================================================
+    // 7. 旅伴個人財務統計儀表板 (Stats Calculation)
+    // ==============================================================
     function computeMemberStatistics() {
       const stats = {};
-      state.members.forEach(m => {
+      appState.members.forEach(m => {
         stats[m] = { totalSpent: 0, totalPaid: 0, net: 0 };
       });
 
-      state.expenses.forEach(exp => {
-        // 代墊增加
+      appState.expenses.forEach(exp => {
+        // 代墊累計
         if (stats[exp.payer]) {
-          stats[exp.payer].totalPaid += (Number(exp.personalPaid) || 0);
+          stats[exp.payer].totalPaid += (Number(exp.personalAdvanceAmount) || 0);
         }
 
-        // 個人特殊自費
-        let rest = exp.amount;
+        // 自費累計
+        let remainder = exp.amount;
         if (Array.isArray(exp.customSplits)) {
           exp.customSplits.forEach(cs => {
             if (stats[cs.person]) {
               stats[cs.person].totalSpent += Number(cs.amount) || 0;
-              rest -= Number(cs.amount) || 0;
+              remainder -= Number(cs.amount) || 0;
             }
           });
         }
 
-        // 平分支出
-        if (Array.isArray(exp.splitWith) && exp.splitWith.length > 0 && rest > 0) {
-          const splitUnit = rest / exp.splitWith.length;
-          exp.splitWith.forEach(p => {
-            if (stats[p]) stats[p].totalSpent += splitUnit;
+        // 平分累計
+        if (exp.splitWith && exp.splitWith.length > 0 && remainder > 0) {
+          const unit = remainder / exp.splitWith.length;
+          exp.splitWith.forEach(person => {
+            if (stats[person]) stats[person].totalSpent += unit;
           });
         }
       });
 
-      // 淨額計算
-      state.members.forEach(m => {
+      // 淨額試算
+      appState.members.forEach(m => {
         stats[m].net = stats[m].totalPaid - stats[m].totalSpent;
       });
 
       return stats;
     }
 
-    // ==========================================
-    // 8. 最終結算演算法 (保管人剩餘現鈔自動合併抵銷)
-    // ==========================================
+    // ==============================================================
+    // 8. 最終結算演算法 (總務剩餘現鈔自動合併抵銷)
+    // ==============================================================
     function computeSettlement() {
       const balance = {};
-      state.members.forEach(m => balance[m] = 0);
+      appState.members.forEach(m => balance[m] = 0);
 
-      // 若公費有剩，保管人持有該筆現鈔（視為保管人的負債，需退還給全員）
-      const kittyBal = getKittyBalance();
-      if (state.members.length > 0 && kittyBal > 0) {
-        const refundPerPerson = kittyBal / state.members.length;
-        state.members.forEach(m => balance[m] += refundPerPerson);
-        if (state.custodian && balance[state.custodian] !== undefined) {
-          balance[state.custodian] -= kittyBal;
-        }
-      }
+      const kittyContrib = {};
+      appState.members.forEach(m => kittyContrib[m] = 0);
 
-      state.expenses.forEach(exp => {
-        if (balance[exp.payer] !== undefined) {
-          balance[exp.payer] += (Number(exp.personalPaid) || 0);
-        }
-
-        let rest = exp.amount;
-        if (Array.isArray(exp.customSplits)) {
-          exp.customSplits.forEach(cs => {
-            if (balance[cs.person] !== undefined) {
-              balance[cs.person] -= cs.amount;
-              rest -= cs.amount;
+      appState.kittyDeposits.forEach(deposit => {
+        if (deposit.type === 'single') {
+          if (kittyContrib[deposit.person] !== undefined) {
+            kittyContrib[deposit.person] += deposit.totalAmount;
+          }
+        } else if (deposit.contributors && deposit.contributors.length > 0) {
+          const perShare = deposit.totalAmount / deposit.contributors.length;
+          deposit.contributors.forEach(person => {
+            if (kittyContrib[person] !== undefined) {
+              kittyContrib[person] += perShare;
             }
           });
-        }
-
-        if (Array.isArray(exp.splitWith) && exp.splitWith.length > 0 && rest > 0) {
-          const splitAmt = rest / exp.splitWith.length;
-          exp.splitWith.forEach(p => {
-            if (balance[p] !== undefined) balance[p] -= splitAmt;
+        } else if (appState.members.length > 0) {
+          const perShare = deposit.totalAmount / appState.members.length;
+          appState.members.forEach(person => {
+            if (kittyContrib[person] !== undefined) {
+              kittyContrib[person] += perShare;
+            }
           });
         }
       });
 
-      // 貪婪演算法配對
+      const { deposited: totalDeposited, balance: kittyLeftover } = getKittyTotals();
+
+      if (totalDeposited > 0) {
+        if (kittyLeftover >= 0) {
+          const refundRatio = kittyLeftover / totalDeposited;
+          appState.members.forEach(m => {
+            balance[m] += (kittyContrib[m] * refundRatio);
+          });
+        } else {
+          if (appState.members.length > 0) {
+            const deficitPerPerson = Math.abs(kittyLeftover) / appState.members.length;
+            appState.members.forEach(m => {
+              balance[m] -= deficitPerPerson;
+            });
+          }
+        }
+      }
+
+      // 總務手中持有實體剩餘現鈔：在演算法中抵銷其個人應收帳目
+      const hasKeeper = appState.kittyKeeper && appState.members.includes(appState.kittyKeeper);
+      if (hasKeeper && kittyLeftover > 0) {
+        balance[appState.kittyKeeper] -= kittyLeftover;
+      }
+
+      appState.expenses.forEach(exp => {
+        const advanceAmt = Number(exp.personalAdvanceAmount) || 0;
+        if (advanceAmt > 0 && balance[exp.payer] !== undefined) {
+          balance[exp.payer] += advanceAmt;
+        }
+
+        let remainder = exp.amount;
+        if (Array.isArray(exp.customSplits)) {
+          exp.customSplits.forEach(cs => {
+            if (balance[cs.person] !== undefined) {
+              balance[cs.person] -= cs.amount;
+              remainder -= cs.amount;
+            }
+          });
+        }
+
+        if (exp.splitWith && exp.splitWith.length > 0 && remainder > 0) {
+          const unit = remainder / exp.splitWith.length;
+          exp.splitWith.forEach(person => {
+            if (balance[person] !== undefined) balance[person] -= unit;
+          });
+        }
+      });
+
       const debtors = [];
       const creditors = [];
       for (const [person, net] of Object.entries(balance)) {
@@ -1195,67 +1853,195 @@
       debtors.sort((a, b) => b.amount - a.amount);
       creditors.sort((a, b) => b.amount - a.amount);
 
+      const totalDeb = debtors.reduce((sum, d) => sum + d.amount, 0);
+      const totalCre = creditors.reduce((sum, c) => sum + c.amount, 0);
+      const diff = totalDeb - totalCre;
+      if (diff !== 0 && debtors.length > 0) {
+        debtors[0].amount -= diff;
+      }
+
       const transactions = [];
-      let i = 0, j = 0;
-      while (i < debtors.length && j < creditors.length) {
-        const d = debtors[i];
-        const cr = creditors[j];
-        const amt = Math.min(d.amount, cr.amount);
+      let d = 0, c = 0;
+      while (d < debtors.length && c < creditors.length) {
+        const deb = debtors[d];
+        const cre = creditors[c];
+        const settle = Math.min(deb.amount, cre.amount);
 
-        transactions.push({ from: d.person, to: cr.person, amount: amt });
-        d.amount -= amt;
-        cr.amount -= amt;
+        if (settle > 0) {
+          transactions.push({
+            from: deb.person,
+            to: cre.person,
+            amount: settle
+          });
+        }
 
-        if (d.amount === 0) i++;
-        if (cr.amount === 0) j++;
+        deb.amount -= settle;
+        cre.amount -= settle;
+
+        if (deb.amount === 0) d++;
+        if (cre.amount === 0) c++;
       }
 
-      return { transactions, creditors, kittyLeftover: kittyBal };
+      const creditorTotals = {};
+      transactions.forEach(t => {
+        creditorTotals[t.to] = (creditorTotals[t.to] || 0) + t.amount;
+      });
+
+      return {
+        transactions,
+        kittyLeftover,
+        creditorTotals,
+        hasKeeper,
+        keeperName: appState.kittyKeeper
+      };
     }
 
-    function updateMemberBank(person, field, val) {
-      if (!state.memberBanks[person]) state.memberBanks[person] = { code: "", account: "" };
-      state.memberBanks[person][field] = val.trim();
-      if (tripRef) {
-        tripRef.child(`memberBanks/${person}/${field}`).set(val.trim());
-      } else {
-        localStorage.setItem('trip_split_hybrid', JSON.stringify(state));
+    // ==============================================================
+    // 9. 銀行代碼/帳號管理與 LINE 結算複製
+    // ==============================================================
+    window.updateMemberBankCode = function(name, val) {
+      if (!appState.memberBankCodes) appState.memberBankCodes = {};
+      appState.memberBankCodes[name] = val.trim();
+      saveAppStateQuietly();
+    };
+
+    window.updateMemberBankAccount = function(name, val) {
+      if (!appState.memberBankAccounts) appState.memberBankAccounts = {};
+      appState.memberBankAccounts[name] = val.trim();
+      saveAppStateQuietly();
+    };
+
+    window.copyPureAccountOnly = function(name) {
+      const acc = (appState.memberBankAccounts && appState.memberBankAccounts[name]) ? appState.memberBankAccounts[name] : '';
+      const cleanAcc = acc.replace(/[^0-9]/g, '');
+      if (!cleanAcc) {
+        showToast(`請先輸入 ${name} 的帳號！`);
+        return;
       }
+      copyToClipboard(cleanAcc, `已複製 ${name} 的帳號：${cleanAcc}`);
+    };
+
+    function copyToClipboard(text, successMsg) {
+      if (!text) return;
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast(successMsg || "已複製到剪貼簿！");
+      } catch (err) {
+        prompt("請長按複製：", text);
+      }
+      document.body.removeChild(ta);
     }
 
-    // ==========================================
-    // 9. 畫面渲染
-    // ==========================================
-    function renderAll() {
-      const kittyBal = getKittyBalance();
-      document.getElementById('kittyBalanceDisplay').innerText = `$${Math.round(kittyBal).toLocaleString()}`;
+    window.copyFullSettlementSummary = function() {
+      const { transactions, kittyLeftover, hasKeeper, keeperName } = computeSettlement();
+      if (transactions.length === 0) {
+        showToast("目前帳目皆已平，無須轉帳！");
+        return;
+      }
 
-      // 保管人選單
-      const cSelect = document.getElementById('custodianSelect');
-      cSelect.innerHTML = `<option value="">未指定</option>` + state.members.map(m => 
-        `<option value="${m}" ${state.custodian === m ? 'selected' : ''}>${m}</option>`
-      ).join('');
+      let text = `🌾【旅程結算清單 (房間:${currentRoomId})】\n`;
+      transactions.forEach(t => {
+        text += `👉 ${t.from} 轉給 ${t.to}：$${t.amount.toLocaleString()} 元\n`;
+      });
+      text += "──────────────\n";
+
+      if (hasKeeper && kittyLeftover > 0) {
+        text += `💡 註：公費剩餘現鈔 $${Math.round(kittyLeftover).toLocaleString()} 元已由總務【${keeperName}】合併抵銷，全員無需再找零退現。\n──────────────\n`;
+      } else if (kittyLeftover !== 0) {
+        const sign = kittyLeftover > 0 ? "剩餘" : "透支";
+        text += `💰 公費${sign}：$${Math.abs(Math.round(kittyLeftover)).toLocaleString()} 元 (已依各人出資結清)\n──────────────\n`;
+      }
+
+      const receivers = [...new Set(transactions.map(t => t.to))];
+      const bankLines = [];
+      receivers.forEach(r => {
+        const code = (appState.memberBankCodes && appState.memberBankCodes[r]) ? appState.memberBankCodes[r] : '';
+        const acc = (appState.memberBankAccounts && appState.memberBankAccounts[r]) ? appState.memberBankAccounts[r] : '';
+        if (code || acc) {
+          bankLines.push(`🏦 ${r}：銀行代碼 ${code || '未填'} 帳號 ${acc || '未填'}`);
+        }
+      });
+
+      if (bankLines.length > 0) {
+        text += "【收款人帳號資訊】\n" + bankLines.join("\n") + "\n";
+      }
+
+      copyToClipboard(text, "已複製完整結算清單！可直接貼至 LINE 群組。");
+    };
+
+    window.resetWholeTrip = function() {
+      if (!isAdmin) return;
+      if (confirm(`⚠️ 確定要清空房間【${currentRoomId}】的所有資料嗎？此動作無法復原。`)) {
+        appState = {
+          members: [],
+          kittyKeeper: "",
+          memberBankCodes: {},
+          memberBankAccounts: {},
+          kittyDeposits: [],
+          expenses: []
+        };
+        expandedExpenses.clear();
+        resetExpenseForm();
+        saveAppState();
+      }
+    };
+
+    function showToast(msg) {
+      const t = document.getElementById('toastBox');
+      t.innerText = msg;
+      t.style.display = 'block';
+      setTimeout(() => {
+        t.style.display = 'none';
+      }, 2500);
+    }
+
+    // ==============================================================
+    // 10. 畫面渲染引擎
+    // ==============================================================
+    function renderAllViews() {
+      if (!currentRoomId) return;
+
+      // 1. 公積金狀態
+      const { balance } = getKittyTotals();
+      document.getElementById('kittyBalanceDisplay').innerText = `$${Math.round(balance).toLocaleString()}`;
+
+      const keeperSelect = document.getElementById('kittyKeeperSelect');
+      let keeperOpts = `<option value="">未指定</option>`;
+      appState.members.forEach(m => {
+        keeperOpts += `<option value="${m}" ${m === appState.kittyKeeper ? 'selected' : ''}>${m}</option>`;
+      });
+      keeperSelect.innerHTML = keeperOpts;
 
       // 公費紀錄抽屜
-      const kLogs = document.getElementById('kittyDepositLogs');
-      if (!state.kittyDeposits || state.kittyDeposits.length === 0) {
-        kLogs.innerHTML = '<span style="opacity:0.7;">尚無繳存紀錄</span>';
+      const historyList = document.getElementById('kittyHistoryList');
+      if (appState.kittyDeposits.length === 0) {
+        historyList.innerHTML = `<span style="font-size:11px; color:#94A3B8;">尚無任何存入紀錄</span>`;
       } else {
-        kLogs.innerHTML = state.kittyDeposits.map(k => `
-          <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0;">
-            <span>${k.time} · ${k.payer} · $${k.totalAmount.toLocaleString()}</span>
-            ${isAdmin ? `<button type="button" onclick="deleteKittyDeposit('${k.id}')" style="background:none; border:none; color:#FCA5A5; cursor:pointer;">&times;</button>` : ''}
+        historyList.innerHTML = appState.kittyDeposits.slice().reverse().map(k => `
+          <div class="kitty-history-row">
+            <div>
+              <span>${k.title}</span>
+              <span style="color:#94A3B8; font-size:10px; margin-left:3px;">(${k.time})</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:5px;">
+              <strong style="color:var(--primary);">+$${k.totalAmount.toLocaleString()}</strong>
+              ${isAdmin ? `<button type="button" class="btn-kitty-del-sub" onclick="deleteKittyDeposit('${k.id}')" title="刪除">&times;</button>` : ''}
+            </div>
           </div>
         `).join('');
       }
 
-      // 旅伴個人財務統計清單
+      // 2. 旅伴個人財務統計看板
       const stats = computeMemberStatistics();
       const statsBox = document.getElementById('memberStatsContainer');
-      if (state.members.length === 0) {
+      if (appState.members.length === 0) {
         statsBox.innerHTML = '<p class="empty-hint">尚未加入成員</p>';
       } else {
-        statsBox.innerHTML = state.members.map(m => {
+        statsBox.innerHTML = appState.members.map(m => {
           const item = stats[m] || { totalSpent: 0, totalPaid: 0, net: 0 };
           const netRound = Math.round(item.net);
           let netBadge = `<span style="color:#64748B;">±$0</span>`;
@@ -1263,14 +2049,14 @@
           else if (netRound < 0) netBadge = `<span class="stats-badge-red">應付 -$${Math.abs(netRound).toLocaleString()}</span>`;
 
           return `
-            <div class="stats-item">
-              <div>
-                <span class="stats-name">${m}</span>
-                ${m === state.custodian ? '<span style="font-size:10px; background:#ECFDF5; color:#065F46; padding:1px 4px; border-radius:4px; margin-left:4px;">總務</span>' : ''}
+            <div class="stats-card-item">
+              <div class="stats-item-left">
+                <span class="stats-person-name">${m}</span>
+                ${m === appState.kittyKeeper ? '<span class="stats-person-tag">總務</span>' : ''}
               </div>
-              <div class="stats-details">
-                <span style="color:#64748B;">消費: $${Math.round(item.totalSpent).toLocaleString()}</span>
-                <span style="color:#64748B;">代墊: $${Math.round(item.totalPaid).toLocaleString()}</span>
+              <div class="stats-item-right">
+                <span style="color:var(--text-muted);">消費: $${Math.round(item.totalSpent).toLocaleString()}</span>
+                <span style="color:var(--text-muted);">代墊: $${Math.round(item.totalPaid).toLocaleString()}</span>
                 ${netBadge}
               </div>
             </div>
@@ -1278,166 +2064,179 @@
         }).join('');
       }
 
-      // 成員標籤
-      document.getElementById('memberCountBadge').innerText = state.members.length;
-      const mContainer = document.getElementById('membersContainer');
-      mContainer.innerHTML = state.members.map(m => `
-        <span class="member-chip">
-          ${m}
-          ${isAdmin ? `<button type="button" class="chip-del" onclick="removeMember('${m}')">&times;</button>` : ''}
-        </span>
-      `).join('') || '<span class="empty-hint" style="padding:0;">尚未加入任何成員</span>';
-
-      // 付款人下拉選單
-      const pSelect = document.getElementById('payerSelect');
-      const curPayer = pSelect.value;
-      pSelect.innerHTML = state.members.map(m => 
-        `<option value="${m}" ${(curPayer === m || (!curPayer && m === state.custodian)) ? 'selected' : ''}>${m}${m === state.custodian ? ' (總務・優先抵公費)' : ''}</option>`
-      ).join('');
-
-      renderSplitButtons();
-      renderCustomList();
-
-      // 消費明細列表
-      const expList = document.getElementById('expenseList');
-      let total = 0;
-      if (state.expenses.length === 0) {
-        expList.innerHTML = '<p class="empty-hint">尚無任何支出紀錄</p>';
+      // 3. 成員徽章清單
+      document.getElementById('memberCountBadge').innerText = appState.members.length;
+      const chipContainer = document.getElementById('membersChipCluster');
+      if (appState.members.length === 0) {
+        chipContainer.innerHTML = `<span class="empty-hint" style="padding:0;">尚未加入任何旅伴</span>`;
       } else {
-        expList.innerHTML = state.expenses.slice().reverse().map(e => {
-          total += Number(e.amount) || 0;
-          const isExpanded = expandedExpenseId === e.id;
-          const hasKitty = e.kittyDeduction > 0;
-
-          return `
-            <div class="expense-item">
-              <div class="expense-main-row">
-                <div>
-                  <span style="font-weight:600; color:#1E293B;">${e.title}</span>
-                  <span style="color:#059669; font-weight:bold; font-family:monospace; margin-left:4px;">$${Math.round(e.amount).toLocaleString()}</span>
-                </div>
-                <div style="display:flex; align-items:center;">
-                  <button type="button" onclick="toggleExpandExpense('${e.id}')" style="background:none; border:none; color:#059669; font-size:11px; cursor:pointer;">
-                    ${isExpanded ? '收合明細 ▴' : '明細 ▾'}
-                  </button>
-                  ${isAdmin ? `<button type="button" class="btn-del-expense" onclick="deleteExpense('${e.id}')">刪除</button>` : ''}
-                </div>
-              </div>
-              <div style="font-size:11px; color:#94A3B8; margin-top:2px;">
-                ${e.payer} 付 · ${(e.splitWith || []).length} 人平攤
-                ${hasKitty ? ` · <span style="color:#059669;">(公費抵 $${Math.round(e.kittyDeduction).toLocaleString()}${e.personalPaid > 0 ? ` + 代墊 $${Math.round(e.personalPaid).toLocaleString()}` : ''})</span>` : ''}
-              </div>
-              ${isExpanded ? `
-                <div class="expense-detail-drawer">
-                  <div style="margin-bottom:4px;"><strong>平攤成員：</strong>${(e.splitWith || []).join('、 ')}</div>
-                  ${(e.customSplits && e.customSplits.length) ? `<div><strong>特殊自費：</strong>${e.customSplits.map(c=>`${c.person}$${c.amount}`).join('、 ')}</div>` : ''}
-                </div>
-              ` : ''}
-            </div>
-          `;
-        }).join('');
-      }
-      document.getElementById('totalCostDisplay').innerText = `累計：$${Math.round(total).toLocaleString()}`;
-
-      // 結算轉帳清單 (優先置頂)
-      const setList = document.getElementById('settlementList');
-      const { transactions, creditors } = computeSettlement();
-      if (transactions.length === 0) {
-        setList.innerHTML = '<p class="empty-hint">帳目已結清，無須額外轉帳</p>';
-      } else {
-        setList.innerHTML = transactions.map(t => `
-          <div class="settle-card">
-            <span style="font-size:12px;"><strong>${t.from}</strong> ➔ 應轉給 <strong>${t.to}</strong></span>
-            <span class="settle-amount">$${t.amount.toLocaleString()}</span>
+        chipContainer.innerHTML = appState.members.map(m => `
+          <div class="member-badge">
+            <span>${m}${m === appState.kittyKeeper ? ' (總務)' : ''}</span>
+            ${isAdmin ? `<button type="button" class="btn-badge-remove" onclick="removeSingleMember('${m}')">&times;</button>` : ''}
           </div>
         `).join('');
       }
 
-      // 收款人帳號專區 (置底選填，僅需填寫一次)
-      const accList = document.getElementById('accountList');
-      if (creditors.length === 0) {
-        accList.innerHTML = '<span style="font-size:11px; color:#94A3B8;">目前無人需要收款</span>';
+      // 4. 付款人選單：純成員名單，標註總務 (無公費支出選項)
+      const payerSel = document.getElementById('expensePayerSelect');
+      const curPayer = payerSel.value;
+      let pOptions = `<option value="" disabled ${!curPayer ? 'selected' : ''}>請選擇付款人</option>`;
+      appState.members.forEach(m => {
+        const isKeeper = (m === appState.kittyKeeper);
+        const label = isKeeper ? `${m} (總務・優先扣抵公費)` : `${m} (個人代墊)`;
+        pOptions += `<option value="${m}" ${curPayer === m ? 'selected' : ''}>${label}</option>`;
+      });
+      payerSel.innerHTML = pOptions;
+
+      // 5. 平攤人選取晶片
+      renderSplitterChips();
+
+      // 6. 消費明細清單 (含公費扣抵與代墊備註)
+      const expContainer = document.getElementById('expenseListCluster');
+      const totalExpense = appState.expenses.reduce((acc, e) => acc + (Number(e.amount) || 0), 0);
+      document.getElementById('totalCostSumDisplay').innerText = `累計：$${Math.round(totalExpense).toLocaleString()}`;
+
+      if (appState.expenses.length === 0) {
+        expContainer.innerHTML = `<p class="empty-hint">尚無任何支出紀錄</p>`;
       } else {
-        accList.innerHTML = creditors.map(c => {
-          const bankData = state.memberBanks[c.person] || { code: "", account: "" };
+        expContainer.innerHTML = appState.expenses.slice().reverse().map(e => {
+          const isExpanded = expandedExpenses.has(e.id);
+          const hasCustom = e.customSplits && e.customSplits.length > 0;
+          const customTotal = hasCustom ? e.customSplits.reduce((acc, c) => acc + c.amount, 0) : 0;
+          const splitAmount = e.amount - customTotal;
+          const perPersonSplit = (e.splitWith && e.splitWith.length > 0) ? Math.round(splitAmount / e.splitWith.length) : 0;
+
+          const offsetAmt = Number(e.kittyOffsetAmount) || 0;
+          const advAmt = Number(e.personalAdvanceAmount) || 0;
+          let paymentNote = `${e.payer} 付`;
+          if (offsetAmt > 0 && advAmt > 0) {
+            paymentNote = `${e.payer} 付 (公費抵 $${offsetAmt.toLocaleString()} + 代墊 $${advAmt.toLocaleString()})`;
+          } else if (offsetAmt > 0) {
+            paymentNote = `${e.payer} 付 (公費全額扣抵 $${offsetAmt.toLocaleString()})`;
+          } else {
+            paymentNote = `${e.payer} 個人代墊`;
+          }
+
+          let detailHtml = '';
+          if (isExpanded) {
+            detailHtml = `
+              <div class="expense-expanded-card">
+                <div style="margin-bottom: 4px; color: var(--primary);">
+                  <strong>支付結構：</strong>
+                  <span>${paymentNote}</span>
+                </div>
+                ${hasCustom ? `
+                  <div style="margin-bottom: 4px; color: #B91C1C;">
+                    <strong>個人自費：</strong>
+                    ${e.customSplits.map(c => `<span class="expanded-tag">${c.person}: $${c.amount}</span>`).join(' ')}
+                  </div>
+                ` : ''}
+                <div>
+                  <strong>平攤：</strong>
+                  <span>$${splitAmount.toLocaleString()} 元由 ${(e.splitWith || []).length} 人平攤 (每人約 $${perPersonSplit.toLocaleString()} 元)</span>
+                </div>
+                <div class="expanded-tag-list">
+                  ${(e.splitWith || []).map(p => `<span class="expanded-tag">${p}</span>`).join('')}
+                </div>
+              </div>
+            `;
+          }
+
           return `
-            <div class="account-card">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:12px; font-weight:bold; color:#1E293B;">${c.person}</span>
-                <span style="font-size:11px; color:#059669; font-weight:600;">總應收: $${c.amount.toLocaleString()}</span>
+            <div class="expense-row-item">
+              <div class="expense-main-line">
+                <div>
+                  <div class="expense-item-name">
+                    <span>${e.title}</span>
+                    <span class="expense-item-cost">$${Math.round(e.amount).toLocaleString()}</span>
+                  </div>
+                  <div class="expense-item-sub">
+                    <span>${paymentNote} · ${(e.splitWith || []).length} 人平分</span>
+                    <button type="button" class="btn-detail-toggle" onclick="toggleExpenseDetail('${e.id}')">
+                      ${isExpanded ? '收合 ▴' : '明細 ▾'}
+                    </button>
+                  </div>
+                </div>
+                ${isAdmin ? `<button type="button" class="btn-text-danger" onclick="removeSingleExpense('${e.id}')">刪除</button>` : ''}
               </div>
-              <div class="account-row">
-                <input type="text" maxlength="3" class="bank-code-input" placeholder="代碼" value="${bankData.code || ''}" 
-                       onchange="updateMemberBank('${c.person}', 'code', this.value)">
-                <input type="text" class="bank-account-input" placeholder="帳號" value="${bankData.account || ''}" 
-                       onchange="updateMemberBank('${c.person}', 'account', this.value)">
-                <button type="button" class="btn-copy-sm" onclick="copyPureAccount('${bankData.account}', '${c.person}')">複製</button>
-              </div>
+              ${detailHtml}
             </div>
           `;
         }).join('');
       }
-    }
 
-    function toggleExpandExpense(id) {
-      expandedExpenseId = (expandedExpenseId === id) ? null : id;
-      renderAll();
-    }
+      // 7. 結算結果 (轉帳路徑置頂，銀行帳號置底選填)
+      const setList = document.getElementById('settlementList');
+      const bankSection = document.getElementById('creditorAccountsSection');
+      const bankList = document.getElementById('creditorAccountsList');
+      const keeperBanner = document.getElementById('keeperOffsetBanner');
+      const res = computeSettlement();
 
-    function copyPureAccount(acc, name) {
-      if (!acc) return alert(`請先填寫 ${name} 的帳號！`);
-      copyToClipboard(acc.replace(/[^0-9]/g, ''), `已複製 ${name} 的銀行帳號！`);
-    }
+      if (res.transactions.length === 0) {
+        setList.innerHTML = '<p class="empty-hint">帳目皆已平，無須額外轉帳</p>';
+        bankSection.style.display = 'none';
+        keeperBanner.style.display = 'none';
+      } else {
+        if (res.hasKeeper && res.kittyLeftover > 0) {
+          keeperBanner.style.display = 'block';
+          keeperBanner.innerHTML = `💡 <strong>總務現鈔抵銷</strong>：公費剩餘現鈔 <strong>$${Math.round(res.kittyLeftover).toLocaleString()}</strong> 元已由總務【${res.keeperName}】合併抵銷，全員無需再找零退現。`;
+        } else {
+          keeperBanner.style.display = 'none';
+        }
 
-    function copyToClipboard(txt, msg) {
-      if (!txt) return;
-      const input = document.createElement('textarea');
-      input.value = txt;
-      document.body.appendChild(input);
-      input.select();
-      try {
-        document.execCommand('copy');
-        alert(msg || '已複製到剪貼簿！');
-      } catch (err) {
-        prompt('請長按複製：', txt);
+        setList.innerHTML = res.transactions.map(t => `
+          <div class="settle-card">
+            <div class="settle-main">
+              <span style="font-size:13px; color:#1E293B;">
+                <strong>${t.from}</strong> ➔ 應轉給 <strong>${t.to}</strong>
+              </span>
+              <span class="settle-amount">$${t.amount.toLocaleString()}</span>
+            </div>
+          </div>
+        `).join('');
+
+        const creditors = Object.keys(res.creditorTotals);
+        if (creditors.length > 0) {
+          bankSection.style.display = 'block';
+          bankList.innerHTML = creditors.map(cName => {
+            const currentCode = (appState.memberBankCodes && appState.memberBankCodes[cName]) ? appState.memberBankCodes[cName] : '';
+            const currentAcc = (appState.memberBankAccounts && appState.memberBankAccounts[cName]) ? appState.memberBankAccounts[cName] : '';
+            const totalRecv = res.creditorTotals[cName];
+
+            return `
+              <div class="bank-card">
+                <div class="bank-header">
+                  <span style="font-weight:700; color:#1E293B;">${cName}</span>
+                  <span style="color:var(--primary); font-weight:700; font-family:monospace; font-size:11px;">總應收：$${totalRecv.toLocaleString()}</span>
+                </div>
+                <div class="bank-input-row">
+                  <input type="text" class="bank-code-field" 
+                         placeholder="代碼" 
+                         maxlength="3"
+                         inputmode="numeric"
+                         value="${currentCode}" 
+                         onchange="updateMemberBankCode('${cName}', this.value)">
+                  <input type="text" class="bank-account-field" 
+                         placeholder="帳號" 
+                         inputmode="numeric"
+                         value="${currentAcc}" 
+                         onchange="updateMemberBankAccount('${cName}', this.value)">
+                  <button type="button" class="btn-copy-sm" onclick="copyPureAccountOnly('${cName}')">
+                    複製
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('');
+        } else {
+          bankSection.style.display = 'none';
+        }
       }
-      document.body.removeChild(input);
     }
 
-    function copySettlementSummary() {
-      const { transactions, creditors, kittyLeftover } = computeSettlement();
-      if (transactions.length === 0) return alert('目前無須轉帳！');
-
-      let out = '🌾【旅程結算清單】\n';
-      transactions.forEach(t => {
-        out += `👉 ${t.from} 轉給 ${t.to}：$${t.amount.toLocaleString()} 元\n`;
-      });
-
-      if (kittyLeftover > 0 && state.custodian) {
-        out += `──────────────\n💡 註：公費剩餘現鈔 $${Math.round(kittyLeftover).toLocaleString()} 已由總務【${state.custodian}】直接抵銷。\n`;
-      }
-
-      out += '──────────────\n【收款人帳號資訊】\n';
-      creditors.forEach(c => {
-        const b = state.memberBanks[c.person] || { code: "", account: "" };
-        out += `🏦 ${c.person}：銀行代碼 ${b.code || '未填'} 帳號 ${b.account || '未填'}\n`;
-      });
-
-      copyToClipboard(out, '完整結算清單已複製！可直接傳到 LINE 群組。');
-    }
-
-    function resetEntireTrip() {
-      if (!isAdmin) return;
-      if (confirm('確定要清空整趟旅程的所有資料（人員、公費、帳目）嗎？')) {
-        state = { members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
-        selectedSplitters = [];
-        customSplits = [];
-        syncState();
-      }
-    }
-
-    // 啟動
-    initDataSync();
+    // 啟動路由與資料同步
+    initRoomRouting();
   </script>
 </body>
 </html>
