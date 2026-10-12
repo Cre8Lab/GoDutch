@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>小旅行・旅程分帳與公費助理</title>
+  <title>旅途・分帳與公費記帳</title>
 
   <!-- 引入 Firebase SDK (純原生相容版本) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -14,20 +14,21 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Sans TC", sans-serif;
     }
     body {
-      background-color: #F8F9FA;
-      color: #2D3748;
+      background-color: #F8FAF9;
+      color: #334155;
       padding-bottom: 90px;
       -webkit-tap-highlight-color: transparent;
+      line-height: 1.5;
     }
 
     /* 頂部導航列 */
     .header {
       background: #FFFFFF;
       border-bottom: 1px solid #E2E8F0;
-      padding: 12px 16px;
+      padding: 14px 18px;
       position: sticky;
       top: 0;
       z-index: 20;
@@ -37,25 +38,26 @@
     }
     .header h1 {
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       color: #1E293B;
+      letter-spacing: 0.5px;
       white-space: nowrap;
     }
     .status-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: #10B981;
+      background: #059669;
       flex-shrink: 0;
     }
     .role-badge {
-      font-size: 10px;
-      padding: 2px 6px;
+      font-size: 11px;
+      padding: 2px 7px;
       border-radius: 4px;
-      font-weight: 600;
+      font-weight: 500;
       white-space: nowrap;
     }
     .role-admin {
@@ -65,28 +67,28 @@
     }
     .role-viewer {
       background: #F1F5F9;
-      color: #475569;
-      border: 1px solid #CBD5E1;
+      color: #64748B;
+      border: 1px solid #E2E8F0;
     }
 
     .header-actions {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       align-items: center;
     }
     .btn-header-link {
-      font-size: 11px;
-      color: #059669;
-      background: #ECFDF5;
-      border: 1px solid #A7F3D0;
-      padding: 5px 9px;
+      font-size: 12px;
+      color: #0F766E;
+      background: #F0FDFA;
+      border: 1px solid #CCFBF1;
+      padding: 5px 10px;
       border-radius: 6px;
       cursor: pointer;
       white-space: nowrap;
-      font-weight: 600;
+      font-weight: 500;
     }
     .btn-header-link:hover {
-      background: #D1FAE5;
+      background: #CCFBF1;
     }
     .btn-reset-all {
       font-size: 11px;
@@ -98,13 +100,13 @@
       white-space: nowrap;
     }
     .btn-reset-all:hover {
-      color: #EF4444;
+      color: #E11D48;
     }
 
     .container {
       max-width: 440px;
       margin: 0 auto;
-      padding: 12px;
+      padding: 14px 12px;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -115,23 +117,23 @@
       background: #FFFFFF;
       border-radius: 16px;
       border: 1px solid #E2E8F0;
-      padding: 26px 20px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      padding: 30px 22px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
       text-align: center;
       margin-top: 10px;
     }
     .room-lobby-title {
-      font-size: 19px;
-      font-weight: 800;
+      font-size: 18px;
+      font-weight: 600;
       color: #0F172A;
       margin-bottom: 6px;
-      letter-spacing: -0.2px;
+      letter-spacing: 0.5px;
     }
     .room-lobby-sub {
       font-size: 12px;
       color: #64748B;
-      line-height: 1.5;
-      margin-bottom: 22px;
+      line-height: 1.6;
+      margin-bottom: 24px;
     }
 
     /* 卡片共用樣式 */
@@ -139,7 +141,7 @@
       background: #FFFFFF;
       border-radius: 14px;
       border: 1px solid #E2E8F0;
-      padding: 14px 16px;
+      padding: 15px 16px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
     }
     .card-header {
@@ -150,7 +152,7 @@
     }
     .card-title {
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       color: #64748B;
       letter-spacing: 0.5px;
       white-space: nowrap;
@@ -166,15 +168,15 @@
       flex-shrink: 0;
     }
     .card-action-btn:hover {
-      color: #EF4444;
+      color: #E11D48;
     }
 
-    /* 迷你單列公積金卡片 */
+    /* 迷你單列公費卡片 */
     .kitty-compact-card {
-      background: linear-gradient(135deg, #065F46, #0D9488);
+      background: linear-gradient(135deg, #115E59, #0F766E);
       color: #FFFFFF;
       border: none;
-      padding: 12px 14px;
+      padding: 13px 15px;
     }
     .kitty-row {
       display: flex;
@@ -190,38 +192,38 @@
     }
     .kitty-label {
       font-size: 11px;
-      opacity: 0.9;
+      opacity: 0.85;
       white-space: nowrap;
     }
     .kitty-amount {
-      font-size: 22px;
-      font-weight: bold;
-      font-family: monospace;
+      font-size: 21px;
+      font-weight: 600;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
       line-height: 1;
       white-space: nowrap;
     }
     .kitty-actions {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       align-items: center;
       flex-shrink: 0;
     }
     .btn-kitty-sm {
-      background: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: #FFFFFF;
       font-size: 11px;
       padding: 5px 9px;
-      border-radius: 7px;
-      font-weight: 600;
+      border-radius: 6px;
+      font-weight: 500;
       cursor: pointer;
       white-space: nowrap;
     }
     .btn-kitty-sm:active {
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.28);
     }
     .kitty-custodian-bar {
-      margin-top: 8px;
+      margin-top: 9px;
       padding-top: 8px;
       border-top: 1px solid rgba(255, 255, 255, 0.15);
       display: flex;
@@ -232,10 +234,10 @@
     }
     .custodian-select {
       background: rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       color: #FFFFFF;
       padding: 2px 6px;
-      border-radius: 6px;
+      border-radius: 5px;
       font-size: 11px;
       outline: none;
     }
@@ -247,7 +249,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(15, 23, 42, 0.4);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -257,14 +259,14 @@
     .modal-box {
       background: #FFFFFF;
       border-radius: 14px;
-      padding: 18px;
+      padding: 20px;
       width: 100%;
-      max-width: 340px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      max-width: 330px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
     .modal-title {
       font-size: 14px;
-      font-weight: bold;
+      font-weight: 600;
       color: #1E293B;
       margin-bottom: 12px;
     }
@@ -286,7 +288,7 @@
       font-size: 12px;
     }
     .stats-name {
-      font-weight: 600;
+      font-weight: 500;
       color: #1E293B;
     }
     .stats-details {
@@ -298,11 +300,11 @@
     }
     .stats-badge-green {
       color: #059669;
-      font-weight: bold;
+      font-weight: 600;
     }
     .stats-badge-red {
-      color: #DC2626;
-      font-weight: bold;
+      color: #E11D48;
+      font-weight: 600;
     }
 
     /* 輸入區元件 */
@@ -316,28 +318,28 @@
       min-width: 0;
       border: 1px solid #CBD5E1;
       background: #FFFFFF;
-      border-radius: 9px;
+      border-radius: 8px;
       padding: 9px 12px;
-      font-size: 14px;
+      font-size: 13px;
       color: #1E293B;
       outline: none;
     }
     .input-text:focus {
-      border-color: #059669;
+      border-color: #0F766E;
     }
     
     .btn-add {
       background: #1E293B;
       color: #FFFFFF;
       border: none;
-      padding: 9px 18px;
-      border-radius: 9px;
+      padding: 9px 16px;
+      border-radius: 8px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       white-space: nowrap;
       flex-shrink: 0;
-      min-width: 64px;
+      min-width: 60px;
       text-align: center;
     }
 
@@ -356,7 +358,7 @@
       background: #F1F5F9;
       border: 1px solid #E2E8F0;
       padding: 4px 10px;
-      border-radius: 20px;
+      border-radius: 16px;
       font-size: 12px;
       color: #334155;
       font-weight: 500;
@@ -366,12 +368,12 @@
       background: none;
       border: none;
       color: #94A3B8;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
       line-height: 1;
     }
     .chip-del:hover {
-      color: #EF4444;
+      color: #E11D48;
     }
 
     /* 表單項目 */
@@ -381,8 +383,8 @@
     .form-label {
       display: block;
       font-size: 11px;
-      font-weight: 600;
-      color: #475569;
+      font-weight: 500;
+      color: #64748B;
       margin-bottom: 5px;
       white-space: nowrap;
     }
@@ -390,9 +392,9 @@
       width: 100%;
       border: 1px solid #CBD5E1;
       background: #FFFFFF;
-      border-radius: 9px;
+      border-radius: 8px;
       padding: 9px 10px;
-      font-size: 14px;
+      font-size: 13px;
       color: #1E293B;
       outline: none;
     }
@@ -406,7 +408,7 @@
     .custom-box {
       background: #F8FAFC;
       border: 1px solid #E2E8F0;
-      border-radius: 9px;
+      border-radius: 8px;
       padding: 9px 11px;
       margin-bottom: 10px;
     }
@@ -418,9 +420,9 @@
     .btn-toggle-custom {
       background: none;
       border: none;
-      color: #059669;
+      color: #0F766E;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
     }
@@ -438,16 +440,16 @@
       color: #64748B;
       font-size: 11px;
       padding: 6px 11px;
-      border-radius: 20px;
+      border-radius: 16px;
       cursor: pointer;
       font-weight: 500;
       white-space: nowrap;
     }
     .split-chip.active {
-      background: #ECFDF5;
-      border-color: #6EE7B7;
-      color: #065F46;
-      font-weight: 700;
+      background: #F0FDFA;
+      border-color: #99F6E4;
+      color: #0F766E;
+      font-weight: 600;
     }
 
     /* 按鈕排版 */
@@ -460,23 +462,23 @@
     .btn-clear-form {
       background: #F1F5F9;
       border: 1px solid #CBD5E1;
-      color: #475569;
-      padding: 11px 0;
-      border-radius: 9px;
+      color: #64748B;
+      padding: 10px 0;
+      border-radius: 8px;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       text-align: center;
       white-space: nowrap;
     }
     .btn-save-expense {
-      background: #059669;
+      background: #0F766E;
       color: #FFFFFF;
       border: none;
-      padding: 11px 0;
-      border-radius: 9px;
+      padding: 10px 0;
+      border-radius: 8px;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
       text-align: center;
       white-space: nowrap;
@@ -499,7 +501,7 @@
     .btn-del-expense {
       background: none;
       border: none;
-      color: #EF4444;
+      color: #E11D48;
       font-size: 11px;
       cursor: pointer;
       white-space: nowrap;
@@ -520,17 +522,17 @@
       background: #F8FAFC;
       border: 1px solid #E2E8F0;
       padding: 10px 12px;
-      border-radius: 9px;
+      border-radius: 8px;
       margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     .settle-amount {
-      color: #059669;
+      color: #0F766E;
       font-size: 14px;
-      font-weight: bold;
-      font-family: monospace;
+      font-weight: 600;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
       white-space: nowrap;
     }
 
@@ -538,7 +540,7 @@
     .account-card {
       background: #F8FAFC;
       border: 1px solid #E2E8F0;
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 10px 12px;
       margin-bottom: 8px;
     }
@@ -578,7 +580,7 @@
       padding: 6px 10px;
       border-radius: 6px;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       white-space: nowrap;
     }
@@ -597,11 +599,11 @@
   <header class="header">
     <h1>
       <span class="status-dot"></span>
-      <span id="tripTitleDisplay">旅程分帳小幫手</span>
-      <span id="roleBadge" class="role-badge role-viewer">旅伴唯讀</span>
+      <span id="tripTitleDisplay">旅途記帳</span>
+      <span id="roleBadge" class="role-badge role-viewer">唯讀</span>
     </h1>
     <div class="header-actions">
-      <button type="button" id="btnShareTrip" class="btn-header-link" onclick="shareTripLinks()" style="display:none;">🔗 分享旅程</button>
+      <button type="button" id="btnShareTrip" class="btn-header-link" onclick="shareTripLinks()" style="display:none;">分享旅程</button>
       <button type="button" id="btnResetTrip" class="btn-reset-all" onclick="resetEntireTrip()" style="display:none;">清空</button>
     </div>
   </header>
@@ -610,29 +612,25 @@
 
     <!-- 0. 首頁大廳 (當網址沒有帶 trip 參數時顯示) -->
     <div id="roomLobbySection" class="room-lobby-card" style="display:none;">
-      <h2 class="room-lobby-title">✈️ 開啟一段美好旅程</h2>
-      <p class="room-lobby-sub">每趟旅程皆有專屬雲端紀錄，與旅伴即時共享帳目，安心享受出遊時光</p>
+      <h2 class="room-lobby-title">旅途記帳</h2>
+      <p class="room-lobby-sub">把心思留給風景，帳目輕輕記下。</p>
 
       <!-- 建立新旅程 (支援自訂代碼) -->
-      <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:16px; border-radius:12px; margin-bottom:16px; text-align:left;">
-        <span style="font-size:13px; font-weight:700; color:#1E293B; display:block; margin-bottom:4px;">✨ 建立新旅程</span>
-        <span style="font-size:11px; color:#64748B; display:block; margin-bottom:10px;">為這趟回憶取個專屬代碼（如 tokyo2026），或隨機產生</span>
-        
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:16px; border-radius:10px; margin-bottom:14px; text-align:left;">
+        <span style="font-size:12px; font-weight:600; color:#334155; display:block; margin-bottom:8px;">開啟新旅程</span>
         <div style="display:flex; gap:6px; margin-bottom:8px;">
-          <input type="text" id="customRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
-          <button type="button" class="btn-clear-form" style="padding:0 10px; font-size:11px; flex-shrink:0;" onclick="generateRandomRoomCode()">🎲 隨機產生</button>
+          <input type="text" id="customRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo-autumn)" style="font-family:monospace; text-transform:lowercase;">
+          <button type="button" class="btn-clear-form" style="padding:0 10px; font-size:11px; flex-shrink:0;" onclick="generateRandomRoomCode()">隨機</button>
         </div>
-        
-        <button type="button" class="btn-save-expense" style="width:100%;" onclick="createNewTripRoom()">開啟旅程 (總務管帳身分)</button>
+        <button type="button" class="btn-save-expense" style="width:100%; font-size:12px;" onclick="createNewTripRoom()">開啟旅程</button>
       </div>
 
       <!-- 加入現有旅程 -->
-      <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:16px; border-radius:12px; text-align:left;">
-        <span style="font-size:13px; font-weight:700; color:#1E293B; display:block; margin-bottom:4px;">🎒 加入旅伴的旅程</span>
-        <span style="font-size:11px; color:#64748B; display:block; margin-bottom:10px;">輸入旅伴分享給你的專屬代碼</span>
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:16px; border-radius:10px; text-align:left;">
+        <span style="font-size:12px; font-weight:600; color:#334155; display:block; margin-bottom:8px;">加入現有旅程</span>
         <div class="input-row">
-          <input type="text" id="joinRoomCodeInput" class="input-text" placeholder="輸入旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
-          <button type="button" class="btn-add" onclick="joinExistingRoom()">加入旅程</button>
+          <input type="text" id="joinRoomCodeInput" class="input-text" placeholder="輸入旅程代碼" style="font-family:monospace; text-transform:lowercase;">
+          <button type="button" class="btn-add" onclick="joinExistingRoom()">加入</button>
         </div>
       </div>
     </div>
@@ -643,16 +641,16 @@
       <div class="card kitty-compact-card">
         <div class="kitty-row">
           <div class="kitty-left">
-            <span class="kitty-label">💰 公費剩餘</span>
+            <span class="kitty-label">公費餘額</span>
             <span class="kitty-amount" id="kittyBalanceDisplay">$0</span>
           </div>
           <div class="kitty-actions">
-            <button type="button" id="btnOpenKittyDeposit" class="btn-kitty-sm" onclick="openKittyModal()">＋ 繳存</button>
+            <button type="button" id="btnOpenKittyDeposit" class="btn-kitty-sm" onclick="openKittyModal()">繳存</button>
             <button type="button" class="btn-kitty-sm" onclick="toggleKittyDrawer()">紀錄 ▾</button>
           </div>
         </div>
         <div class="kitty-custodian-bar">
-          <span>公費保管人 (總務)：</span>
+          <span>公費保管人：</span>
           <select id="custodianSelect" class="custodian-select" onchange="changeCustodian(this.value)">
             <option value="">未指定</option>
           </select>
@@ -665,22 +663,22 @@
       <!-- 2. 旅伴個人財務統計清單 (全員唯讀與管理員皆可見) -->
       <div class="card">
         <div class="card-header">
-          <span class="card-title">旅伴個人消費與收支概況</span>
+          <span class="card-title">旅伴收支</span>
           <span style="font-size:10px; color:#94A3B8;">即時試算</span>
         </div>
         <div id="memberStatsContainer" class="stats-grid">
-          <p class="empty-hint">尚未加入旅伴</p>
+          <p class="empty-hint">尚未加入旅伴名單</p>
         </div>
       </div>
 
       <!-- 3. 旅伴名單管理 (僅管理員可見) -->
       <div class="card admin-only" id="memberManageCard">
         <div class="card-header">
-          <span class="card-title">旅伴名單 (<span id="memberCountBadge">0</span>人)</span>
-          <button type="button" class="card-action-btn" onclick="clearAllMembers()">清空人員</button>
+          <span class="card-title">同行旅伴 (<span id="memberCountBadge">0</span>人)</span>
+          <button type="button" class="card-action-btn" onclick="clearAllMembers()">清空</button>
         </div>
         <div class="input-row">
-          <input id="memberNameInput" type="text" class="input-text" placeholder="輸入旅伴姓名 (如: 阿信)">
+          <input id="memberNameInput" type="text" class="input-text" placeholder="旅伴姓名 (例如：阿信)">
           <button type="button" class="btn-add" onclick="addMember()">加入</button>
         </div>
         <div id="membersContainer" class="chips-box"></div>
@@ -689,12 +687,12 @@
       <!-- 4. 記錄支出 (僅管理員可見) -->
       <div class="card admin-only" id="expenseFormCard">
         <div class="card-header">
-          <span class="card-title">記錄支出</span>
+          <span class="card-title">記錄花費</span>
         </div>
 
         <div class="form-group">
-          <label class="form-label">消費項目</label>
-          <input id="itemTitle" type="text" class="input-text" style="width:100%;" placeholder="例如：居酒屋晚餐、計程車">
+          <label class="form-label">項目名稱</label>
+          <input id="itemTitle" type="text" class="input-text" style="width:100%;" placeholder="例如：晚餐、交通">
         </div>
 
         <div class="form-grid-2 form-group">
@@ -711,7 +709,7 @@
         <!-- 特殊自費 -->
         <div class="custom-box">
           <div class="custom-header">
-            <span class="form-label" style="margin-bottom:0;">包含特定個人自費？</span>
+            <span class="form-label" style="margin-bottom:0;">包含個人自費？</span>
             <button type="button" id="customToggleBtn" class="btn-toggle-custom" onclick="toggleCustomSection()">＋ 新增自費</button>
           </div>
           <div id="customArea" style="display:none; margin-top:6px; border-top:1px solid #E2E8F0; padding-top:6px;">
@@ -723,26 +721,26 @@
         <!-- 平攤旅伴 -->
         <div class="form-group">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-            <label class="form-label" style="margin-bottom:0;">其餘平攤旅伴</label>
-            <button type="button" onclick="toggleAllSplitters()" style="background:none; border:none; color:#059669; font-size:11px; font-weight:700; cursor:pointer;">全選 / 反選</button>
+            <label class="form-label" style="margin-bottom:0;">其餘平攤成員</label>
+            <button type="button" onclick="toggleAllSplitters()" style="background:none; border:none; color:#0F766E; font-size:11px; font-weight:600; cursor:pointer;">全選 / 反選</button>
           </div>
           <div id="splitButtonsContainer" class="chips-box" style="margin-top:0;"></div>
         </div>
 
         <!-- 雙按鈕 -->
         <div class="btn-submit-row">
-          <button type="button" class="btn-clear-form" onclick="clearExpenseForm()">重新填寫</button>
-          <button type="button" class="btn-save-expense" onclick="addExpense()">儲存這筆費用</button>
+          <button type="button" class="btn-clear-form" onclick="clearExpenseForm()">重填</button>
+          <button type="button" class="btn-save-expense" onclick="addExpense()">儲存花費</button>
         </div>
       </div>
 
       <!-- 5. 消費明細動態 -->
       <div class="card">
         <div class="card-header">
-          <span class="card-title">消費明細動態</span>
+          <span class="card-title">花費動態</span>
           <div style="display:flex; gap:8px; align-items:center;">
-            <span id="totalCostDisplay" style="color:#059669; font-family:monospace; font-size:11px; font-weight:bold;">累計：$0</span>
-            <button type="button" id="btnClearExpenses" class="card-action-btn admin-only" onclick="clearAllExpenses()">清空消費</button>
+            <span id="totalCostDisplay" style="color:#0F766E; font-family:monospace; font-size:11px; font-weight:600;">累計：$0</span>
+            <button type="button" id="btnClearExpenses" class="card-action-btn admin-only" onclick="clearAllExpenses()">清空</button>
           </div>
         </div>
         <div id="expenseList"></div>
@@ -751,14 +749,14 @@
       <!-- 6. 結算建議 (先條列轉帳路徑，置底銀行帳號專區) -->
       <div class="card">
         <div class="card-header">
-          <span class="card-title">結算建議 (最簡轉帳路徑)</span>
-          <button type="button" onclick="copySettlementSummary()" style="background:#F1F5F9; border:1px solid #CBD5E1; padding:3px 8px; border-radius:5px; font-size:10px; cursor:pointer; font-weight:600;">複製 LINE 清單</button>
+          <span class="card-title">結算明細</span>
+          <button type="button" onclick="copySettlementSummary()" style="background:#F8FAFC; border:1px solid #CBD5E1; padding:3px 8px; border-radius:5px; font-size:10px; cursor:pointer; font-weight:500;">複製清單</button>
         </div>
         <div id="settlementList"></div>
 
         <!-- 置底收款人帳號專區 -->
         <div id="accountSection" style="margin-top:14px; padding-top:12px; border-top:1px dashed #CBD5E1;">
-          <span class="card-title" style="display:block; margin-bottom:8px;">🏦 收款人帳號專區 (收款者填寫一次即可)</span>
+          <span class="card-title" style="display:block; margin-bottom:8px;">匯款帳號 (選填)</span>
           <div id="accountList"></div>
         </div>
       </div>
@@ -772,24 +770,24 @@
     <div class="modal-box">
       <div class="modal-title">繳存公費</div>
       <div class="form-group">
-        <label class="form-label">存入模式</label>
+        <label class="form-label">繳存方式</label>
         <select id="kittyDepositType" class="form-select" onchange="switchDepositType(this.value)">
-          <option value="all">全員等額繳存 (每人出資相同)</option>
-          <option value="single">單一旅伴補繳 (中途加入旅程)</option>
-          <option value="custom">自由湊整存入 (零錢/找零)</option>
+          <option value="all">全員均分繳存</option>
+          <option value="single">單一旅伴補繳</option>
+          <option value="custom">自訂存入金額</option>
         </select>
       </div>
       <div id="kittySingleTargetGroup" class="form-group" style="display:none;">
-        <label class="form-label">補繳旅伴</label>
+        <label class="form-label">補繳成員</label>
         <select id="kittySingleTarget" class="form-select"></select>
       </div>
       <div class="form-group">
-        <label class="form-label" id="kittyAmountLabel">每人繳納金額 (TWD)</label>
+        <label class="form-label" id="kittyAmountLabel">每人金額 (TWD)</label>
         <input id="kittyAmountInput" type="number" class="input-text" style="width:100%;" placeholder="例如: 1000">
       </div>
       <div style="display:flex; gap:8px; margin-top:14px;">
         <button type="button" class="btn-clear-form" style="flex:1;" onclick="closeKittyModal()">取消</button>
-        <button type="button" class="btn-save-expense" style="flex:1;" onclick="submitKittyDeposit()">確認存入</button>
+        <button type="button" class="btn-save-expense" style="flex:1;" onclick="submitKittyDeposit()">確認</button>
       </div>
     </div>
   </div>
@@ -815,7 +813,7 @@
       firebase.initializeApp(firebaseConfig);
       db = firebase.database();
     } catch (e) {
-      console.warn("Firebase 初始化提示：", e);
+      console.warn("Firebase 連線提示：", e);
     }
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -853,22 +851,21 @@
     function createNewTripRoom() {
       let code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
       if (!code) {
-        alert('請填寫自訂旅程代碼，或點擊「🎲 隨機產生」！');
+        alert('請填寫自訂旅程代碼，或點選「隨機」');
         return;
       }
       if (!/^[a-z0-9_-]+$/.test(code)) {
-        alert('旅程代碼只能包含英文字母、數字、連字號（-）或底線（_），不能有空格或中文！');
+        alert('代碼僅限英文、數字、連字號（-）或底線（_），不含空格與中文。');
         return;
       }
 
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (snap.exists() && snap.val() && snap.val().createdAt) {
-            if (!confirm(`旅程代碼「${code}」已經存在！\n是否要以「總務管理身分」直接進入該旅程？`)) {
+            if (!confirm(`旅程代碼「${code}」已存在，是否直接進入？`)) {
               return;
             }
           } else {
-            // 初始化並登記該旅程
             db.ref('trips/' + code).set({
               createdAt: Date.now(),
               members: [],
@@ -888,15 +885,14 @@
     function joinExistingRoom() {
       const code = document.getElementById('joinRoomCodeInput').value.trim().toLowerCase();
       if (!code) {
-        alert('請輸入旅程代碼！');
+        alert('請輸入旅程代碼');
         return;
       }
 
-      // 檢查雲端是否存在此旅程，防止隨意打代碼進入
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
-            alert(`❌ 找不到代碼為「${code}」的旅程！\n請確認代碼是否輸入正確，或請總務先建立旅程。`);
+            alert(`找不到代碼為「${code}」的旅程，請確認代碼是否正確。`);
             return;
           }
           window.location.href = `${window.location.pathname}?trip=${code}`;
@@ -911,8 +907,8 @@
       const viewerUrl = `${baseUrl}?trip=${currentTripId}`;
       const adminUrl = `${baseUrl}?trip=${currentTripId}&admin=1`;
 
-      const msg = `🌿【美好旅程分帳看板】\n旅程代碼：${currentTripId}\n\n👉 旅伴唯讀看板（可直接轉傳至 LINE 群）：\n${viewerUrl}\n\n🔑 總務管帳連結（自行妥善保存）：\n${adminUrl}`;
-      copyToClipboard(msg, '已複製旅伴與總務專屬連結！');
+      const msg = `【旅程分帳】\n旅程代碼：${currentTripId}\n\n旅伴查看連結：\n${viewerUrl}\n\n管理記帳連結：\n${adminUrl}`;
+      copyToClipboard(msg, '已複製旅程連結');
     }
 
     // ==========================================
@@ -928,12 +924,11 @@
         return;
       }
 
-      // 檢查該旅程是否存在
       if (db) {
         db.ref('trips/' + currentTripId).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
             if (!isAdmin) {
-              alert(`❌ 找不到代碼為「${currentTripId}」的旅程！將為您返回大廳。`);
+              alert(`找不到代碼為「${currentTripId}」的旅程，返回大廳。`);
               window.location.href = window.location.pathname;
               return;
             }
@@ -948,14 +943,14 @@
 
       const roleBadge = document.getElementById('roleBadge');
       if (isAdmin) {
-        roleBadge.innerText = '總務管理模式';
+        roleBadge.innerText = '記帳管理';
         roleBadge.className = 'role-badge role-admin';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
         document.getElementById('btnResetTrip').style.display = '';
         document.getElementById('btnOpenKittyDeposit').style.display = '';
         document.getElementById('custodianSelect').disabled = false;
       } else {
-        roleBadge.innerText = '旅伴唯讀模式';
+        roleBadge.innerText = '唯讀';
         roleBadge.className = 'role-badge role-viewer';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
         document.getElementById('btnResetTrip').style.display = 'none';
@@ -963,7 +958,6 @@
         document.getElementById('custodianSelect').disabled = true;
       }
 
-      // 即時連線
       if (db) {
         tripRef = db.ref('trips/' + currentTripId);
         tripRef.on('value', (snapshot) => {
@@ -1025,7 +1019,7 @@
     function openKittyModal() {
       if (!isAdmin) return;
       if (state.members.length === 0) {
-        alert('請先在下方加入旅伴！');
+        alert('請先在下方加入旅伴成員');
         return;
       }
       document.getElementById('kittyAmountInput').value = '';
@@ -1045,13 +1039,13 @@
       if (type === 'single') {
         targetGroup.style.display = 'block';
         targetSelect.innerHTML = state.members.map(m => `<option value="${m}">${m}</option>`).join('');
-        label.innerText = '該旅伴補繳金額 (TWD)';
+        label.innerText = '補繳金額 (TWD)';
       } else if (type === 'custom') {
         targetGroup.style.display = 'none';
-        label.innerText = '總存入現鈔金額 (TWD)';
+        label.innerText = '存入金額 (TWD)';
       } else {
         targetGroup.style.display = 'none';
-        label.innerText = '每人繳納金額 (TWD)';
+        label.innerText = '每人金額 (TWD)';
       }
     }
 
@@ -1060,7 +1054,7 @@
       const type = document.getElementById('kittyDepositType').value;
       const amount = parseFloat(document.getElementById('kittyAmountInput').value);
       if (isNaN(amount) || amount <= 0) {
-        alert('請輸入有效金額！');
+        alert('請輸入有效金額');
         return;
       }
 
@@ -1073,7 +1067,7 @@
         payer = document.getElementById('kittySingleTarget').value;
         totalAmount = amount;
       } else {
-        payer = "自由湊整";
+        payer = "自訂存入";
         totalAmount = amount;
       }
 
@@ -1103,8 +1097,8 @@
       if (!isAdmin) return;
       const input = document.getElementById('memberNameInput');
       const name = input.value ? input.value.trim() : '';
-      if (!name) return alert('請先輸入旅伴姓名！');
-      if (state.members.includes(name)) return alert('旅伴姓名重複囉！');
+      if (!name) return alert('請輸入旅伴姓名');
+      if (state.members.includes(name)) return alert('姓名重複');
 
       state.members.push(name);
       selectedSplitters.push(name);
@@ -1116,7 +1110,7 @@
     function removeMember(name) {
       if (!isAdmin) return;
       const inUse = state.expenses.some(e => e.payer === name || (e.splitWith && e.splitWith.includes(name)));
-      if (inUse) return alert(`「${name}」在消費紀錄中已有帳目，請先刪除該消費才能移除。`);
+      if (inUse) return alert(`「${name}」在紀錄中已有帳目，請先刪除該項花費。`);
 
       state.members = state.members.filter(m => m !== name);
       selectedSplitters = selectedSplitters.filter(n => n !== name);
@@ -1127,8 +1121,8 @@
 
     function clearAllMembers() {
       if (!isAdmin) return;
-      if (state.expenses.length > 0) return alert('目前已有消費紀錄，請先清空消費！');
-      if (confirm('確定清空所有旅伴人員？')) {
+      if (state.expenses.length > 0) return alert('已有消費紀錄，請先清空花費');
+      if (confirm('確定清空所有旅伴？')) {
         state.members = [];
         state.custodian = "";
         state.memberBanks = {};
@@ -1144,9 +1138,9 @@
       const area = document.getElementById('customArea');
       const btn = document.getElementById('customToggleBtn');
       if (area.style.display === 'none') {
-        if (state.members.length === 0) return alert('請先加入旅伴！');
+        if (state.members.length === 0) return alert('請先加入旅伴');
         area.style.display = 'block';
-        btn.innerText = '關閉自費';
+        btn.innerText = '取消自費';
         if (customSplits.length === 0) addCustomRow();
       } else {
         area.style.display = 'none';
@@ -1177,7 +1171,7 @@
           <span style="font-size:11px; white-space:nowrap;">自費</span>
           <input type="number" value="${row.amount || ''}" oninput="customSplits[${idx}].amount=parseFloat(this.value)||0" placeholder="金額" class="input-text" style="width:75px; padding:5px 8px; font-size:12px;">
           <span style="font-size:11px; white-space:nowrap;">元</span>
-          <button type="button" onclick="removeCustomRow(${idx})" style="background:none; border:none; color:#EF4444; font-size:14px; font-weight:bold; cursor:pointer;">&times;</button>
+          <button type="button" onclick="removeCustomRow(${idx})" style="background:none; border:none; color:#E11D48; font-size:14px; font-weight:bold; cursor:pointer;">&times;</button>
         </div>
       `).join('');
     }
@@ -1198,7 +1192,7 @@
     function renderSplitButtons() {
       const c = document.getElementById('splitButtonsContainer');
       if (state.members.length === 0) {
-        c.innerHTML = '<span style="font-size:11px; color:#94A3B8;">請先在上方加入旅伴</span>';
+        c.innerHTML = '<span style="font-size:11px; color:#94A3B8;">請先在上方加入成員</span>';
         return;
       }
       c.innerHTML = state.members.map(m => {
@@ -1225,7 +1219,7 @@
 
     function addExpense() {
       if (!isAdmin) return;
-      if (state.members.length === 0) return alert('請先加入旅伴！');
+      if (state.members.length === 0) return alert('請先加入旅伴');
 
       const titleInput = document.getElementById('itemTitle');
       const amountInput = document.getElementById('itemAmount');
@@ -1235,13 +1229,13 @@
       const amount = parseFloat(amountInput.value);
       const payer = payerSelect.value;
 
-      if (!title) return alert('請填寫消費項目！');
-      if (isNaN(amount) || amount <= 0) return alert('請輸入有效金額！');
-      if (!payer) return alert('請選擇付款人！');
+      if (!title) return alert('請填寫項目名稱');
+      if (isNaN(amount) || amount <= 0) return alert('請輸入有效金額');
+      if (!payer) return alert('請選擇付款人');
 
       const customSum = customSplits.reduce((acc, c) => acc + (Number(c.amount) || 0), 0);
-      if (customSum > amount) return alert('自費總和不能大於消費金額！');
-      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return alert('扣除自費後仍有餘額，請至少點選一位平攤旅伴！');
+      if (customSum > amount) return alert('自費總和不能大於花費金額');
+      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return alert('請至少勾選一位平攤成員');
 
       let kittyDeduction = 0;
       let personalPaid = amount;
@@ -1278,7 +1272,7 @@
     function clearAllExpenses() {
       if (!isAdmin) return;
       if (state.expenses.length === 0) return;
-      if (confirm('確定清空所有消費紀錄？')) {
+      if (confirm('確定清空所有花費紀錄？')) {
         state.expenses = [];
         syncState();
       }
@@ -1415,7 +1409,7 @@
       // 公費紀錄抽屜
       const kLogs = document.getElementById('kittyDepositLogs');
       if (!state.kittyDeposits || state.kittyDeposits.length === 0) {
-        kLogs.innerHTML = '<span style="opacity:0.7;">尚無繳存紀錄</span>';
+        kLogs.innerHTML = '<span style="opacity:0.7;">尚無紀錄</span>';
       } else {
         kLogs.innerHTML = state.kittyDeposits.map(k => `
           <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0;">
@@ -1429,23 +1423,23 @@
       const stats = computeMemberStatistics();
       const statsBox = document.getElementById('memberStatsContainer');
       if (state.members.length === 0) {
-        statsBox.innerHTML = '<p class="empty-hint">尚未加入旅伴</p>';
+        statsBox.innerHTML = '<p class="empty-hint">尚未加入旅伴名單</p>';
       } else {
         statsBox.innerHTML = state.members.map(m => {
           const item = stats[m] || { totalSpent: 0, totalPaid: 0, net: 0 };
           const netRound = Math.round(item.net);
           let netBadge = `<span style="color:#64748B;">±$0</span>`;
-          if (netRound > 0) netBadge = `<span class="stats-badge-green">應收 +$${netRound.toLocaleString()}</span>`;
-          else if (netRound < 0) netBadge = `<span class="stats-badge-red">應付 -$${Math.abs(netRound).toLocaleString()}</span>`;
+          if (netRound > 0) netBadge = `<span class="stats-badge-green">+ $${netRound.toLocaleString()}</span>`;
+          else if (netRound < 0) netBadge = `<span class="stats-badge-red">- $${Math.abs(netRound).toLocaleString()}</span>`;
 
           return `
             <div class="stats-item">
               <div>
                 <span class="stats-name">${m}</span>
-                ${m === state.custodian ? '<span style="font-size:10px; background:#ECFDF5; color:#065F46; padding:1px 4px; border-radius:4px; margin-left:4px;">總務</span>' : ''}
+                ${m === state.custodian ? '<span style="font-size:10px; background:#F0FDFA; color:#0F766E; padding:1px 4px; border-radius:3px; margin-left:4px;">保管人</span>' : ''}
               </div>
               <div class="stats-details">
-                <span style="color:#64748B;">消費: $${Math.round(item.totalSpent).toLocaleString()}</span>
+                <span style="color:#64748B;">花費: $${Math.round(item.totalSpent).toLocaleString()}</span>
                 <span style="color:#64748B;">代墊: $${Math.round(item.totalPaid).toLocaleString()}</span>
                 ${netBadge}
               </div>
@@ -1462,13 +1456,13 @@
           ${m}
           ${isAdmin ? `<button type="button" class="chip-del" onclick="removeMember('${m}')">&times;</button>` : ''}
         </span>
-      `).join('') || '<span class="empty-hint" style="padding:0;">尚未加入任何旅伴</span>';
+      `).join('') || '<span class="empty-hint" style="padding:0;">尚未加入任何成員</span>';
 
       // 付款人下拉選單
       const pSelect = document.getElementById('payerSelect');
       const curPayer = pSelect.value;
       pSelect.innerHTML = state.members.map(m => 
-        `<option value="${m}" ${(curPayer === m || (!curPayer && m === state.custodian)) ? 'selected' : ''}>${m}${m === state.custodian ? ' (總務・優先抵公費)' : ''}</option>`
+        `<option value="${m}" ${(curPayer === m || (!curPayer && m === state.custodian)) ? 'selected' : ''}>${m}${m === state.custodian ? ' (公費優先抵扣)' : ''}</option>`
       ).join('');
 
       renderSplitButtons();
@@ -1478,7 +1472,7 @@
       const expList = document.getElementById('expenseList');
       let total = 0;
       if (state.expenses.length === 0) {
-        expList.innerHTML = '<p class="empty-hint">尚無任何支出紀錄</p>';
+        expList.innerHTML = '<p class="empty-hint">尚無花費紀錄</p>';
       } else {
         expList.innerHTML = state.expenses.slice().reverse().map(e => {
           total += Number(e.amount) || 0;
@@ -1489,19 +1483,19 @@
             <div class="expense-item">
               <div class="expense-main-row">
                 <div>
-                  <span style="font-weight:600; color:#1E293B;">${e.title}</span>
-                  <span style="color:#059669; font-weight:bold; font-family:monospace; margin-left:4px;">$${Math.round(e.amount).toLocaleString()}</span>
+                  <span style="font-weight:500; color:#1E293B;">${e.title}</span>
+                  <span style="color:#0F766E; font-weight:600; font-family:monospace; margin-left:4px;">$${Math.round(e.amount).toLocaleString()}</span>
                 </div>
                 <div style="display:flex; align-items:center;">
-                  <button type="button" onclick="toggleExpandExpense('${e.id}')" style="background:none; border:none; color:#059669; font-size:11px; cursor:pointer;">
-                    ${isExpanded ? '收合明細 ▴' : '明細 ▾'}
+                  <button type="button" onclick="toggleExpandExpense('${e.id}')" style="background:none; border:none; color:#0F766E; font-size:11px; cursor:pointer;">
+                    ${isExpanded ? '收合 ▴' : '明細 ▾'}
                   </button>
                   ${isAdmin ? `<button type="button" class="btn-del-expense" onclick="deleteExpense('${e.id}')">刪除</button>` : ''}
                 </div>
               </div>
               <div style="font-size:11px; color:#94A3B8; margin-top:2px;">
                 ${e.payer} 付 · ${(e.splitWith || []).length} 人平攤
-                ${hasKitty ? ` · <span style="color:#059669;">(公費抵 $${Math.round(e.kittyDeduction).toLocaleString()}${e.personalPaid > 0 ? ` + 代墊 $${Math.round(e.personalPaid).toLocaleString()}` : ''})</span>` : ''}
+                ${hasKitty ? ` · <span style="color:#0F766E;">(公費抵 $${Math.round(e.kittyDeduction).toLocaleString()}${e.personalPaid > 0 ? ` + 個人代墊 $${Math.round(e.personalPaid).toLocaleString()}` : ''})</span>` : ''}
               </div>
               ${isExpanded ? `
                 <div class="expense-detail-drawer">
@@ -1519,7 +1513,7 @@
       const setList = document.getElementById('settlementList');
       const { transactions, creditors } = computeSettlement();
       if (transactions.length === 0) {
-        setList.innerHTML = '<p class="empty-hint">帳目已結清，無須額外轉帳</p>';
+        setList.innerHTML = '<p class="empty-hint">目前帳目已平衡</p>';
       } else {
         setList.innerHTML = transactions.map(t => `
           <div class="settle-card">
@@ -1532,15 +1526,15 @@
       // 收款人帳號專區 (置底選填，僅需填寫一次)
       const accList = document.getElementById('accountList');
       if (creditors.length === 0) {
-        accList.innerHTML = '<span style="font-size:11px; color:#94A3B8;">目前無人需要收款</span>';
+        accList.innerHTML = '<span style="font-size:11px; color:#94A3B8;">尚無收款需求</span>';
       } else {
         accList.innerHTML = creditors.map(c => {
           const bankData = state.memberBanks[c.person] || { code: "", account: "" };
           return `
             <div class="account-card">
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:12px; font-weight:bold; color:#1E293B;">${c.person}</span>
-                <span style="font-size:11px; color:#059669; font-weight:600;">總應收: $${c.amount.toLocaleString()}</span>
+                <span style="font-size:12px; font-weight:600; color:#1E293B;">${c.person}</span>
+                <span style="font-size:11px; color:#0F766E; font-weight:600;">應收: $${c.amount.toLocaleString()}</span>
               </div>
               <div class="account-row">
                 <input type="text" maxlength="3" class="bank-code-input" placeholder="代碼" value="${bankData.code || ''}" 
@@ -1561,8 +1555,8 @@
     }
 
     function copyPureAccount(acc, name) {
-      if (!acc) return alert(`請先填寫 ${name} 的帳號！`);
-      copyToClipboard(acc.replace(/[^0-9]/g, ''), `已複製 ${name} 的銀行帳號！`);
+      if (!acc) return alert(`請先填寫 ${name} 的帳號`);
+      copyToClipboard(acc.replace(/[^0-9]/g, ''), `已複製 ${name} 的銀行帳號`);
     }
 
     function copyToClipboard(txt, msg) {
@@ -1573,38 +1567,38 @@
       input.select();
       try {
         document.execCommand('copy');
-        alert(msg || '已複製到剪貼簿！');
+        alert(msg || '已複製');
       } catch (err) {
-        prompt('請長按複製：', txt);
+        prompt('複製內容：', txt);
       }
       document.body.removeChild(input);
     }
 
     function copySettlementSummary() {
       const { transactions, creditors, kittyLeftover } = computeSettlement();
-      if (transactions.length === 0) return alert('目前無須轉帳！');
+      if (transactions.length === 0) return alert('目前無須轉帳');
 
-      let out = '🌾【美好旅程結算清單】\n';
+      let out = '【結算清單】\n';
       transactions.forEach(t => {
-        out += `👉 ${t.from} 轉給 ${t.to}：$${t.amount.toLocaleString()} 元\n`;
+        out += `・${t.from} ➔ ${t.to}：$${t.amount.toLocaleString()}\n`;
       });
 
       if (kittyLeftover > 0 && state.custodian) {
-        out += `──────────────\n💡 註：公費剩餘現鈔 $${Math.round(kittyLeftover).toLocaleString()} 已由總務【${state.custodian}】直接抵銷。\n`;
+        out += `\n備註：公費剩餘現鈔 $${Math.round(kittyLeftover).toLocaleString()} 已由保管人【${state.custodian}】直接抵銷。\n`;
       }
 
-      out += '──────────────\n【收款人帳號資訊】\n';
+      out += '\n【收款帳號】\n';
       creditors.forEach(c => {
         const b = state.memberBanks[c.person] || { code: "", account: "" };
-        out += `🏦 ${c.person}：銀行代碼 ${b.code || '未填'} 帳號 ${b.account || '未填'}\n`;
+        out += `・${c.person}：銀行代碼 ${b.code || '未填'} 帳號 ${b.account || '未填'}\n`;
       });
 
-      copyToClipboard(out, '完整結算清單已複製！可直接傳到 LINE 群組。');
+      copyToClipboard(out, '已複製結算清單');
     }
 
     function resetEntireTrip() {
       if (!isAdmin) return;
-      if (confirm('確定要清空這趟旅程的所有紀錄（人員、公費、帳目）嗎？')) {
+      if (confirm('確定清空這趟旅程的所有紀錄？')) {
         state = { createdAt: Date.now(), members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
         selectedSplitters = [];
         customSplits = [];
