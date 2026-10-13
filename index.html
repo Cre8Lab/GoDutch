@@ -11,10 +11,10 @@
 
   <style>
     /* ========================================================
-       低飽和、粉柔樸實色系定義 (莫蘭迪粉系：淺藍、淺綠、淺黃、淺紅)
+       低飽和日系四季粉柔色盤 (春・夏・秋・冬)
        ======================================================== */
     :root {
-      --bg-warm: #FAF8F6;
+      --bg-warm: #FAF8F8;
       --card-bg: #FFFFFF;
       --text-main: #3C3835;
       --text-muted: #7E7670;
@@ -24,28 +24,28 @@
       --radius-md: 14px;
       --radius-lg: 20px;
 
-      /* 預設為淺藍 (粉柔霧藍) */
-      --theme-main: #7B9EA8;
-      --theme-dark: #58757E;
-      --theme-light: #E9F1F3;
-      --theme-border: #D1E1E5;
-      --kitty-gradient-1: #8BAAB3;
-      --kitty-gradient-2: #6C8E98;
+      /* 預設為：🌸 春・櫻落粉 */
+      --theme-main: #C88A8A;
+      --theme-dark: #8E5656;
+      --theme-light: #F7EEEE;
+      --theme-border: #E8D3D3;
+      --kitty-gradient-1: #D29898;
+      --kitty-gradient-2: #B37474;
     }
 
-    /* 1. 淺藍 (粉柔霧藍) */
-    body[data-theme="blue"] {
-      --bg-warm: #F8FAFB;
-      --theme-main: #7B9EA8;
-      --theme-dark: #58757E;
-      --theme-light: #EBF2F4;
-      --theme-border: #D2E2E6;
-      --kitty-gradient-1: #8CAAB3;
-      --kitty-gradient-2: #6D8E98;
+    /* 🌸 春・櫻落粉 (Spring) */
+    body[data-theme="spring"] {
+      --bg-warm: #FAF8F8;
+      --theme-main: #C88A8A;
+      --theme-dark: #8E5656;
+      --theme-light: #F7EEEE;
+      --theme-border: #E8D3D3;
+      --kitty-gradient-1: #D29898;
+      --kitty-gradient-2: #B37474;
     }
 
-    /* 2. 淺綠 (粉柔鼠尾草綠) */
-    body[data-theme="green"] {
+    /* 🌿 夏・夏木綠 (Summer) */
+    body[data-theme="summer"] {
       --bg-warm: #F8FAF8;
       --theme-main: #7D9D8B;
       --theme-dark: #577564;
@@ -55,8 +55,8 @@
       --kitty-gradient-2: #6B8C7A;
     }
 
-    /* 3. 淺黃 (粉柔奶杏鵝黃) */
-    body[data-theme="yellow"] {
+    /* 🍁 秋・銀杏黃 (Autumn) */
+    body[data-theme="autumn"] {
       --bg-warm: #FAF9F6;
       --theme-main: #BFA06E;
       --theme-dark: #917548;
@@ -66,15 +66,15 @@
       --kitty-gradient-2: #A88B5B;
     }
 
-    /* 4. 淺紅 (粉柔乾燥玫瑰紅) */
-    body[data-theme="rose"] {
-      --bg-warm: #FAF8F8;
-      --theme-main: #B97F7F;
-      --theme-dark: #8C5757;
-      --theme-light: #F6EEEE;
-      --theme-border: #E8D3D3;
-      --kitty-gradient-1: #C58F8F;
-      --kitty-gradient-2: #A56C6C;
+    /* ❄️ 冬・暮雪藍 (Winter) */
+    body[data-theme="winter"] {
+      --bg-warm: #F8FAFB;
+      --theme-main: #7B9EA8;
+      --theme-dark: #58757E;
+      --theme-light: #EBF2F4;
+      --theme-border: #D2E2E6;
+      --kitty-gradient-1: #8CAAB3;
+      --kitty-gradient-2: #6D8E98;
     }
 
     * {
@@ -154,7 +154,7 @@
       border: 1px solid var(--border-soft);
     }
 
-    /* 頂部 4 顆小圓球切換按鈕 */
+    /* 頂部四季切換小圓球 */
     .theme-picker-group {
       display: flex;
       gap: 6px;
@@ -178,10 +178,10 @@
       border-color: #3C3835;
       transform: scale(1.15);
     }
-    .theme-dot-blue   { background-color: #8BAAB3; }
-    .theme-dot-green  { background-color: #8EAC9B; }
-    .theme-dot-yellow { background-color: #C9AD7F; }
-    .theme-dot-rose   { background-color: #C58F8F; }
+    .theme-dot-spring { background-color: #D29898; }
+    .theme-dot-summer { background-color: #8EAC9B; }
+    .theme-dot-autumn { background-color: #C9AD7F; }
+    .theme-dot-winter { background-color: #8CAAB3; }
 
     .header-actions-row {
       display: flex;
@@ -358,7 +358,7 @@
       font-weight: 500;
     }
 
-    /* 粉柔漸層公基金卡片 */
+    /* 四季粉柔公基金卡片 */
     .kitty-compact-card {
       background: linear-gradient(135deg, var(--kitty-gradient-1), var(--kitty-gradient-2));
       color: #FFFFFF;
@@ -801,7 +801,7 @@
     }
   </style>
 </head>
-<body data-theme="blue">
+<body data-theme="spring">
 
   <!-- 頂部導航 -->
   <header class="header">
@@ -812,18 +812,18 @@
         <span id="roleBadge" class="role-badge role-viewer">旅伴檢視</span>
       </div>
 
-      <!-- 四顆小圓球切換色系按鈕 (淺藍、淺綠、淺黃、淺紅) -->
+      <!-- 四季色盤小圓球 (春・夏・秋・冬) -->
       <div class="theme-picker-group">
-        <button type="button" class="theme-dot theme-dot-blue active" title="淺藍" onclick="setAppTheme('blue')"></button>
-        <button type="button" class="theme-dot theme-dot-green" title="淺綠" onclick="setAppTheme('green')"></button>
-        <button type="button" class="theme-dot theme-dot-yellow" title="淺黃" onclick="setAppTheme('yellow')"></button>
-        <button type="button" class="theme-dot theme-dot-rose" title="淺紅" onclick="setAppTheme('rose')"></button>
+        <button type="button" class="theme-dot theme-dot-spring active" title="春・櫻落粉" onclick="setAppTheme('spring')"></button>
+        <button type="button" class="theme-dot theme-dot-summer" title="夏・夏木綠" onclick="setAppTheme('summer')"></button>
+        <button type="button" class="theme-dot theme-dot-autumn" title="秋・銀杏黃" onclick="setAppTheme('autumn')"></button>
+        <button type="button" class="theme-dot theme-dot-winter" title="冬・暮雪藍" onclick="setAppTheme('winter')"></button>
       </div>
 
       <button type="button" id="btnShareTrip" class="btn-header-link" onclick="shareTripLinks()" style="display:none;">分享旅程</button>
     </div>
 
-    <!-- 總務專用次功能列 (已移除下載按鈕) -->
+    <!-- 總務專用次功能列 -->
     <div class="header-actions-row admin-only" id="adminHeaderBar" style="display:none;">
       <button type="button" class="btn-header-sub" onclick="shareAdminAccess()">移交總務</button>
       <button type="button" class="btn-reset-all" onclick="resetEntireTrip()">清空旅程</button>
@@ -1061,7 +1061,7 @@
 
   <script>
     // ==========================================
-    // 0. 色系切換 (淺藍 blue / 淺綠 green / 淺黃 yellow / 淺紅 rose)
+    // 0. 四季色盤切換 (春 spring / 夏 summer / 秋 autumn / 冬 winter)
     // ==========================================
     function setAppTheme(themeName) {
       document.body.setAttribute('data-theme', themeName);
@@ -1076,8 +1076,8 @@
       });
     }
 
-    // 初始化讀取使用者偏好色系 (預設為淺藍)
-    const savedTheme = localStorage.getItem('godutch_theme') || 'blue';
+    // 初始化讀取使用者偏好色系 (預設為春季 spring)
+    const savedTheme = localStorage.getItem('godutch_theme') || 'spring';
     setAppTheme(savedTheme);
 
     // ==========================================
@@ -1245,7 +1245,7 @@
     }
 
     // ==========================================
-    // 4. 資料同步與驗證
+    // 4. 資料同步與嚴格驗證
     // ==========================================
     let pinModalResolver = null;
 
