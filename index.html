@@ -3,110 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>遠行時光・旅途分帳與公費小幫手</title>
+  <title>遠行時光・旅途分帳與公基金小幫手</title>
 
   <!-- Firebase 相容版本 SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <style>
-    /* ==========================================
-       四季色彩與聯動配置 (Theme Token System)
-       預設：秋天「溫暖燕麥焦糖調」
-       ========================================== */
-    :root, [data-theme="autumn"] {
-      --bg-warm: #FAF8F5;
+    /* ========================================================
+       低飽和日系四季粉柔色盤 (春・夏・秋・冬)
+       ======================================================== */
+    :root {
+      --bg-warm: #FAF8F8;
       --card-bg: #FFFFFF;
-      --text-main: #3D352F;
-      --text-muted: #827870;
-      --text-light: #B0A7A0;
-      
-      --theme-dark: #6E4F3B;
-      --theme-main: #8C6751;
-      --theme-soft: #A67C5E;
-      --theme-light: #F4ECE6;
-      --warm-border: #EFE6DF;
-      --border-soft: #F0ECE8;
-      
-      --rose-subtle: #BD6060;
+      --text-main: #3C3835;
+      --text-muted: #7E7670;
+      --text-light: #B2AAA4;
+      --border-soft: #EDE8E3;
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
-      
-      /* 抽象多洛米堤 SVG 季節著色 */
-      --art-sky-glow: rgba(230, 192, 160, 0.25);
-      --art-mountain-base: #EDE6DF;
-      --art-mountain-shade: #8C6751;
-      --art-lake-glow: rgba(140, 103, 81, 0.15);
-      --art-forest-shade: #6E4F3B;
-      --art-dot: #A67C5E;
+
+      /* 預設為：🌸 春・櫻落粉 */
+      --theme-main: #C88A8A;
+      --theme-dark: #8E5656;
+      --theme-light: #F7EEEE;
+      --theme-border: #E8D3D3;
+      --kitty-gradient-1: #D29898;
+      --kitty-gradient-2: #B37474;
     }
 
-    /* 春天「初融櫻桃粉調」 */
-    [data-theme="spring"] {
-      --bg-warm: #FAF6F5;
-      --theme-dark: #7A4242;
-      --theme-main: #9E6161;
-      --theme-soft: #B87C7C;
-      --theme-light: #F8ECEC;
-      --warm-border: #EEDCDC;
-      --border-soft: #F2EBEB;
-      --rose-subtle: #BD6060;
-      
-      /* 插畫春天著色 */
-      --art-sky-glow: rgba(248, 204, 204, 0.28);
-      --art-mountain-base: #F2EAE9;
-      --art-mountain-shade: #9E6161;
-      --art-lake-glow: rgba(158, 97, 97, 0.14);
-      --art-forest-shade: #7A4242;
-      --art-dot: #B87C7C;
+    /* 🌸 春・櫻落粉 (Spring) */
+    body[data-theme="spring"] {
+      --bg-warm: #FAF8F8;
+      --theme-main: #C88A8A;
+      --theme-dark: #8E5656;
+      --theme-light: #F7EEEE;
+      --theme-border: #E8D3D3;
+      --kitty-gradient-1: #D29898;
+      --kitty-gradient-2: #B37474;
     }
 
-    /* 夏天「茂密森活綠調」 */
-    [data-theme="summer"] {
-      --bg-warm: #F6F8F6;
-      --theme-dark: #375243;
-      --theme-main: #4F6E5C;
-      --theme-soft: #6A8D77;
+    /* 🌿 夏・夏木綠 (Summer) */
+    body[data-theme="summer"] {
+      --bg-warm: #F8FAF8;
+      --theme-main: #7D9D8B;
+      --theme-dark: #577564;
       --theme-light: #EBF2ED;
-      --warm-border: #D8E5DC;
-      --border-soft: #E5EDE7;
-      --rose-subtle: #BD6060;
-      
-      /* 插畫夏天著色 */
-      --art-sky-glow: rgba(180, 215, 195, 0.28);
-      --art-mountain-base: #EAECE9;
-      --art-mountain-shade: #4F6E5C;
-      --art-lake-glow: rgba(79, 110, 92, 0.16);
-      --art-forest-shade: #375243;
-      --art-dot: #6A8D77;
+      --theme-border: #D2E3D7;
+      --kitty-gradient-1: #8EAC9B;
+      --kitty-gradient-2: #6B8C7A;
     }
 
-    /* 冬天「靜謐雪霽藍調」 */
-    [data-theme="winter"] {
-      --bg-warm: #F5F7F9;
-      --theme-dark: #38535F;
-      --theme-main: #4D6D7A;
-      --theme-soft: #688C9B;
-      --theme-light: #E9F0F4;
-      --warm-border: #D6E3EA;
-      --border-soft: #E2EBF0;
-      --rose-subtle: #BD6060;
-      
-      /* 插畫冬天著色 */
-      --art-sky-glow: rgba(190, 215, 225, 0.3);
-      --art-mountain-base: #EAEFF2;
-      --art-mountain-shade: #4D6D7A;
-      --art-lake-glow: rgba(77, 109, 122, 0.14);
-      --art-forest-shade: #38535F;
-      --art-dot: #688C9B;
+    /* 🍁 秋・銀杏黃 (Autumn) */
+    body[data-theme="autumn"] {
+      --bg-warm: #FAF9F6;
+      --theme-main: #BFA06E;
+      --theme-dark: #917548;
+      --theme-light: #F7F2EA;
+      --theme-border: #EADBCA;
+      --kitty-gradient-1: #C9AD7F;
+      --kitty-gradient-2: #A88B5B;
+    }
+
+    /* ❄️ 冬・暮雪藍 (Winter) */
+    body[data-theme="winter"] {
+      --bg-warm: #F8FAFB;
+      --theme-main: #7B9EA8;
+      --theme-dark: #58757E;
+      --theme-light: #EBF2F4;
+      --theme-border: #D2E2E6;
+      --kitty-gradient-1: #8CAAB3;
+      --kitty-gradient-2: #6D8E98;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -115,55 +90,63 @@
       color: var(--text-main);
       padding-bottom: 96px;
       -webkit-tap-highlight-color: transparent;
-      line-height: 1.6;
-      transition: background-color 0.4s ease, color 0.4s ease;
+      line-height: 1.5;
+      transition: background-color 0.3s ease;
     }
 
     /* 頂部導航 */
     .header {
-      background: rgba(255, 255, 255, 0.94);
+      background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border-soft);
-      padding: 13px 18px;
       position: sticky;
       top: 0;
       z-index: 30;
+      padding: 10px 16px;
+    }
+    .header-top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 8px;
     }
     .header-brand {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 7px;
+      min-width: 0;
     }
     .brand-leaf {
       display: inline-block;
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: var(--theme-soft);
-      transition: background-color 0.4s ease;
+      background: var(--theme-main);
+      flex-shrink: 0;
+      transition: background 0.3s ease;
     }
     .header h1 {
       font-size: 15px;
       font-weight: 600;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .role-badge {
       font-size: 10px;
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 12px;
       letter-spacing: 0.5px;
       font-weight: 500;
       white-space: nowrap;
-      transition: all 0.4s ease;
+      flex-shrink: 0;
     }
     .role-admin {
       background: var(--theme-light);
       color: var(--theme-dark);
-      border: 1px solid var(--warm-border);
+      border: 1px solid var(--theme-border);
     }
     .role-viewer {
       background: #F4F1EE;
@@ -171,53 +154,70 @@
       border: 1px solid var(--border-soft);
     }
 
-    /* 季切切換點點 (Theme Selector) */
-    .header-actions {
+    /* 頂部四季切換小圓球 */
+    .theme-picker-group {
       display: flex;
-      gap: 12px;
+      gap: 6px;
       align-items: center;
+      flex-shrink: 0;
+      padding: 2px 4px;
     }
-    .theme-dots {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .dot {
-      display: inline-block;
+    .theme-dot {
       width: 14px;
       height: 14px;
       border-radius: 50%;
       cursor: pointer;
-      border: 1.5px solid transparent;
+      border: 2px solid transparent;
+      outline: none;
       transition: transform 0.2s, border-color 0.2s;
     }
-    .dot:hover {
-      transform: scale(1.2);
+    .theme-dot:active {
+      transform: scale(0.9);
     }
-    .dot.spring { background-color: #C88A8A; }
-    .dot.summer { background-color: #7D9D8B; }
-    .dot.autumn { background-color: #C49767; }
-    .dot.winter { background-color: #829DA7; }
+    .theme-dot.active {
+      border-color: #3C3835;
+      transform: scale(1.15);
+    }
+    .theme-dot-spring { background-color: #D29898; }
+    .theme-dot-summer { background-color: #8EAC9B; }
+    .theme-dot-autumn { background-color: #C9AD7F; }
+    .theme-dot-winter { background-color: #8CAAB3; }
 
-    /* 選中狀態 border 加粗，使用對應的深色點點 */
-    [data-theme="spring"] .dot.spring { border-color: #5E2A2A; transform: scale(1.1); }
-    [data-theme="summer"] .dot.summer { border-color: #2F4238; transform: scale(1.1); }
-    [data-theme="autumn"] .dot.autumn { border-color: #4D3321; transform: scale(1.1); }
-    [data-theme="winter"] .dot.winter { border-color: #2B3B42; transform: scale(1.1); }
-
+    .header-actions-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border-soft);
+      overflow-x: auto;
+    }
     .btn-header-link {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--theme-dark);
       background: var(--theme-light);
-      border: 1px solid var(--warm-border);
+      border: 1px solid var(--theme-border);
       padding: 5px 12px;
-      border-radius: 20px;
+      border-radius: 16px;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.3s ease;
+      transition: all 0.2s;
+      flex-shrink: 0;
     }
-    .btn-header-link:hover {
-      background: var(--warm-border);
+    .btn-header-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #FFFFFF;
+      border: 1px solid var(--border-soft);
+      padding: 5px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .btn-header-sub:hover {
+      background: var(--bg-warm);
+      color: var(--text-main);
     }
     .btn-reset-all {
       font-size: 11px;
@@ -226,33 +226,21 @@
       border: none;
       cursor: pointer;
       white-space: nowrap;
+      margin-left: auto;
+      padding: 4px 6px;
       transition: color 0.2s;
     }
     .btn-reset-all:hover {
-      color: var(--rose-subtle);
+      color: #BA7C7C;
     }
 
     .container {
       max-width: 440px;
       margin: 0 auto;
-      padding: 16px 14px;
+      padding: 14px 14px;
       display: flex;
       flex-direction: column;
       gap: 13px;
-    }
-
-    /* 抽象多洛米堤 輕盈手繪景致 */
-    .art-illustration-wrapper {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin-bottom: 6px;
-      padding-top: 10px;
-    }
-    .art-svg {
-      width: 100%;
-      max-width: 290px;
-      height: auto;
     }
 
     /* 首頁：啟程大廳 */
@@ -260,115 +248,44 @@
       background: var(--card-bg);
       border-radius: var(--radius-lg);
       border: 1px solid var(--border-soft);
-      padding: 24px 20px 32px 20px;
-      box-shadow: 0 4px 20px rgba(61, 53, 47, 0.02);
-      text-align: center;
-      margin-top: 8px;
-      transition: all 0.4s ease;
+      padding: 24px 18px;
+      box-shadow: 0 4px 20px rgba(60, 56, 53, 0.02);
+      margin-top: 4px;
     }
     .room-lobby-title {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 600;
-      letter-spacing: 1.2px;
+      letter-spacing: 0.8px;
       color: var(--text-main);
+      text-align: center;
       margin-bottom: 4px;
     }
     .room-lobby-sub {
       font-size: 12px;
       color: var(--text-muted);
-      letter-spacing: 0.6px;
-      margin-bottom: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
     }
-
-    /* 2026 手風琴摺疊大按鈕 (Accordion) */
-    .lobby-accordion-btn {
-      width: 100%;
+    .lobby-box {
       background: var(--bg-warm);
       border: 1px solid var(--border-soft);
+      padding: 14px 14px;
       border-radius: var(--radius-md);
-      padding: 15px 18px;
-      margin-bottom: 10px;
-      text-align: left;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.3s ease;
-      outline: none;
-    }
-    .lobby-accordion-btn:hover {
-      background: var(--theme-light);
-      border-color: var(--warm-border);
-    }
-    .lobby-accordion-btn span {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-main);
-    }
-    .lobby-accordion-arrow {
-      font-size: 12px;
-      color: var(--text-muted);
-      transition: transform 0.3s ease;
-    }
-    
-    /* 展開時狀態 */
-    .lobby-accordion-btn.active {
-      background: var(--theme-light);
-      border-color: var(--warm-border);
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-      margin-bottom: 0;
-    }
-    .lobby-accordion-btn.active .lobby-accordion-arrow {
-      transform: rotate(180deg);
-    }
-
-    /* 摺疊內容抽屜 */
-    .lobby-accordion-drawer {
-      display: none;
-      background: var(--card-bg);
-      border: 1px solid var(--border-soft);
-      border-top: none;
-      border-bottom-left-radius: var(--radius-md);
-      border-bottom-right-radius: var(--radius-md);
-      padding: 18px 16px 22px 16px;
       margin-bottom: 12px;
-      text-align: left;
-      box-shadow: inset 0 -4px 12px rgba(61, 53, 47, 0.01);
     }
     .lobby-box-title {
-      font-size: 11.5px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--theme-dark);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .lobby-desc {
+      font-size: 11px;
       color: var(--text-muted);
       line-height: 1.5;
-      display: block;
-      margin-bottom: 14px;
-    }
-
-    /* 填寫區樣式與防呆 */
-    .lobby-form-row {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-    .lobby-btn-sub {
-      width: 100%;
-      background: var(--theme-main);
-      color: #FFFFFF;
-      border: none;
-      padding: 11px 0;
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.8px;
-      cursor: pointer;
-      text-align: center;
-      margin-top: 10px;
-      transition: background-color 0.2s;
-    }
-    .lobby-btn-sub:hover {
-      background: var(--theme-dark);
+      margin-bottom: 10px;
     }
 
     /* 卡片共用樣式 */
@@ -376,9 +293,8 @@
       background: var(--card-bg);
       border-radius: var(--radius-md);
       border: 1px solid var(--border-soft);
-      padding: 15px 17px;
-      box-shadow: 0 2px 10px rgba(61, 53, 47, 0.02);
-      transition: all 0.4s ease;
+      padding: 14px 15px;
+      box-shadow: 0 2px 10px rgba(60, 56, 53, 0.02);
     }
     .card-header {
       display: flex;
@@ -390,7 +306,7 @@
       font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
       white-space: nowrap;
     }
     .card-action-btn {
@@ -405,17 +321,51 @@
       transition: color 0.2s;
     }
     .card-action-btn:hover {
-      color: var(--rose-subtle);
+      color: #BA7C7C;
     }
 
-    /* 溫和公費卡片 (與主題色彩完全聯動的漸層) */
+    /* 公基金未啟用開關列 */
+    .kitty-toggle-banner {
+      background: var(--bg-warm);
+      border: 1px dashed var(--theme-border);
+      border-radius: var(--radius-md);
+      padding: 11px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .kitty-toggle-banner:hover {
+      background: var(--theme-light);
+    }
+    .kitty-toggle-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--theme-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .kitty-toggle-btn {
+      background: var(--theme-main);
+      color: #FFF;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    /* 四季粉柔公基金卡片 */
     .kitty-compact-card {
-      background: linear-gradient(135deg, var(--theme-soft), var(--theme-dark));
+      background: linear-gradient(135deg, var(--kitty-gradient-1), var(--kitty-gradient-2));
       color: #FFFFFF;
       border: none;
-      padding: 16px 18px;
-      box-shadow: 0 4px 14px rgba(61, 53, 47, 0.12);
-      transition: all 0.4s ease;
+      padding: 15px 16px;
+      box-shadow: 0 4px 14px rgba(60, 56, 53, 0.08);
+      transition: background 0.3s ease;
     }
     .kitty-row {
       display: flex;
@@ -431,13 +381,13 @@
     }
     .kitty-label {
       font-size: 11px;
-      opacity: 0.9;
-      letter-spacing: 0.8px;
+      opacity: 0.92;
+      letter-spacing: 0.6px;
       white-space: nowrap;
     }
     .kitty-amount {
-      font-size: 22px;
-      font-weight: 500;
+      font-size: 23px;
+      font-weight: 600;
       font-family: "SF Mono", Menlo, Consolas, monospace;
       letter-spacing: 0.5px;
       line-height: 1;
@@ -450,34 +400,33 @@
       flex-shrink: 0;
     }
     .btn-kitty-sm {
-      background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       color: #FFFFFF;
       font-size: 11px;
-      padding: 5px 11px;
+      padding: 5px 10px;
       border-radius: 16px;
-      font-weight: 400;
+      font-weight: 500;
       cursor: pointer;
       white-space: nowrap;
       transition: background 0.2s;
     }
     .btn-kitty-sm:hover {
-      background: rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.32);
     }
     .kitty-custodian-bar {
       margin-top: 10px;
       padding-top: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      border-top: 1px solid rgba(255, 255, 255, 0.22);
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 11px;
-      opacity: 0.94;
-      letter-spacing: 0.5px;
+      opacity: 0.95;
     }
     .custodian-select {
-      background: rgba(0, 0, 0, 0.22);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: #FFFFFF;
       padding: 3px 8px;
       border-radius: 6px;
@@ -488,144 +437,41 @@
       color: var(--text-main);
     }
 
-    /* 彈窗樣式 */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(45, 38, 32, 0.4);
-      backdrop-filter: blur(4px);
+    /* 旅伴網格系統：文字居中且截斷防爆版 */
+    .chips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+      gap: 6px;
+      margin-top: 10px;
+      width: 100%;
+    }
+    .member-chip {
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 50;
-      padding: 16px;
-    }
-    .modal-box {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: 24px 22px;
-      width: 100%;
-      max-width: 330px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
-    }
-    .modal-title {
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.8px;
-      color: var(--text-main);
-      margin-bottom: 14px;
-    }
-
-    /* 旅伴收支小記清單 (預設精簡收合) */
-    .stats-toggle-btn {
-      background: none;
-      border: none;
-      color: var(--theme-soft);
-      font-size: 11px;
-      cursor: pointer;
-      font-weight: 500;
-      padding: 0 2px;
-    }
-    .stats-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .stats-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #FDFCFB;
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-sm);
-      padding: 8px 11px;
-      font-size: 12px;
-    }
-    .stats-name {
-      font-weight: 500;
-      color: var(--text-main);
-      letter-spacing: 0.3px;
-    }
-    .stats-details {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      font-size: 11px;
-      font-family: "SF Mono", Menlo, Consolas, monospace;
-    }
-    .stats-spent {
-      color: var(--text-muted);
-    }
-    .stats-paid {
-      color: var(--theme-dark);
-      font-weight: 600;
-    }
-
-    /* 輸入元件 */
-    .input-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .input-text {
-      flex: 1;
-      min-width: 0;
-      border: 1px solid var(--border-soft);
-      background: #FDFCFB;
-      border-radius: var(--radius-sm);
-      padding: 9px 12px;
-      font-size: 13px;
-      color: var(--text-main);
-      outline: none;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .input-text:focus {
-      border-color: var(--theme-soft);
-      background: #FFFFFF;
-    }
-    
-    .btn-add {
-      background: var(--theme-main);
-      color: #FFFFFF;
-      border: none;
-      padding: 9px 17px;
-      border-radius: var(--radius-sm);
-      font-size: 12px;
-      letter-spacing: 0.8px;
-      font-weight: 500;
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-      min-width: 58px;
-      text-align: center;
-      transition: background 0.2s;
-    }
-    .btn-add:hover {
-      background: var(--theme-dark);
-    }
-
-    .chips-box {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-      min-height: 28px;
-      align-items: center;
-    }
-    .member-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      position: relative;
       background: var(--theme-light);
-      border: 1px solid var(--warm-border);
-      padding: 4px 11px;
+      border: 1px solid var(--theme-border);
+      padding: 6px 18px 6px 8px;
       border-radius: 16px;
       font-size: 12px;
       color: var(--theme-dark);
-      letter-spacing: 0.3px;
+      min-width: 0;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .member-chip span {
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      font-weight: 500;
     }
     .chip-del {
+      position: absolute;
+      right: 6px;
       background: none;
       border: none;
       color: var(--text-light);
@@ -634,27 +480,92 @@
       line-height: 1;
     }
     .chip-del:hover {
-      color: var(--rose-subtle);
+      color: #BA7C7C;
+    }
+
+    /* 分攤旅伴按鈕：自適應網格等寬排列、文字居中 */
+    .split-chip {
+      border: 1px solid var(--border-soft);
+      background: var(--bg-warm);
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 6px 6px;
+      border-radius: 16px;
+      cursor: pointer;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: all 0.2s;
+      outline: none;
+      width: 100%;
+    }
+    .split-chip.active {
+      background: var(--theme-light);
+      border-color: var(--theme-border);
+      color: var(--theme-dark);
+      font-weight: 600;
+    }
+
+    /* 輸入元件 */
+    .input-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .input-text {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid var(--border-soft);
+      background: var(--bg-warm);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 13px;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .input-text:focus {
+      border-color: var(--theme-main);
+      background: #FFFFFF;
+    }
+    
+    .btn-add {
+      background: var(--theme-main);
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 15px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: opacity 0.2s;
+    }
+    .btn-add:hover {
+      opacity: 0.88;
     }
 
     /* 表單區 */
     .form-group {
-      margin-bottom: 11px;
+      margin-bottom: 10px;
     }
     .form-label {
       display: block;
       font-size: 11px;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.5px;
       color: var(--text-muted);
-      margin-bottom: 5px;
+      margin-bottom: 4px;
       white-space: nowrap;
     }
     .form-select {
       width: 100%;
       border: 1px solid var(--border-soft);
-      background: #FDFCFB;
+      background: var(--bg-warm);
       border-radius: var(--radius-sm);
-      padding: 9px 10px;
+      padding: 8px 8px;
       font-size: 13px;
       color: var(--text-main);
       outline: none;
@@ -667,11 +578,11 @@
 
     /* 自費設定區 */
     .custom-box {
-      background: #FDFCFB;
+      background: var(--bg-warm);
       border: 1px solid var(--border-soft);
       border-radius: var(--radius-sm);
-      padding: 10px 12px;
-      margin-bottom: 11px;
+      padding: 10px 10px;
+      margin-bottom: 10px;
     }
     .custom-header {
       display: flex;
@@ -683,37 +594,14 @@
       border: none;
       color: var(--theme-dark);
       font-size: 11px;
-      letter-spacing: 0.5px;
       font-weight: 500;
       cursor: pointer;
-      white-space: nowrap;
     }
     .custom-row {
       display: flex;
       gap: 6px;
       align-items: center;
       margin-top: 6px;
-    }
-
-    /* 分攤旅伴按鈕：極簡膠囊 */
-    .split-chip {
-      border: 1px solid var(--border-soft);
-      background: #FDFCFB;
-      color: var(--text-muted);
-      font-size: 12px;
-      padding: 5px 13px;
-      border-radius: 16px;
-      cursor: pointer;
-      letter-spacing: 0.3px;
-      white-space: nowrap;
-      transition: all 0.2s;
-      outline: none;
-    }
-    .split-chip.active {
-      background: var(--theme-light);
-      border-color: var(--warm-border);
-      color: var(--theme-dark);
-      font-weight: 600;
     }
 
     /* 操作按鈕組 */
@@ -724,13 +612,13 @@
       margin-top: 10px;
     }
     .btn-clear-form {
-      background: #F5F1ED;
+      background: #F4F1EE;
       border: 1px solid var(--border-soft);
       color: var(--text-muted);
-      padding: 10px 0;
+      padding: 9px 0;
       border-radius: var(--radius-sm);
       font-size: 12px;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.5px;
       cursor: pointer;
       text-align: center;
       white-space: nowrap;
@@ -739,23 +627,23 @@
       background: var(--theme-main);
       color: #FFFFFF;
       border: none;
-      padding: 10px 0;
+      padding: 9px 0;
       border-radius: var(--radius-sm);
       font-size: 13px;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.5px;
       font-weight: 500;
       cursor: pointer;
       text-align: center;
       white-space: nowrap;
-      transition: background 0.2s;
+      transition: opacity 0.2s;
     }
     .btn-save-expense:hover {
-      background: var(--theme-dark);
+      opacity: 0.9;
     }
 
     /* 消費明細 */
     .expense-item {
-      padding: 11px 0;
+      padding: 10px 0;
       border-bottom: 1px solid var(--border-soft);
       font-size: 12px;
     }
@@ -770,29 +658,28 @@
     .btn-del-expense {
       background: none;
       border: none;
-      color: var(--rose-subtle);
+      color: #BA7C7C;
       font-size: 11px;
       cursor: pointer;
-      white-space: nowrap;
       margin-left: 8px;
     }
     .expense-detail-drawer {
-      background: #FDFCFB;
+      background: var(--bg-warm);
       border: 1px solid var(--border-soft);
       border-radius: var(--radius-sm);
-      padding: 8px 11px;
-      margin-top: 7px;
+      padding: 8px 10px;
+      margin-top: 6px;
       font-size: 11px;
       color: var(--text-muted);
     }
 
     /* 結算明細卡片 */
     .settle-card {
-      background: #FDFCFB;
+      background: var(--bg-warm);
       border: 1px solid var(--border-soft);
-      padding: 11px 13px;
+      padding: 10px 12px;
       border-radius: var(--radius-sm);
-      margin-bottom: 7px;
+      margin-bottom: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -805,29 +692,29 @@
       white-space: nowrap;
     }
 
-    /* 收款帳號專區 */
+    /* 收款帳號 */
     .account-card {
-      background: #FDFCFB;
+      background: var(--bg-warm);
       border: 1px solid var(--border-soft);
       border-radius: var(--radius-sm);
-      padding: 11px 13px;
+      padding: 10px 12px;
       margin-bottom: 8px;
     }
     .account-row {
       display: flex;
       gap: 6px;
       align-items: center;
-      margin-top: 7px;
+      margin-top: 6px;
       width: 100%;
     }
     .bank-code-input {
-      width: 72px;
+      width: 68px;
       flex-shrink: 0;
       text-align: center;
       border: 1px solid var(--border-soft);
       background: #FFFFFF;
       border-radius: 6px;
-      padding: 7px 4px;
+      padding: 6px 4px;
       font-size: 12px;
       outline: none;
     }
@@ -837,159 +724,188 @@
       border: 1px solid var(--border-soft);
       background: #FFFFFF;
       border-radius: 6px;
-      padding: 7px 9px;
+      padding: 6px 8px;
       font-size: 12px;
       outline: none;
     }
     .btn-copy-sm {
       flex-shrink: 0;
       background: #FFFFFF;
-      border: 1px solid var(--warm-border);
+      border: 1px solid var(--theme-border);
       color: var(--theme-dark);
-      padding: 7px 11px;
+      padding: 6px 10px;
       border-radius: 6px;
       font-size: 11px;
       font-weight: 500;
       cursor: pointer;
-      white-space: nowrap;
     }
 
     .empty-hint {
       text-align: center;
       font-size: 11px;
       color: var(--text-light);
-      padding: 14px 0;
+      padding: 12px 0;
+    }
+
+    /* 彈窗樣式 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(60, 56, 53, 0.45);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      padding: 16px;
+    }
+    .modal-box {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 22px 20px;
+      width: 100%;
+      max-width: 320px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1);
+    }
+    .modal-title {
+      font-size: 14px;
+      font-weight: 600;
       letter-spacing: 0.5px;
+      color: var(--text-main);
+      margin-bottom: 10px;
+    }
+
+    /* 自訂吐司提示 */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(60, 56, 53, 0.94);
+      color: #FFF;
+      font-size: 12px;
+      padding: 9px 18px;
+      border-radius: 20px;
+      z-index: 200;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      pointer-events: none;
+      display: none;
+      letter-spacing: 0.5px;
+      animation: fadeInOut 2.4s forwards;
+    }
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translate(-50%, 8px); }
+      15% { opacity: 1; transform: translate(-50%, 0); }
+      80% { opacity: 1; transform: translate(-50%, 0); }
+      100% { opacity: 0; transform: translate(-50%, -8px); }
     }
   </style>
 </head>
-<body>
+<body data-theme="spring">
 
   <!-- 頂部導航 -->
   <header class="header">
-    <div class="header-brand">
-      <span class="brand-leaf"></span>
-      <h1 id="tripTitleDisplay">遠行時光</h1>
-      <span id="roleBadge" class="role-badge role-viewer">旅伴檢視</span>
-    </div>
-    <div class="header-actions">
-      <!-- 四季點點切換 -->
-      <div class="theme-dots">
-        <span class="dot spring" onclick="setSeasonTheme('spring')" title="春日"></span>
-        <span class="dot summer" onclick="setSeasonTheme('summer')" title="夏林"></span>
-        <span class="dot autumn" onclick="setSeasonTheme('autumn')" title="秋楓"></span>
-        <span class="dot winter" onclick="setSeasonTheme('winter')" title="雪霽"></span>
+    <div class="header-top-row">
+      <div class="header-brand">
+        <span class="brand-leaf"></span>
+        <h1 id="tripTitleDisplay">遠行時光</h1>
+        <span id="roleBadge" class="role-badge role-viewer">旅伴檢視</span>
       </div>
+
+      <!-- 四季色盤小圓球 (春・夏・秋・冬) -->
+      <div class="theme-picker-group">
+        <button type="button" class="theme-dot theme-dot-spring active" title="春・櫻落粉" onclick="setAppTheme('spring')"></button>
+        <button type="button" class="theme-dot theme-dot-summer" title="夏・夏木綠" onclick="setAppTheme('summer')"></button>
+        <button type="button" class="theme-dot theme-dot-autumn" title="秋・銀杏黃" onclick="setAppTheme('autumn')"></button>
+        <button type="button" class="theme-dot theme-dot-winter" title="冬・暮雪藍" onclick="setAppTheme('winter')"></button>
+      </div>
+
       <button type="button" id="btnShareTrip" class="btn-header-link" onclick="shareTripLinks()" style="display:none;">分享旅程</button>
-      <button type="button" id="btnResetTrip" class="btn-reset-all" onclick="resetEntireTrip()" style="display:none;">清空紀錄</button>
+    </div>
+
+    <!-- 總務專用次功能列 -->
+    <div class="header-actions-row admin-only" id="adminHeaderBar" style="display:none;">
+      <button type="button" class="btn-header-sub" onclick="shareAdminAccess()">移交總務</button>
+      <button type="button" class="btn-reset-all" onclick="resetEntireTrip()">清空旅程</button>
     </div>
   </header>
 
   <div class="container">
 
-    <!-- 0. 首頁大廳 (當網址未帶 trip 參數時呈現) -->
+    <!-- 0. 首頁大廳 -->
     <div id="roomLobbySection" class="room-lobby-card" style="display:none;">
-      
-      <!-- 手繪抽象多洛米堤湖山景致 -->
-      <div class="art-illustration-wrapper">
-        <svg class="art-svg" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- 四季漸變天空與暖陽 -->
-          <circle cx="255" cy="40" r="14" fill="var(--art-dot)" opacity="0.4" />
-          <path d="M10,135 Q120,65 240,110 T305,100" stroke="var(--art-mountain-shade)" stroke-width="1.2" stroke-linecap="round" fill="none" />
-          <path d="M10,135 L310,135" stroke="var(--art-mountain-shade)" stroke-width="0.8" opacity="0.6" stroke-linecap="round" />
-          
-          <!-- 大地基底與柔和漸層 (純向量) -->
-          <path d="M15,135 C50,95 140,55 245,78 C255,80 290,105 305,105 L305,135 Z" fill="var(--art-sky-glow)" opacity="0.4" />
-          
-          <!-- 義大利多洛米堤經典鋸齒狀、刀鋒抽象山脈 (線條極簡，避免繁雜) -->
-          <path d="M22,125 L45,100 L75,115 L120,68 L155,90 L210,48 L240,78 L265,58 L292,85 L305,75" stroke="var(--art-mountain-shade)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="var(--art-mountain-base)" opacity="0.85" />
-          <path d="M45,100 L58,118 M120,68 L138,98 M210,48 L224,85 M265,58 L275,76" stroke="var(--art-mountain-shade)" stroke-width="0.7" stroke-linecap="round" opacity="0.5" />
-          
-          <!-- 湖泊與倒影 (水平抽象波浪) -->
-          <ellipse cx="165" cy="155" rx="140" ry="16" fill="var(--art-lake-glow)" opacity="0.6" />
-          <path d="M55,150 C110,147 210,147 265,150 M75,158 C120,155 190,155 245,158" stroke="var(--art-mountain-shade)" stroke-width="0.8" stroke-linecap="round" opacity="0.4" />
-          <path d="M115,164 Q160,162 205,164" stroke="var(--art-mountain-shade)" stroke-width="0.5" stroke-linecap="round" opacity="0.3" />
-          
-          <!-- 手繪抽象樹影與湖邊小船 -->
-          <path d="M25,128 L23,135 M29,129 L28,135 M34,127 L33,135 M42,128 L42,135 M275,125 L272,135 M282,123 L280,135 M294,124 L294,135 M301,126 L302,135" stroke="var(--art-forest-shade)" stroke-width="1.2" stroke-linecap="round" />
-          <path d="M125,145 L135,145 M135,145 C132,148 128,148 125,145 Z M185,148 L197,148 M197,148 C194,151 188,151 185,148 Z" fill="var(--art-forest-shade)" opacity="0.75" />
-        </svg>
-      </div>
-
       <h2 class="room-lobby-title">遠行與日常</h2>
-      <p class="room-lobby-sub">隨手記錄帳目 · 時間留予旅途</p>
+      <p class="room-lobby-sub">隨手記錄帳目。時間留予旅途</p>
 
-      <!-- 1. 開啟一段新旅程 (摺疊卡片) -->
-      <button type="button" class="lobby-accordion-btn" onclick="toggleLobbyAccordion('create')">
-        <span>1. 開啟一段新旅程</span>
-        <span class="lobby-accordion-arrow" id="arrow-create">▾</span>
-      </button>
-      <div id="drawer-create" class="lobby-accordion-drawer">
-        <span class="lobby-box-title">提示：設定一組原創的旅程代碼與密碼，建立並管理這趟旅程的帳目。</span>
-        <div class="lobby-form-row">
+      <!-- 區塊一：總務管理入口 -->
+      <div class="lobby-box">
+        <span class="lobby-box-title">總務管理入口</span>
+        <p class="lobby-desc">初次發起旅程請設定一組代號+密碼<br>若旅程已建立，請填入原密碼以總務身分進入</p>
+        <div style="display:flex; gap:6px; margin-bottom:8px;">
           <input type="text" id="customRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
-          <button type="button" class="btn-add" style="font-size:11px; padding:0 12px;" onclick="generateRandomRoomCode()">隨機</button>
+          <button type="button" class="btn-clear-form" style="padding:0 10px; font-size:11px; flex-shrink:0;" onclick="generateRandomRoomCode()">隨機</button>
         </div>
-        <div>
-          <input type="password" id="customRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (例如 4 碼數字)">
+        <div style="margin-bottom:10px;">
+          <input type="password" id="customRoomPinInput" maxlength="4" pattern="\d{4}" inputmode="numeric" class="input-text" style="width:100%; font-family:monospace;" placeholder="總務密碼 (4碼數字)">
         </div>
-        <button type="button" class="lobby-btn-sub" onclick="createNewTripRoom()">建立並以總務身分進入</button>
+        <button type="button" class="btn-save-expense" style="width:100%; font-size:12px;" onclick="handleAdminEntry()">開始旅程</button>
       </div>
 
-      <!-- 2. 加入既有的旅程 (摺疊卡片) -->
-      <button type="button" class="lobby-accordion-btn" onclick="toggleLobbyAccordion('join')">
-        <span>2. 加入既有的旅程</span>
-        <span class="lobby-accordion-arrow" id="arrow-join">▾</span>
-      </button>
-      <div id="drawer-join" class="lobby-accordion-drawer">
-        <span class="lobby-box-title">提示：輸入旅伴分享的旅程代碼。若您是總務並持有密碼，可填入密碼以管理身分登入。</span>
-        <div class="lobby-form-row" style="margin-bottom:6px;">
+      <!-- 區塊二：旅伴查看入口 -->
+      <div class="lobby-box">
+        <span class="lobby-box-title">同行旅伴入口</span>
+        <p class="lobby-desc">輸入總務分享的旅程代碼，可即時瞭解帳目與支出</p>
+        <div class="input-row">
           <input type="text" id="joinRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
+          <button type="button" class="btn-add" onclick="joinExistingRoom()">查看</button>
         </div>
-        <div>
-          <input type="password" id="joinRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (一般旅伴免填，僅總務需要)">
-        </div>
-        <button type="button" class="lobby-btn-sub" onclick="joinExistingRoom()">加入這趟旅程</button>
       </div>
-
     </div>
 
-    <!-- 1. 迷你公費卡片 -->
+    <!-- 1. 公基金模組 (可隨時開啟或收合) -->
     <div id="mainAppSection" style="display:flex; flex-direction:column; gap:13px;">
 
-      <div class="card kitty-compact-card">
+      <!-- A. 公基金未啟用開關列 -->
+      <div id="kittyInactiveBanner" class="kitty-toggle-banner" style="display:none;" onclick="toggleKittyFeature(true)">
+        <span class="kitty-toggle-title">💰 本趟旅程尚未啟用公基金</span>
+        <button type="button" class="kitty-toggle-btn admin-only">＋ 啟用公基金</button>
+      </div>
+
+      <!-- B. 公基金作用卡片 -->
+      <div id="kittyActiveCard" class="card kitty-compact-card" style="display:none;">
         <div class="kitty-row">
           <div class="kitty-left">
-            <span class="kitty-label">公費餘額</span>
+            <span class="kitty-label">公基金餘額</span>
             <span class="kitty-amount" id="kittyBalanceDisplay">$0</span>
           </div>
           <div class="kitty-actions">
-            <button type="button" id="btnOpenKittyDeposit" class="btn-kitty-sm" onclick="openKittyModal()">繳存</button>
+            <button type="button" id="btnOpenKittyDeposit" class="btn-kitty-sm admin-only" onclick="openKittyModal()">收款</button>
             <button type="button" class="btn-kitty-sm" onclick="toggleKittyDrawer()">紀錄 ▾</button>
+            <button type="button" class="btn-kitty-sm admin-only" onclick="toggleKittyFeature(false)" style="opacity:0.8;">關閉</button>
           </div>
         </div>
         <div class="kitty-custodian-bar">
-          <span>公費保管（總務）：</span>
+          <span>公基金保管（總務）：</span>
           <select id="custodianSelect" class="custodian-select" onchange="changeCustodian(this.value)">
             <option value="">未指定</option>
           </select>
         </div>
-        <div id="kittyDrawer" style="display:none; margin-top:10px; padding-top:10px; border-top:1px dashed rgba(255,255,255,0.2); font-size:11px;">
+        <div id="kittyDrawer" style="display:none; margin-top:10px; padding-top:10px; border-top:1px dashed rgba(255,255,255,0.25); font-size:11px;">
           <div id="kittyDepositLogs"></div>
         </div>
       </div>
 
-      <!-- 2. 旅伴收支小記 (預設精簡收合) -->
+      <!-- 2. 旅伴收支小記 -->
       <div class="card">
-        <div class="card-header" style="margin-bottom:0;" onclick="toggleStatsDrawer()">
-          <span class="card-title" style="cursor:pointer;">旅伴收支小記</span>
+        <div class="card-header" style="margin-bottom:0; cursor:pointer;" onclick="toggleStatsDrawer()">
+          <span class="card-title">旅伴收支小記</span>
           <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:10px; color:var(--text-light); letter-spacing:0.5px;">即時統計</span>
-            <button type="button" id="btnToggleStats" class="stats-toggle-btn">展開 ▾</button>
+            <span style="font-size:10px; color:var(--text-light);">即時統計</span>
+            <button type="button" id="btnToggleStats" class="card-action-btn" style="color:var(--theme-dark);">展開 ▾</button>
           </div>
         </div>
         <div id="statsDrawer" style="display:none; margin-top:10px;">
-          <div id="memberStatsContainer" class="stats-grid">
+          <div id="memberStatsContainer" style="display:flex; flex-direction:column; gap:6px;">
             <p class="empty-hint">尚未加入同行旅伴</p>
           </div>
         </div>
@@ -1005,13 +921,13 @@
           <input id="memberNameInput" type="text" class="input-text" placeholder="旅伴姓名 (例如：阿信)">
           <button type="button" class="btn-add" onclick="addMember()">加入</button>
         </div>
-        <div id="membersContainer" class="chips-box"></div>
+        <div id="membersContainer" class="chips-grid"></div>
       </div>
 
-      <!-- 4. 記錄花費 (總務管理專用) -->
+      <!-- 4. 記錄支出 (總務管理專用) -->
       <div class="card admin-only" id="expenseFormCard">
         <div class="card-header">
-          <span class="card-title">記錄花費</span>
+          <span class="card-title">記錄支出</span>
         </div>
 
         <div class="form-group">
@@ -1045,16 +961,16 @@
         <!-- 分攤旅伴 -->
         <div class="form-group">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <label class="form-label" style="margin-bottom:0;">分攤旅伴</label>
-            <button type="button" onclick="toggleAllSplitters()" style="background:none; border:none; color:var(--theme-dark); font-size:11px; letter-spacing:0.5px; font-weight:500; cursor:pointer;">全選 / 反選</button>
+            <label class="form-label" style="margin-bottom:0;">分攤旅伴 (可點選)</label>
+            <button type="button" onclick="toggleAllSplitters()" style="background:none; border:none; color:var(--theme-dark); font-size:11px; font-weight:500; cursor:pointer;">全選 / 反選</button>
           </div>
-          <div id="splitButtonsContainer" class="chips-box" style="margin-top:0;"></div>
+          <div id="splitButtonsContainer" class="chips-grid" style="margin-top:0;"></div>
         </div>
 
         <!-- 按鈕 -->
         <div class="btn-submit-row">
           <button type="button" class="btn-clear-form" onclick="clearExpenseForm()">清除重填</button>
-          <button type="button" class="btn-save-expense" onclick="addExpense()">儲存花費</button>
+          <button type="button" class="btn-save-expense" onclick="addExpense()">記錄支出</button>
         </div>
       </div>
 
@@ -1070,15 +986,14 @@
         <div id="expenseList"></div>
       </div>
 
-      <!-- 6. 結算明細 (清楚列出誰該給誰多少錢) -->
+      <!-- 6. 結算明細 -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">結算明細</span>
-          <button type="button" onclick="copySettlementSummary()" style="background:#FDFCFB; border:1px solid var(--border-soft); padding:3px 9px; border-radius:4px; font-size:10px; cursor:pointer; color:var(--text-muted);">複製清單</button>
+          <button type="button" onclick="copySettlementSummary()" style="background:var(--bg-warm); border:1px solid var(--border-soft); padding:3px 9px; border-radius:4px; font-size:10px; cursor:pointer; color:var(--text-muted);">複製清單</button>
         </div>
         <div id="settlementList"></div>
 
-        <!-- 置底收款帳號專區 (防爆版設計) -->
         <div id="accountSection" style="margin-top:14px; padding-top:12px; border-top:1px dashed var(--border-soft);">
           <span class="card-title" style="display:block; margin-bottom:8px;">匯款帳號 (選填)</span>
           <div id="accountList"></div>
@@ -1089,20 +1004,20 @@
 
   </div>
 
-  <!-- 繳存公費彈窗 -->
+  <!-- 公基金收款彈窗 -->
   <div id="kittyModal" class="modal-overlay" style="display:none;">
     <div class="modal-box">
-      <div class="modal-title">繳存公費</div>
+      <div class="modal-title">公基金收款</div>
       <div class="form-group">
-        <label class="form-label">繳存方式</label>
+        <label class="form-label">收款方式</label>
         <select id="kittyDepositType" class="form-select" onchange="switchDepositType(this.value)">
-          <option value="all">全員平均繳存</option>
-          <option value="single">單一旅伴補繳</option>
-          <option value="custom">自訂存入金額</option>
+          <option value="all">全員平均收款</option>
+          <option value="single">向特定旅伴收款</option>
+          <option value="custom">自訂收款金額</option>
         </select>
       </div>
       <div id="kittySingleTargetGroup" class="form-group" style="display:none;">
-        <label class="form-label">補繳旅伴</label>
+        <label class="form-label">收款對象</label>
         <select id="kittySingleTarget" class="form-select"></select>
       </div>
       <div class="form-group">
@@ -1111,14 +1026,62 @@
       </div>
       <div style="display:flex; gap:8px; margin-top:16px;">
         <button type="button" class="btn-clear-form" style="flex:1;" onclick="closeKittyModal()">取消</button>
-        <button type="button" class="btn-save-expense" style="flex:1;" onclick="submitKittyDeposit()">確認存入</button>
+        <button type="button" class="btn-save-expense" style="flex:1;" onclick="submitKittyDeposit()">確認收款</button>
       </div>
     </div>
   </div>
 
+  <!-- 總務 PIN 驗證彈窗 -->
+  <div id="pinModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+      <div class="modal-title">輸入總務密碼</div>
+      <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">此旅程設有管理保護，請輸入 4 碼數字密碼：</p>
+      <input type="password" id="pinModalInput" maxlength="4" pattern="\d{4}" inputmode="numeric" class="input-text" style="width:100%; text-align:center; font-size:20px; font-family:monospace; letter-spacing:4px; margin-bottom:14px;" placeholder="••••">
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn-clear-form" style="flex:1;" onclick="cancelPinModal()">僅檢視</button>
+        <button type="button" class="btn-save-expense" style="flex:1;" onclick="confirmPinModal()">確認解鎖</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 自訂確認彈窗 -->
+  <div id="confirmModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+      <div class="modal-title">提示</div>
+      <p id="confirmModalMsg" style="font-size:13px; color:var(--text-main); margin-bottom:16px; line-height:1.5;"></p>
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn-clear-form" style="flex:1;" id="btnConfirmCancel">取消</button>
+        <button type="button" class="btn-save-expense" style="flex:1;" id="btnConfirmOk">確認</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 自訂吐司提示 -->
+  <div id="toast" class="toast-container"></div>
+
   <script>
     // ==========================================
-    // 1. Firebase 連線設定 (固定專案金鑰)
+    // 0. 四季色盤切換 (春 spring / 夏 summer / 秋 autumn / 冬 winter)
+    // ==========================================
+    function setAppTheme(themeName) {
+      document.body.setAttribute('data-theme', themeName);
+      localStorage.setItem('godutch_theme', themeName);
+
+      // 更新按鈕 active 樣式
+      document.querySelectorAll('.theme-dot').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.classList.contains('theme-dot-' + themeName)) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    // 初始化讀取使用者偏好色系 (預設為春季 spring)
+    const savedTheme = localStorage.getItem('godutch_theme') || 'spring';
+    setAppTheme(savedTheme);
+
+    // ==========================================
+    // 1. Firebase 連線設定
     // ==========================================
     const firebaseConfig = {
       apiKey: "AIzaSyDZEhQNAmZLDa-VRclvFLqUL7cZkvUKUjs",
@@ -1142,14 +1105,15 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     const currentTripId = urlParams.get('trip');
-    const isAdmin = urlParams.get('admin') === '1';
+    let isAdmin = urlParams.get('admin') === '1';
 
     // ==========================================
-    // 2. 狀態資料模型
+    // 2. 狀態模型與自訂提示
     // ==========================================
     let state = {
       createdAt: null,
-      password: "",         // 儲存總務的管理密碼
+      adminPin: "",
+      kittyEnabled: false, // 預設關閉公基金 (純代墊模式)
       members: [],          
       custodian: "",        
       memberBanks: {},      
@@ -1160,54 +1124,39 @@
     let selectedSplitters = [];
     let customSplits = [];
     let expandedExpenseId = null;
-    let isStatsExpanded = false; // 預設收合旅伴收支小記
+    let isStatsExpanded = false;
 
-    // ==========================================
-    // 3. 四季主題切換 (Theme Toggle)
-    // ==========================================
-    function setSeasonTheme(season) {
-      document.documentElement.setAttribute('data-theme', season);
-      localStorage.setItem('godutch_preferred_season', season);
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2300);
     }
 
-    // 載入預設或儲存的主題
-    const savedSeason = localStorage.getItem('godutch_preferred_season') || 'autumn';
-    setSeasonTheme(savedSeason);
+    function showConfirm(msg, onOk, onCancel) {
+      const modal = document.getElementById('confirmModal');
+      const text = document.getElementById('confirmModalMsg');
+      const okBtn = document.getElementById('btnConfirmOk');
+      const cancelBtn = document.getElementById('btnConfirmCancel');
 
-    // 大廳手風琴 Accordion 動態折疊
-    function toggleLobbyAccordion(type) {
-      const drawerCreate = document.getElementById('drawer-create');
-      const drawerJoin = document.getElementById('drawer-join');
-      const btnCreate = document.querySelector('[onclick="toggleLobbyAccordion(\'create\')"]');
-      const btnJoin = document.querySelector('[onclick="toggleLobbyAccordion(\'join\')"]');
-      const arrowCreate = document.getElementById('arrow-create');
-      const arrowJoin = document.getElementById('arrow-join');
+      text.innerText = msg;
+      modal.style.display = 'flex';
 
-      if (type === 'create') {
-        const isCurrentlyOpen = drawerCreate.style.display === 'block';
-        drawerCreate.style.display = isCurrentlyOpen ? 'none' : 'block';
-        btnCreate.classList.toggle('active', !isCurrentlyOpen);
-        arrowCreate.innerText = isCurrentlyOpen ? '▾' : '▴';
-
-        // 強制關閉另一個
-        drawerJoin.style.display = 'none';
-        btnJoin.classList.remove('active');
-        arrowJoin.innerText = '▾';
-      } else {
-        const isCurrentlyOpen = drawerJoin.style.display === 'block';
-        drawerJoin.style.display = isCurrentlyOpen ? 'none' : 'block';
-        btnJoin.classList.toggle('active', !isCurrentlyOpen);
-        arrowJoin.innerText = isCurrentlyOpen ? '▾' : '▴';
-
-        // 強制關閉另一個
-        drawerCreate.style.display = 'none';
-        btnCreate.classList.remove('active');
-        arrowCreate.innerText = '▾';
-      }
+      okBtn.onclick = () => {
+        modal.style.display = 'none';
+        if (onOk) onOk();
+      };
+      cancelBtn.onclick = () => {
+        modal.style.display = 'none';
+        if (onCancel) onCancel();
+      };
     }
 
     // ==========================================
-    // 4. 旅程大廳與自訂代碼
+    // 3. 旅程大廳與登入邏輯
     // ==========================================
     function generateRandomRoomCode() {
       const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
@@ -1218,75 +1167,62 @@
       document.getElementById('customRoomCodeInput').value = code;
     }
 
-    function createNewTripRoom() {
-      let code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
-      let password = document.getElementById('customRoomPassInput').value.trim();
-      
-      if (!code) {
-        alert('請填寫自訂旅程代碼，或點選「隨機」');
-        return;
-      }
-      if (!/^[a-z0-9_-]+$/.test(code)) {
-        alert('代碼僅限英文、數字、連字號（-）或底線（_），不含空格與中文。');
-        return;
-      }
-      if (!password) {
-        alert('請填寫總務管理密碼（日後以管理身分登入的憑證）');
+    function handleAdminEntry() {
+      const code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
+      const pin = document.getElementById('customRoomPinInput').value.trim();
+
+      if (!code) return showToast('請輸入旅程代碼');
+      if (!/^[a-z0-9_-]+$/.test(code)) return showToast('代碼僅限英文、數字、- 或 _');
+      if (!/^\d{4}$/.test(pin)) return showToast('請輸入 4 位數純數字密碼');
+
+      if (!db) {
+        window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
         return;
       }
 
-      if (db) {
-        db.ref('trips/' + code).once('value', (snap) => {
-          if (snap.exists() && snap.val() && snap.val().createdAt) {
-            alert(`旅程代碼「${code}」已被使用，請重新設定代碼。`);
-            return;
-          } else {
-            db.ref('trips/' + code).set({
-              createdAt: Date.now(),
-              password: password,
-              members: [],
-              custodian: "",
-              kittyDeposits: [],
-              expenses: [],
-              memberBanks: {}
-            }, () => {
+      db.ref('trips/' + code).once('value', (snap) => {
+        const val = snap.val();
+        if (snap.exists() && val && val.createdAt) {
+          if (val.adminPin) {
+            if (val.adminPin === pin) {
+              sessionStorage.setItem('godutch_auth_' + code, pin);
               window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
-            });
+            } else {
+              showToast('密碼錯誤，請確認後重新輸入');
+            }
+          } else {
+            db.ref('trips/' + code + '/adminPin').set(pin);
+            sessionStorage.setItem('godutch_auth_' + code, pin);
+            window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
           }
-        });
-      } else {
-        window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
-      }
+        } else {
+          db.ref('trips/' + code).set({
+            createdAt: Date.now(),
+            adminPin: pin,
+            kittyEnabled: false,
+            members: [],
+            custodian: "",
+            kittyDeposits: [],
+            expenses: [],
+            memberBanks: {}
+          }, () => {
+            sessionStorage.setItem('godutch_auth_' + code, pin);
+            window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
+          });
+        }
+      });
     }
 
     function joinExistingRoom() {
       const code = document.getElementById('joinRoomCodeInput').value.trim().toLowerCase();
-      const inputPass = document.getElementById('joinRoomPassInput').value.trim();
-
-      if (!code) {
-        alert('請輸入旅程代碼');
-        return;
-      }
+      if (!code) return showToast('請輸入旅程代碼');
 
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
-            alert(`找不到代碼為「${code}」的旅程，請確認代碼是否輸入正確。`);
-            return;
+            return showToast(`找不到代碼為「${code}」的旅程`);
           }
-          
-          const roomData = snap.val();
-          if (inputPass) {
-            // 如果填了密碼，要驗證
-            if (roomData.password === inputPass) {
-              window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
-            } else {
-              alert('管理密碼錯誤，請確認，或不填密碼以旅伴檢視身分進入');
-            }
-          } else {
-            // 沒填密碼，一般旅伴身分
-            window.location.href = `${window.location.pathname}?trip=${code}`;
-          }
+          window.location.href = `${window.location.pathname}?trip=${code}`;
         });
       } else {
         window.location.href = `${window.location.pathname}?trip=${code}`;
@@ -1296,35 +1232,77 @@
     function shareTripLinks() {
       const baseUrl = window.location.origin + window.location.pathname;
       const viewerUrl = `${baseUrl}?trip=${currentTripId}`;
-      const adminUrl = `${baseUrl}?trip=${currentTripId}&admin=1`;
+      const msg = `【遠行時光・旅程分帳】\n旅程代碼：${currentTripId}\n\n👉 旅伴查看連結：\n${viewerUrl}`;
+      copyToClipboard(msg, '已複製旅伴查看連結');
+    }
 
-      const msg = `【遠行時光・旅程分帳】\n旅程代碼：${currentTripId}\n\n👉 旅伴查看連結（傳到 LINE 群）：\n${viewerUrl}\n\n🔑 總務管理連結（若需要管理）：\n${adminUrl}`;
-      copyToClipboard(msg, '已複製旅程連結');
+    function shareAdminAccess() {
+      const baseUrl = window.location.origin + window.location.pathname;
+      const adminUrl = `${baseUrl}?trip=${currentTripId}&admin=1`;
+      const pin = state.adminPin || '未設定';
+      const msg = `【遠行時光・旅程分帳】\n旅程代碼：${currentTripId}\n總務密碼：${pin}\n\n👉 總務管理連結：\n${adminUrl}`;
+      copyToClipboard(msg, '已複製總務管理連結與密碼');
     }
 
     // ==========================================
-    // 5. 資料同步與初始化
+    // 4. 資料同步與嚴格驗證
     // ==========================================
-    function initDataSync() {
+    let pinModalResolver = null;
+
+    function requestPinFromModal() {
+      return new Promise((resolve) => {
+        pinModalResolver = resolve;
+        document.getElementById('pinModalInput').value = '';
+        document.getElementById('pinModal').style.display = 'flex';
+        setTimeout(() => document.getElementById('pinModalInput').focus(), 100);
+      });
+    }
+
+    function confirmPinModal() {
+      const val = document.getElementById('pinModalInput').value.trim();
+      document.getElementById('pinModal').style.display = 'none';
+      if (pinModalResolver) pinModalResolver(val);
+    }
+
+    function cancelPinModal() {
+      document.getElementById('pinModal').style.display = 'none';
+      if (pinModalResolver) pinModalResolver(null);
+    }
+
+    async function initDataSync() {
       if (!currentTripId) {
         document.getElementById('roomLobbySection').style.display = 'block';
         document.getElementById('mainAppSection').style.display = 'none';
         document.getElementById('btnShareTrip').style.display = 'none';
-        document.getElementById('btnResetTrip').style.display = 'none';
+        document.getElementById('adminHeaderBar').style.display = 'none';
         document.getElementById('roleBadge').style.display = 'none';
         return;
       }
 
       if (db) {
-        db.ref('trips/' + currentTripId).once('value', (snap) => {
-          if (!snap.exists() || !snap.val()) {
-            if (!isAdmin) {
-              alert(`找不到代碼為「${currentTripId}」的旅程，將返回大廳。`);
-              window.location.href = window.location.pathname;
-              return;
+        const snap = await db.ref('trips/' + currentTripId).once('value');
+        if (!snap.exists() || !snap.val()) {
+          showToast(`找不到代碼為「${currentTripId}」的旅程，將返回大廳`);
+          setTimeout(() => { window.location.href = window.location.pathname; }, 1200);
+          return;
+        }
+
+        const data = snap.val();
+
+        if (isAdmin && data.adminPin) {
+          const cachedPin = sessionStorage.getItem('godutch_auth_' + currentTripId);
+          if (cachedPin !== data.adminPin) {
+            const entered = await requestPinFromModal();
+            if (entered === data.adminPin) {
+              sessionStorage.setItem('godutch_auth_' + currentTripId, entered);
+              isAdmin = true;
+            } else {
+              isAdmin = false;
+              window.history.replaceState({}, '', `${window.location.pathname}?trip=${currentTripId}`);
+              showToast(entered ? '密碼錯誤，切換為旅伴檢視' : '已進入旅伴檢視模式');
             }
           }
-        });
+        }
       }
 
       document.getElementById('roomLobbySection').style.display = 'none';
@@ -1332,22 +1310,7 @@
       document.getElementById('tripTitleDisplay').innerText = `${currentTripId}`;
       document.getElementById('btnShareTrip').style.display = 'block';
 
-      const roleBadge = document.getElementById('roleBadge');
-      if (isAdmin) {
-        roleBadge.innerText = '總務管理';
-        roleBadge.className = 'role-badge role-admin';
-        document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
-        document.getElementById('btnResetTrip').style.display = '';
-        document.getElementById('btnOpenKittyDeposit').style.display = '';
-        document.getElementById('custodianSelect').disabled = false;
-      } else {
-        roleBadge.innerText = '旅伴檢視';
-        roleBadge.className = 'role-badge role-viewer';
-        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-        document.getElementById('btnResetTrip').style.display = 'none';
-        document.getElementById('btnOpenKittyDeposit').style.display = 'none';
-        document.getElementById('custodianSelect').disabled = true;
-      }
+      updateRoleUI();
 
       if (db) {
         tripRef = db.ref('trips/' + currentTripId);
@@ -1355,14 +1318,15 @@
           const val = snapshot.val();
           if (val) {
             state.createdAt = val.createdAt || Date.now();
-            state.password = val.password || "";
+            state.adminPin = val.adminPin || "";
+            state.kittyEnabled = (val.kittyEnabled === true);
             state.members = Array.isArray(val.members) ? val.members : [];
             state.custodian = val.custodian || "";
             state.memberBanks = val.memberBanks || {};
             state.kittyDeposits = Array.isArray(val.kittyDeposits) ? val.kittyDeposits : [];
             state.expenses = Array.isArray(val.expenses) ? val.expenses : [];
           } else {
-            state = { createdAt: Date.now(), password: "", members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
+            state = { createdAt: Date.now(), adminPin: "", kittyEnabled: false, members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
           }
           selectedSplitters = state.members.slice();
           renderAll();
@@ -1378,6 +1342,23 @@
       }
     }
 
+    function updateRoleUI() {
+      const roleBadge = document.getElementById('roleBadge');
+      if (isAdmin) {
+        roleBadge.innerText = '總務管理';
+        roleBadge.className = 'role-badge role-admin';
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+        document.getElementById('adminHeaderBar').style.display = 'flex';
+        document.getElementById('custodianSelect').disabled = false;
+      } else {
+        roleBadge.innerText = '旅伴檢視';
+        roleBadge.className = 'role-badge role-viewer';
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+        document.getElementById('adminHeaderBar').style.display = 'none';
+        document.getElementById('custodianSelect').disabled = true;
+      }
+    }
+
     function syncState() {
       if (tripRef && isAdmin) {
         if (!state.createdAt) state.createdAt = Date.now();
@@ -1389,9 +1370,25 @@
     }
 
     // ==========================================
-    // 6. 公費計算邏輯
+    // 5. 公基金開關與運算
     // ==========================================
+    function toggleKittyFeature(enable) {
+      if (!isAdmin) return;
+      if (!enable && getKittyBalance() !== 0) {
+        showConfirm('目前公基金仍有餘額或收支，確定要關閉公基金功能嗎？（記錄仍會保留）', () => {
+          state.kittyEnabled = false;
+          syncState();
+          showToast('已關閉公基金功能');
+        });
+        return;
+      }
+      state.kittyEnabled = enable;
+      syncState();
+      showToast(enable ? '已啟用公基金功能' : '已關閉公基金功能');
+    }
+
     function getKittyBalance() {
+      if (!state.kittyEnabled) return 0;
       const inAmt = (state.kittyDeposits || []).reduce((acc, c) => acc + (Number(c.totalAmount) || 0), 0);
       const outAmt = (state.expenses || []).reduce((acc, c) => acc + (Number(c.kittyDeduction) || 0), 0);
       return inAmt - outAmt;
@@ -1408,7 +1405,6 @@
       drawer.style.display = (drawer.style.display === 'none') ? 'block' : 'none';
     }
 
-    /* 收支小記展開/收合切換 */
     function toggleStatsDrawer() {
       isStatsExpanded = !isStatsExpanded;
       const drawer = document.getElementById('statsDrawer');
@@ -1424,10 +1420,7 @@
 
     function openKittyModal() {
       if (!isAdmin) return;
-      if (state.members.length === 0) {
-        alert('請先在下方加入同行旅伴');
-        return;
-      }
+      if (state.members.length === 0) return showToast('請先在下方加入同行旅伴');
       document.getElementById('kittyAmountInput').value = '';
       switchDepositType(document.getElementById('kittyDepositType').value);
       document.getElementById('kittyModal').style.display = 'flex';
@@ -1445,10 +1438,10 @@
       if (type === 'single') {
         targetGroup.style.display = 'block';
         targetSelect.innerHTML = state.members.map(m => `<option value="${m}">${m}</option>`).join('');
-        label.innerText = '補繳金額';
+        label.innerText = '收款金額';
       } else if (type === 'custom') {
         targetGroup.style.display = 'none';
-        label.innerText = '存入總額';
+        label.innerText = '收款總額';
       } else {
         targetGroup.style.display = 'none';
         label.innerText = '每人金額';
@@ -1459,10 +1452,7 @@
       if (!isAdmin) return;
       const type = document.getElementById('kittyDepositType').value;
       const amount = parseFloat(document.getElementById('kittyAmountInput').value);
-      if (isNaN(amount) || amount <= 0) {
-        alert('請輸入有效金額');
-        return;
-      }
+      if (isNaN(amount) || amount <= 0) return showToast('請輸入有效金額');
 
       let payer = "全員";
       let totalAmount = amount;
@@ -1473,7 +1463,7 @@
         payer = document.getElementById('kittySingleTarget').value;
         totalAmount = amount;
       } else {
-        payer = "自訂存入";
+        payer = "自訂收款";
         totalAmount = amount;
       }
 
@@ -1496,15 +1486,12 @@
       syncState();
     }
 
-    // ==========================================
-    // 7. 旅伴名單管理
-    // ==========================================
     function addMember() {
       if (!isAdmin) return;
       const input = document.getElementById('memberNameInput');
       const name = input.value ? input.value.trim() : '';
-      if (!name) return alert('請輸入旅伴姓名');
-      if (state.members.includes(name)) return alert('旅伴姓名重複');
+      if (!name) return showToast('請輸入旅伴姓名');
+      if (state.members.includes(name)) return showToast('旅伴姓名重複');
 
       state.members.push(name);
       selectedSplitters.push(name);
@@ -1516,7 +1503,7 @@
     function removeMember(name) {
       if (!isAdmin) return;
       const inUse = state.expenses.some(e => e.payer === name || (e.splitWith && e.splitWith.includes(name)));
-      if (inUse) return alert(`「${name}」在紀錄中已有帳目，請先刪除該項花費。`);
+      if (inUse) return showToast(`「${name}」已有帳目，請先刪除花費紀錄`);
 
       state.members = state.members.filter(m => m !== name);
       selectedSplitters = selectedSplitters.filter(n => n !== name);
@@ -1527,24 +1514,24 @@
 
     function clearAllMembers() {
       if (!isAdmin) return;
-      if (state.expenses.length > 0) return alert('已有消費紀錄，請先清空花費');
-      if (confirm('確定清空所有同行旅伴？')) {
+      if (state.expenses.length > 0) return showToast('已有消費紀錄，請先清空花費');
+      showConfirm('確定清空所有同行旅伴？', () => {
         state.members = [];
         state.custodian = "";
         state.memberBanks = {};
         selectedSplitters = [];
         syncState();
-      }
+      });
     }
 
     // ==========================================
-    // 8. 記錄花費
+    // 6. 記錄支出 (自費、扣抵、分攤)
     // ==========================================
     function toggleCustomSection() {
       const area = document.getElementById('customArea');
       const btn = document.getElementById('customToggleBtn');
       if (area.style.display === 'none') {
-        if (state.members.length === 0) return alert('請先加入同行旅伴');
+        if (state.members.length === 0) return showToast('請先加入同行旅伴');
         area.style.display = 'block';
         btn.innerText = '取消自費';
         if (customSplits.length === 0) addCustomRow();
@@ -1571,13 +1558,13 @@
       const c = document.getElementById('customList');
       c.innerHTML = customSplits.map((row, idx) => `
         <div class="custom-row">
-          <select onchange="customSplits[${idx}].person=this.value" class="form-select" style="width:auto; padding:5px 8px; font-size:12px;">
+          <select onchange="customSplits[${idx}].person=this.value" class="form-select" style="width:auto; padding:5px 6px; font-size:12px;">
             ${state.members.map(m => `<option value="${m}" ${m === row.person ? 'selected' : ''}>${m}</option>`).join('')}
           </select>
-          <span style="font-size:11px; white-space:nowrap; color:var(--text-muted);">自費</span>
-          <input type="number" value="${row.amount || ''}" oninput="customSplits[${idx}].amount=parseFloat(this.value)||0" placeholder="金額" class="input-text" style="width:75px; padding:5px 8px; font-size:12px;">
-          <span style="font-size:11px; white-space:nowrap; color:var(--text-muted);">元</span>
-          <button type="button" onclick="removeCustomRow(${idx})" style="background:none; border:none; color:var(--rose-subtle); font-size:14px; cursor:pointer;">&times;</button>
+          <span style="font-size:11px; color:var(--text-muted);">自費</span>
+          <input type="number" value="${row.amount || ''}" oninput="customSplits[${idx}].amount=parseFloat(this.value)||0" placeholder="金額" class="input-text" style="width:70px; padding:5px 6px; font-size:12px;">
+          <span style="font-size:11px; color:var(--text-muted);">元</span>
+          <button type="button" onclick="removeCustomRow(${idx})" style="background:none; border:none; color:#BA7C7C; font-size:14px; cursor:pointer;">&times;</button>
         </div>
       `).join('');
     }
@@ -1595,11 +1582,10 @@
       renderSplitButtons();
     }
 
-    /* 渲染極簡膠囊按鈕 */
     function renderSplitButtons() {
       const c = document.getElementById('splitButtonsContainer');
       if (state.members.length === 0) {
-        c.innerHTML = '<span style="font-size:11px; color:var(--text-light);">請先在上方加入成員</span>';
+        c.innerHTML = '<span style="font-size:11px; color:var(--text-light); grid-column:1/-1;">請先在上方加入旅伴</span>';
         return;
       }
       c.innerHTML = state.members.map(m => {
@@ -1615,7 +1601,7 @@
     function clearExpenseForm() {
       document.getElementById('itemTitle').value = '';
       document.getElementById('itemAmount').value = '';
-      document.getElementById('payerSelect').value = state.custodian || (state.members[0] || '');
+      document.getElementById('payerSelect').value = (state.kittyEnabled && state.custodian) ? state.custodian : (state.members[0] || '');
       customSplits = [];
       document.getElementById('customArea').style.display = 'none';
       document.getElementById('customToggleBtn').innerText = '＋ 新增自費';
@@ -1626,7 +1612,7 @@
 
     function addExpense() {
       if (!isAdmin) return;
-      if (state.members.length === 0) return alert('請先加入同行旅伴');
+      if (state.members.length === 0) return showToast('請先加入同行旅伴');
 
       const titleInput = document.getElementById('itemTitle');
       const amountInput = document.getElementById('itemAmount');
@@ -1636,18 +1622,18 @@
       const amount = parseFloat(amountInput.value);
       const payer = payerSelect.value;
 
-      if (!title) return alert('請填寫支出品項');
-      if (isNaN(amount) || amount <= 0) return alert('請輸入有效金額');
-      if (!payer) return alert('請選擇付款人');
+      if (!title) return showToast('請填寫支出品項');
+      if (isNaN(amount) || amount <= 0) return showToast('請輸入有效金額');
+      if (!payer) return showToast('請選擇付款人');
 
       const customSum = customSplits.reduce((acc, c) => acc + (Number(c.amount) || 0), 0);
-      if (customSum > amount) return alert('自費總和不能大於支出金額');
-      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return alert('請至少勾選一位分攤旅伴');
+      if (customSum > amount) return showToast('自費總和不能大於支出金額');
+      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return showToast('請至少勾選一位分攤旅伴');
 
       let kittyDeduction = 0;
       let personalPaid = amount;
 
-      if (payer === state.custodian) {
+      if (state.kittyEnabled && payer === state.custodian) {
         const currentKitty = getKittyBalance();
         if (currentKitty > 0) {
           kittyDeduction = Math.min(amount, currentKitty);
@@ -1679,14 +1665,14 @@
     function clearAllExpenses() {
       if (!isAdmin) return;
       if (state.expenses.length === 0) return;
-      if (confirm('確定清空所有花費紀錄？')) {
+      showConfirm('確定清空所有花費紀錄？', () => {
         state.expenses = [];
         syncState();
-      }
+      });
     }
 
     // ==========================================
-    // 9. 旅伴收支統計 (僅統計純花費與個人代墊)
+    // 7. 收支統計與結算演算法
     // ==========================================
     function computeMemberStatistics() {
       const stats = {};
@@ -1720,9 +1706,6 @@
       return stats;
     }
 
-    // ==========================================
-    // 10. 結算與零和演算法
-    // ==========================================
     function computeSettlement() {
       const balance = {};
       state.members.forEach(m => balance[m] = 0);
@@ -1751,7 +1734,7 @@
       });
 
       const kittyBal = getKittyBalance();
-      if (state.members.length > 0 && kittyBal > 0) {
+      if (state.kittyEnabled && state.members.length > 0 && kittyBal > 0) {
         const refundPerPerson = kittyBal / state.members.length;
         state.members.forEach(m => balance[m] += refundPerPerson);
         if (state.custodian && balance[state.custodian] !== undefined) {
@@ -1800,9 +1783,20 @@
     }
 
     // ==========================================
-    // 11. 畫面渲染
+    // 8. 畫面渲染
     // ==========================================
     function renderAll() {
+      const inactiveBanner = document.getElementById('kittyInactiveBanner');
+      const activeCard = document.getElementById('kittyActiveCard');
+
+      if (state.kittyEnabled) {
+        inactiveBanner.style.display = 'none';
+        activeCard.style.display = 'block';
+      } else {
+        inactiveBanner.style.display = 'flex';
+        activeCard.style.display = 'none';
+      }
+
       const kittyBal = getKittyBalance();
       document.getElementById('kittyBalanceDisplay').innerText = `$${Math.round(kittyBal).toLocaleString()}`;
 
@@ -1812,15 +1806,15 @@
         `<option value="${m}" ${state.custodian === m ? 'selected' : ''}>${m}</option>`
       ).join('');
 
-      // 公費紀錄抽屜
+      // 公基金紀錄抽屜
       const kLogs = document.getElementById('kittyDepositLogs');
       if (!state.kittyDeposits || state.kittyDeposits.length === 0) {
-        kLogs.innerHTML = '<span style="opacity:0.7;">尚無公費繳存紀錄</span>';
+        kLogs.innerHTML = '<span style="opacity:0.75;">尚無公基金收款紀錄</span>';
       } else {
         kLogs.innerHTML = state.kittyDeposits.map(k => `
           <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0;">
             <span>${k.time} · ${k.payer} · $${k.totalAmount.toLocaleString()}</span>
-            ${isAdmin ? `<button type="button" onclick="deleteKittyDeposit('${k.id}')" style="background:none; border:none; color:var(--rose-subtle); cursor:pointer;">&times;</button>` : ''}
+            ${isAdmin ? `<button type="button" onclick="deleteKittyDeposit('${k.id}')" style="background:none; border:none; color:#BA7C7C; cursor:pointer;">&times;</button>` : ''}
           </div>
         `).join('');
       }
@@ -1833,43 +1827,43 @@
       } else {
         statsBox.innerHTML = state.members.map(m => {
           const item = stats[m] || { totalSpent: 0, totalPaid: 0 };
-
           return `
-            <div class="stats-item">
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-warm); border:1px solid var(--border-soft); border-radius:var(--radius-sm); padding:7px 10px; font-size:12px;">
               <div>
-                <span class="stats-name">${m}</span>
-                ${m === state.custodian ? '<span style="font-size:10px; background:var(--theme-light); color:var(--theme-dark); padding:1px 5px; border-radius:3px; margin-left:4px;">總務</span>' : ''}
+                <span style="font-weight:500;">${m}</span>
+                ${(state.kittyEnabled && m === state.custodian) ? '<span style="font-size:10px; background:var(--theme-light); color:var(--theme-dark); padding:1px 5px; border-radius:3px; margin-left:4px;">總務</span>' : ''}
               </div>
-              <div class="stats-details">
-                <span class="stats-spent">花費 $${Math.round(item.totalSpent).toLocaleString()}</span>
-                <span class="stats-paid">代墊 $${Math.round(item.totalPaid).toLocaleString()}</span>
+              <div style="display:flex; gap:10px; font-size:11px; font-family:monospace;">
+                <span style="color:var(--text-muted);">花費 $${Math.round(item.totalSpent).toLocaleString()}</span>
+                <span style="color:var(--theme-dark); font-weight:600;">代墊 $${Math.round(item.totalPaid).toLocaleString()}</span>
               </div>
             </div>
           `;
         }).join('');
       }
 
-      // 成員標籤
+      // 成員網格名單
       document.getElementById('memberCountBadge').innerText = state.members.length;
       const mContainer = document.getElementById('membersContainer');
       mContainer.innerHTML = state.members.map(m => `
         <span class="member-chip">
-          ${m}
+          <span>${m}</span>
           ${isAdmin ? `<button type="button" class="chip-del" onclick="removeMember('${m}')">&times;</button>` : ''}
         </span>
-      `).join('') || '<span class="empty-hint" style="padding:0;">尚未加入任何旅伴</span>';
+      `).join('') || '<span class="empty-hint" style="grid-column:1/-1; padding:4px 0;">尚未加入任何旅伴</span>';
 
       // 付款人下拉選單
       const pSelect = document.getElementById('payerSelect');
       const curPayer = pSelect.value;
-      pSelect.innerHTML = state.members.map(m => 
-        `<option value="${m}" ${(curPayer === m || (!curPayer && m === state.custodian)) ? 'selected' : ''}>${m}${m === state.custodian ? ' (公費優先扣抵)' : ''}</option>`
-      ).join('');
+      pSelect.innerHTML = state.members.map(m => {
+        const isCustodian = state.kittyEnabled && m === state.custodian;
+        return `<option value="${m}" ${(curPayer === m || (!curPayer && isCustodian)) ? 'selected' : ''}>${m}${isCustodian ? ' (公基金優先扣抵)' : ''}</option>`;
+      }).join('');
 
       renderSplitButtons();
       renderCustomList();
 
-      // 消費明細列表
+      // 消費清單
       const expList = document.getElementById('expenseList');
       let total = 0;
       if (state.expenses.length === 0) {
@@ -1884,7 +1878,7 @@
             <div class="expense-item">
               <div class="expense-main-row">
                 <div>
-                  <span style="font-weight:500; color:var(--text-main);">${e.title}</span>
+                  <span style="font-weight:500;">${e.title}</span>
                   <span style="color:var(--theme-dark); font-weight:600; font-family:monospace; margin-left:4px;">$${Math.round(e.amount).toLocaleString()}</span>
                 </div>
                 <div style="display:flex; align-items:center;">
@@ -1896,11 +1890,11 @@
               </div>
               <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">
                 ${e.payer} 付 · ${(e.splitWith || []).length} 人分攤
-                ${hasKitty ? ` · <span style="color:var(--theme-dark);">(公費扣抵 $${Math.round(e.kittyDeduction).toLocaleString()}${e.personalPaid > 0 ? ` + 個人代墊 $${Math.round(e.personalPaid).toLocaleString()}` : ''})</span>` : ''}
+                ${hasKitty ? ` · <span style="color:var(--theme-dark);">(公基金扣抵 $${Math.round(e.kittyDeduction).toLocaleString()}${e.personalPaid > 0 ? ` + 個人代墊 $${Math.round(e.personalPaid).toLocaleString()}` : ''})</span>` : ''}
               </div>
               ${isExpanded ? `
                 <div class="expense-detail-drawer">
-                  <div style="margin-bottom:4px;"><strong>分攤旅伴：</strong>${(e.splitWith || []).join('、 ')}</div>
+                  <div style="margin-bottom:3px;"><strong>分攤旅伴：</strong>${(e.splitWith || []).join('、 ')}</div>
                   ${(e.customSplits && e.customSplits.length) ? `<div><strong>特定自費：</strong>${e.customSplits.map(c=>`${c.person}$${c.amount}`).join('、 ')}</div>` : ''}
                 </div>
               ` : ''}
@@ -1910,7 +1904,7 @@
       }
       document.getElementById('totalCostDisplay').innerText = `累計：$${Math.round(total).toLocaleString()}`;
 
-      // 結算轉帳清單
+      // 結算列表
       const setList = document.getElementById('settlementList');
       const { transactions, creditors } = computeSettlement();
       if (transactions.length === 0) {
@@ -1924,7 +1918,7 @@
         `).join('');
       }
 
-      // 收款人帳號專區
+      // 收款帳號列表
       const accList = document.getElementById('accountList');
       if (creditors.length === 0) {
         accList.innerHTML = '<span style="font-size:11px; color:var(--text-light);">尚無收款需求</span>';
@@ -1934,7 +1928,7 @@
           return `
             <div class="account-card">
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:12px; font-weight:600; color:var(--text-main);">${c.person}</span>
+                <span style="font-size:12px; font-weight:600;">${c.person}</span>
                 <span style="font-size:11px; color:var(--theme-dark); font-weight:600;">應收：$${c.amount.toLocaleString()}</span>
               </div>
               <div class="account-row">
@@ -1956,36 +1950,48 @@
     }
 
     function copyPureAccount(acc, name) {
-      if (!acc) return alert(`請先填寫 ${name} 的帳號`);
-      copyToClipboard(acc.replace(/[^0-9]/g, ''), `已複製 ${name} 的銀行帳號`);
+      if (!acc) return showToast(`請先填寫 ${name} 的帳號`);
+      copyToClipboard(acc.replace(/[^0-9]/g, ''), `已複製 ${name} 的帳號`);
     }
 
     function copyToClipboard(txt, msg) {
       if (!txt) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(() => {
+          showToast(msg || '已複製');
+        }).catch(() => fallbackCopy(txt, msg));
+      } else {
+        fallbackCopy(txt, msg);
+      }
+    }
+
+    function fallbackCopy(txt, msg) {
       const input = document.createElement('textarea');
       input.value = txt;
+      input.style.position = 'fixed';
+      input.style.opacity = '0';
       document.body.appendChild(input);
       input.select();
       try {
         document.execCommand('copy');
-        alert(msg || '已複製');
+        showToast(msg || '已複製');
       } catch (err) {
-        prompt('請長按複製：', txt);
+        showToast('複製失敗，請手動複製');
       }
       document.body.removeChild(input);
     }
 
     function copySettlementSummary() {
       const { transactions, creditors, kittyLeftover } = computeSettlement();
-      if (transactions.length === 0) return alert('目前無須轉帳');
+      if (transactions.length === 0) return showToast('目前無須轉帳');
 
       let out = '🌾【旅途結算清單】\n';
       transactions.forEach(t => {
         out += `👉 ${t.from} 應轉給 ${t.to}：$${t.amount.toLocaleString()} 元\n`;
       });
 
-      if (kittyLeftover > 0 && state.custodian) {
-        out += `\n💡 備註：公費剩餘現鈔 $${Math.round(kittyLeftover).toLocaleString()} 已由總務【${state.custodian}】直接抵銷。\n`;
+      if (state.kittyEnabled && kittyLeftover > 0 && state.custodian) {
+        out += `\n💡 備註：公基金剩餘現鈔 $${Math.round(kittyLeftover).toLocaleString()} 已由總務【${state.custodian}】直接抵銷。\n`;
       }
 
       out += '\n【收款人帳號】\n';
@@ -1999,12 +2005,17 @@
 
     function resetEntireTrip() {
       if (!isAdmin) return;
-      if (confirm('確定要清空這趟旅程的所有紀錄（人員、公費、帳目）嗎？')) {
-        state = { createdAt: Date.now(), password: "", members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
+      showConfirm('確定要清空這趟旅程的所有紀錄（人員、公基金、花費）嗎？', () => {
+        state.members = [];
+        state.custodian = "";
+        state.memberBanks = {};
+        state.kittyDeposits = [];
+        state.expenses = [];
+        state.kittyEnabled = false;
         selectedSplitters = [];
         customSplits = [];
         syncState();
-      }
+      });
     }
 
     // 啟動初始化
