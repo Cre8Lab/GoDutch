@@ -32,7 +32,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -41,39 +41,47 @@
       color: var(--text-main);
       padding-bottom: 96px;
       -webkit-tap-highlight-color: transparent;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
-    /* 頂部導航 */
+    /* 頂部導航：上下分層結構，解決手機寬度不足排版擠壓問題 */
     .header {
-      background: rgba(255, 255, 255, 0.94);
+      background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border-soft);
-      padding: 13px 18px;
       position: sticky;
       top: 0;
       z-index: 30;
+      padding: 10px 16px;
+    }
+    .header-top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
     }
     .header-brand {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
+      min-width: 0;
     }
     .brand-leaf {
       display: inline-block;
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--milktea-soft);
+      flex-shrink: 0;
     }
     .header h1 {
       font-size: 15px;
       font-weight: 600;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .role-badge {
       font-size: 10px;
@@ -82,6 +90,7 @@
       letter-spacing: 0.5px;
       font-weight: 500;
       white-space: nowrap;
+      flex-shrink: 0;
     }
     .role-admin {
       background: var(--milktea-light);
@@ -94,18 +103,22 @@
       border: 1px solid var(--border-soft);
     }
 
-    .header-actions {
+    .header-actions-row {
       display: flex;
       gap: 8px;
       align-items: center;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border-soft);
+      overflow-x: auto;
     }
     .btn-header-link {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--milktea-dark);
       background: var(--milktea-light);
       border: 1px solid var(--warm-border);
-      padding: 5px 11px;
-      border-radius: 20px;
+      padding: 5px 12px;
+      border-radius: 16px;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s;
@@ -113,19 +126,20 @@
     .btn-header-link:hover {
       background: #ECE2DA;
     }
-    .btn-header-admin-share {
-      font-size: 12px;
-      color: #6E4F3B;
-      background: #FFF;
-      border: 1px solid var(--warm-border);
-      padding: 5px 11px;
-      border-radius: 20px;
+    .btn-header-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #FFFFFF;
+      border: 1px solid var(--border-soft);
+      padding: 5px 12px;
+      border-radius: 16px;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s;
     }
-    .btn-header-admin-share:hover {
-      background: var(--milktea-light);
+    .btn-header-sub:hover {
+      background: #FDFCFB;
+      color: var(--text-main);
     }
     .btn-reset-all {
       font-size: 11px;
@@ -134,6 +148,8 @@
       border: none;
       cursor: pointer;
       white-space: nowrap;
+      margin-left: auto;
+      padding: 4px 6px;
       transition: color 0.2s;
     }
     .btn-reset-all:hover {
@@ -143,7 +159,7 @@
     .container {
       max-width: 440px;
       margin: 0 auto;
-      padding: 16px 14px;
+      padding: 14px 14px;
       display: flex;
       flex-direction: column;
       gap: 13px;
@@ -154,39 +170,43 @@
       background: var(--card-bg);
       border-radius: var(--radius-lg);
       border: 1px solid var(--border-soft);
-      padding: 32px 22px;
+      padding: 24px 18px;
       box-shadow: 0 4px 20px rgba(61, 53, 47, 0.02);
-      text-align: center;
-      margin-top: 8px;
+      margin-top: 4px;
     }
     .room-lobby-title {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 600;
-      letter-spacing: 1.2px;
+      letter-spacing: 0.8px;
       color: var(--text-main);
-      margin-bottom: 6px;
+      text-align: center;
+      margin-bottom: 4px;
     }
     .room-lobby-sub {
       font-size: 12px;
       color: var(--text-muted);
-      letter-spacing: 0.6px;
-      margin-bottom: 24px;
+      text-align: center;
+      margin-bottom: 20px;
     }
     .lobby-box {
       background: #FDFCFB;
       border: 1px solid var(--border-soft);
-      padding: 16px 15px;
+      padding: 14px 14px;
       border-radius: var(--radius-md);
-      margin-bottom: 14px;
-      text-align: left;
+      margin-bottom: 12px;
     }
     .lobby-box-title {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: 0.8px;
       color: var(--milktea-dark);
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
+    }
+    .lobby-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 10px;
     }
 
     /* 卡片共用樣式 */
@@ -194,7 +214,7 @@
       background: var(--card-bg);
       border-radius: var(--radius-md);
       border: 1px solid var(--border-soft);
-      padding: 15px 17px;
+      padding: 14px 15px;
       box-shadow: 0 2px 10px rgba(61, 53, 47, 0.02);
     }
     .card-header {
@@ -207,7 +227,7 @@
       font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
       white-space: nowrap;
     }
     .card-action-btn {
@@ -225,12 +245,12 @@
       color: var(--rose-subtle);
     }
 
-    /* 溫暖柔和公費卡片 (焦糖奶茶漸層) */
+    /* 公費卡片 (焦糖奶茶漸層) */
     .kitty-compact-card {
       background: linear-gradient(140deg, #96725B, #7D5B46);
       color: #FFFFFF;
       border: none;
-      padding: 16px 18px;
+      padding: 15px 16px;
       box-shadow: 0 4px 14px rgba(125, 91, 70, 0.15);
     }
     .kitty-row {
@@ -248,7 +268,7 @@
     .kitty-label {
       font-size: 11px;
       opacity: 0.9;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.6px;
       white-space: nowrap;
     }
     .kitty-amount {
@@ -270,7 +290,7 @@
       border: 1px solid rgba(255, 255, 255, 0.28);
       color: #FFFFFF;
       font-size: 11px;
-      padding: 5px 11px;
+      padding: 5px 10px;
       border-radius: 16px;
       font-weight: 400;
       cursor: pointer;
@@ -289,7 +309,6 @@
       align-items: center;
       font-size: 11px;
       opacity: 0.94;
-      letter-spacing: 0.5px;
     }
     .custodian-select {
       background: rgba(0, 0, 0, 0.22);
@@ -302,6 +321,309 @@
     }
     .custodian-select option {
       color: var(--text-main);
+    }
+
+    /* 旅伴網格系統：徹底解決右側畸零空白問題 */
+    .chips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+      gap: 6px;
+      margin-top: 10px;
+      width: 100%;
+    }
+    .member-chip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--milktea-light);
+      border: 1px solid var(--warm-border);
+      padding: 5px 8px;
+      border-radius: 16px;
+      font-size: 12px;
+      color: var(--milktea-dark);
+      min-width: 0;
+    }
+    .member-chip span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-right: 4px;
+    }
+    .chip-del {
+      background: none;
+      border: none;
+      color: var(--text-light);
+      font-size: 13px;
+      cursor: pointer;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .chip-del:hover {
+      color: var(--rose-subtle);
+    }
+
+    /* 分攤旅伴按鈕：自適應網格等寬排列 */
+    .split-chip {
+      border: 1px solid var(--border-soft);
+      background: #FDFCFB;
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 6px 4px;
+      border-radius: 16px;
+      cursor: pointer;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: all 0.2s;
+      outline: none;
+      width: 100%;
+    }
+    .split-chip.active {
+      background: var(--milktea-light);
+      border-color: var(--warm-border);
+      color: var(--milktea-dark);
+      font-weight: 600;
+    }
+
+    /* 輸入元件 */
+    .input-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .input-text {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid var(--border-soft);
+      background: #FDFCFB;
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 13px;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .input-text:focus {
+      border-color: var(--milktea-soft);
+      background: #FFFFFF;
+    }
+    
+    .btn-add {
+      background: var(--milktea-main);
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 15px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .btn-add:hover {
+      background: var(--milktea-dark);
+    }
+
+    /* 表單區 */
+    .form-group {
+      margin-bottom: 10px;
+    }
+    .form-label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      white-space: nowrap;
+    }
+    .form-select {
+      width: 100%;
+      border: 1px solid var(--border-soft);
+      background: #FDFCFB;
+      border-radius: var(--radius-sm);
+      padding: 8px 8px;
+      font-size: 13px;
+      color: var(--text-main);
+      outline: none;
+    }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* 自費設定區 */
+    .custom-box {
+      background: #FDFCFB;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-sm);
+      padding: 10px 10px;
+      margin-bottom: 10px;
+    }
+    .custom-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn-toggle-custom {
+      background: none;
+      border: none;
+      color: var(--milktea-dark);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .custom-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    /* 操作按鈕組 */
+    .btn-submit-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .btn-clear-form {
+      background: #F5F1ED;
+      border: 1px solid var(--border-soft);
+      color: var(--text-muted);
+      padding: 9px 0;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .btn-save-expense {
+      background: var(--milktea-main);
+      color: #FFFFFF;
+      border: none;
+      padding: 9px 0;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: center;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .btn-save-expense:hover {
+      background: var(--milktea-dark);
+    }
+
+    /* 消費明細 */
+    .expense-item {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 12px;
+    }
+    .expense-item:last-child {
+      border-bottom: none;
+    }
+    .expense-main-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn-del-expense {
+      background: none;
+      border: none;
+      color: var(--rose-subtle);
+      font-size: 11px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+    .expense-detail-drawer {
+      background: #FDFCFB;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* 結算明細卡片 */
+    .settle-card {
+      background: #FDFCFB;
+      border: 1px solid var(--border-soft);
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .settle-amount {
+      color: var(--milktea-dark);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      white-space: nowrap;
+    }
+
+    /* 收款帳號 */
+    .account-card {
+      background: #FDFCFB;
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
+    .account-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-top: 6px;
+      width: 100%;
+    }
+    .bank-code-input {
+      width: 68px;
+      flex-shrink: 0;
+      text-align: center;
+      border: 1px solid var(--border-soft);
+      background: #FFFFFF;
+      border-radius: 6px;
+      padding: 6px 4px;
+      font-size: 12px;
+      outline: none;
+    }
+    .bank-account-input {
+      flex: 1 1 auto;
+      min-width: 0;
+      border: 1px solid var(--border-soft);
+      background: #FFFFFF;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 12px;
+      outline: none;
+    }
+    .btn-copy-sm {
+      flex-shrink: 0;
+      background: #FFFFFF;
+      border: 1px solid var(--warm-border);
+      color: var(--milktea-dark);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .empty-hint {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-light);
+      padding: 12px 0;
     }
 
     /* 彈窗樣式 */
@@ -321,387 +643,40 @@
       border-radius: var(--radius-lg);
       padding: 22px 20px;
       width: 100%;
-      max-width: 330px;
+      max-width: 320px;
       box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1);
     }
     .modal-title {
       font-size: 14px;
       font-weight: 600;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.5px;
       color: var(--text-main);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
-    /* 吐司提示 (代替原生 alert，無網址前綴) */
+    /* 自訂吐司提示 (代替原生 alert) */
     .toast-container {
       position: fixed;
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(61, 53, 47, 0.92);
+      background: rgba(61, 53, 47, 0.94);
       color: #FFF;
-      font-size: 13px;
-      padding: 10px 18px;
-      border-radius: 24px;
+      font-size: 12px;
+      padding: 9px 18px;
+      border-radius: 20px;
       z-index: 200;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
       pointer-events: none;
-      letter-spacing: 0.5px;
       display: none;
+      letter-spacing: 0.5px;
       animation: fadeInOut 2.4s forwards;
     }
     @keyframes fadeInOut {
-      0% { opacity: 0; transform: translate(-50%, 10px); }
+      0% { opacity: 0; transform: translate(-50%, 8px); }
       15% { opacity: 1; transform: translate(-50%, 0); }
       80% { opacity: 1; transform: translate(-50%, 0); }
-      100% { opacity: 0; transform: translate(-50%, -10px); }
-    }
-
-    /* 旅伴收支小記清單 (可收合折疊) */
-    .stats-toggle-btn {
-      background: none;
-      border: none;
-      color: var(--milktea-soft);
-      font-size: 11px;
-      cursor: pointer;
-      font-weight: 500;
-      padding: 0 2px;
-    }
-    .stats-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      transition: all 0.3s ease;
-    }
-    .stats-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #FDFCFB;
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-sm);
-      padding: 8px 11px;
-      font-size: 12px;
-    }
-    .stats-name {
-      font-weight: 500;
-      color: var(--text-main);
-      letter-spacing: 0.3px;
-    }
-    .stats-details {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      font-size: 11px;
-      font-family: "SF Mono", Menlo, Consolas, monospace;
-    }
-    .stats-spent {
-      color: var(--text-muted);
-    }
-    .stats-paid {
-      color: var(--milktea-dark);
-      font-weight: 600;
-    }
-
-    /* 輸入元件 */
-    .input-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .input-text {
-      flex: 1;
-      min-width: 0;
-      border: 1px solid var(--border-soft);
-      background: #FDFCFB;
-      border-radius: var(--radius-sm);
-      padding: 9px 12px;
-      font-size: 13px;
-      color: var(--text-main);
-      outline: none;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .input-text:focus {
-      border-color: var(--milktea-soft);
-      background: #FFFFFF;
-    }
-    
-    .btn-add {
-      background: var(--milktea-main);
-      color: #FFFFFF;
-      border: none;
-      padding: 9px 17px;
-      border-radius: var(--radius-sm);
-      font-size: 12px;
-      letter-spacing: 0.8px;
-      font-weight: 500;
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-      min-width: 58px;
-      text-align: center;
-      transition: background 0.2s;
-    }
-    .btn-add:hover {
-      background: var(--milktea-dark);
-    }
-
-    .chips-box {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-      min-height: 28px;
-      align-items: center;
-    }
-    .member-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--milktea-light);
-      border: 1px solid var(--warm-border);
-      padding: 4px 11px;
-      border-radius: 16px;
-      font-size: 12px;
-      color: var(--milktea-dark);
-      letter-spacing: 0.3px;
-      white-space: nowrap;
-    }
-    .chip-del {
-      background: none;
-      border: none;
-      color: var(--text-light);
-      font-size: 13px;
-      cursor: pointer;
-      line-height: 1;
-    }
-    .chip-del:hover {
-      color: var(--rose-subtle);
-    }
-
-    /* 表單區 */
-    .form-group {
-      margin-bottom: 11px;
-    }
-    .form-label {
-      display: block;
-      font-size: 11px;
-      letter-spacing: 0.8px;
-      color: var(--text-muted);
-      margin-bottom: 5px;
-      white-space: nowrap;
-    }
-    .form-select {
-      width: 100%;
-      border: 1px solid var(--border-soft);
-      background: #FDFCFB;
-      border-radius: var(--radius-sm);
-      padding: 9px 10px;
-      font-size: 13px;
-      color: var(--text-main);
-      outline: none;
-    }
-    .form-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    /* 自費設定區 */
-    .custom-box {
-      background: #FDFCFB;
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
-      margin-bottom: 11px;
-    }
-    .custom-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .btn-toggle-custom {
-      background: none;
-      border: none;
-      color: var(--milktea-dark);
-      font-size: 11px;
-      letter-spacing: 0.5px;
-      font-weight: 500;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .custom-row {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      margin-top: 6px;
-    }
-
-    /* 分攤旅伴按鈕：極簡日系膠囊設計 */
-    .split-chip {
-      border: 1px solid var(--border-soft);
-      background: #FDFCFB;
-      color: var(--text-muted);
-      font-size: 12px;
-      padding: 5px 13px;
-      border-radius: 16px;
-      cursor: pointer;
-      letter-spacing: 0.3px;
-      white-space: nowrap;
-      transition: all 0.2s;
-      outline: none;
-    }
-    .split-chip.active {
-      background: var(--milktea-light);
-      border-color: var(--warm-border);
-      color: var(--milktea-dark);
-      font-weight: 600;
-    }
-
-    /* 操作按鈕組 */
-    .btn-submit-row {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .btn-clear-form {
-      background: #F5F1ED;
-      border: 1px solid var(--border-soft);
-      color: var(--text-muted);
-      padding: 10px 0;
-      border-radius: var(--radius-sm);
-      font-size: 12px;
-      letter-spacing: 0.8px;
-      cursor: pointer;
-      text-align: center;
-      white-space: nowrap;
-    }
-    .btn-save-expense {
-      background: var(--milktea-main);
-      color: #FFFFFF;
-      border: none;
-      padding: 10px 0;
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      letter-spacing: 0.8px;
-      font-weight: 500;
-      cursor: pointer;
-      text-align: center;
-      white-space: nowrap;
-      transition: background 0.2s;
-    }
-    .btn-save-expense:hover {
-      background: var(--milktea-dark);
-    }
-
-    /* 消費明細 */
-    .expense-item {
-      padding: 11px 0;
-      border-bottom: 1px solid var(--border-soft);
-      font-size: 12px;
-    }
-    .expense-item:last-child {
-      border-bottom: none;
-    }
-    .expense-main-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .btn-del-expense {
-      background: none;
-      border: none;
-      color: var(--rose-subtle);
-      font-size: 11px;
-      cursor: pointer;
-      white-space: nowrap;
-      margin-left: 8px;
-    }
-    .expense-detail-drawer {
-      background: #FDFCFB;
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-sm);
-      padding: 8px 11px;
-      margin-top: 7px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    /* 結算明細卡片 */
-    .settle-card {
-      background: #FDFCFB;
-      border: 1px solid var(--border-soft);
-      padding: 11px 13px;
-      border-radius: var(--radius-sm);
-      margin-bottom: 7px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .settle-amount {
-      color: var(--milktea-dark);
-      font-size: 14px;
-      font-weight: 600;
-      font-family: "SF Mono", Menlo, Consolas, monospace;
-      white-space: nowrap;
-    }
-
-    /* 收款帳號專區 (防爆版設計) */
-    .account-card {
-      background: #FDFCFB;
-      border: 1px solid var(--border-soft);
-      border-radius: var(--radius-sm);
-      padding: 11px 13px;
-      margin-bottom: 8px;
-    }
-    .account-row {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      margin-top: 7px;
-      width: 100%;
-    }
-    .bank-code-input {
-      width: 72px;
-      flex-shrink: 0;
-      text-align: center;
-      border: 1px solid var(--border-soft);
-      background: #FFFFFF;
-      border-radius: 6px;
-      padding: 7px 4px;
-      font-size: 12px;
-      outline: none;
-    }
-    .bank-account-input {
-      flex: 1 1 auto;
-      min-width: 0;
-      border: 1px solid var(--border-soft);
-      background: #FFFFFF;
-      border-radius: 6px;
-      padding: 7px 9px;
-      font-size: 12px;
-      outline: none;
-    }
-    .btn-copy-sm {
-      flex-shrink: 0;
-      background: #FFFFFF;
-      border: 1px solid var(--warm-border);
-      color: var(--milktea-dark);
-      padding: 7px 11px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 500;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .empty-hint {
-      text-align: center;
-      font-size: 11px;
-      color: var(--text-light);
-      padding: 14px 0;
-      letter-spacing: 0.5px;
+      100% { opacity: 0; transform: translate(-50%, -8px); }
     }
   </style>
 </head>
@@ -709,52 +684,54 @@
 
   <!-- 頂部導航 -->
   <header class="header">
-    <div class="header-brand">
-      <span class="brand-leaf"></span>
-      <h1 id="tripTitleDisplay">遠行時光</h1>
-      <span id="roleBadge" class="role-badge role-viewer">旅伴檢視</span>
-    </div>
-    <div class="header-actions">
-      <!-- 旅伴分享連結 -->
+    <div class="header-top-row">
+      <div class="header-brand">
+        <span class="brand-leaf"></span>
+        <h1 id="tripTitleDisplay">遠行時光</h1>
+        <span id="roleBadge" class="role-badge role-viewer">旅伴檢視</span>
+      </div>
       <button type="button" id="btnShareTrip" class="btn-header-link" onclick="shareTripLinks()" style="display:none;">分享旅程</button>
-      <!-- 總務分享權限按鈕 (僅總務顯示) -->
-      <button type="button" id="btnShareAdmin" class="btn-header-admin-share" onclick="shareAdminAccess()" style="display:none;">移交總務</button>
-      <!-- 清空旅程 (僅總務顯示) -->
-      <button type="button" id="btnResetTrip" class="btn-reset-all" onclick="resetEntireTrip()" style="display:none;">清空紀錄</button>
+    </div>
+    <!-- 總務專用次功能列 -->
+    <div class="header-actions-row admin-only" id="adminHeaderBar" style="display:none;">
+      <button type="button" class="btn-header-sub" onclick="shareAdminAccess()">移交總務</button>
+      <button type="button" class="btn-reset-all" onclick="resetEntireTrip()">清空旅程</button>
     </div>
   </header>
 
   <div class="container">
 
-    <!-- 0. 首頁大廳 (當網址未帶 trip 參數時呈現) -->
+    <!-- 0. 首頁大廳 -->
     <div id="roomLobbySection" class="room-lobby-card" style="display:none;">
       <h2 class="room-lobby-title">遠行與日常</h2>
       <p class="room-lobby-sub">把心思留給風景，帳目輕輕記下</p>
 
-      <!-- 建立旅程 -->
+      <!-- 區塊一：總務管理入口 -->
       <div class="lobby-box">
-        <span class="lobby-box-title">開啟新旅程</span>
+        <span class="lobby-box-title">總務管理入口</span>
+        <p class="lobby-desc">初次發起旅程請設定一組代號與密碼；若旅程已建立，請填入原密碼以總務身分進入管理。</p>
         <div style="display:flex; gap:6px; margin-bottom:8px;">
           <input type="text" id="customRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
-          <button type="button" class="btn-clear-form" style="padding:0 12px; font-size:11px; flex-shrink:0;" onclick="generateRandomRoomCode()">隨機產生</button>
+          <button type="button" class="btn-clear-form" style="padding:0 10px; font-size:11px; flex-shrink:0;" onclick="generateRandomRoomCode()">隨機</button>
         </div>
         <div style="margin-bottom:10px;">
-          <input type="password" id="customRoomPinInput" maxlength="4" pattern="\d{4}" inputmode="numeric" class="input-text" style="width:100%; font-family:monospace; letter-spacing:2px;" placeholder="設定 4 碼總務密碼 (純數字)">
+          <input type="password" id="customRoomPinInput" maxlength="4" pattern="\d{4}" inputmode="numeric" class="input-text" style="width:100%; font-family:monospace;" placeholder="總務密碼 (4 碼純數字)">
         </div>
-        <button type="button" class="btn-save-expense" style="width:100%; font-size:12px;" onclick="createNewTripRoom()">啟程記帳 (以總務進入)</button>
+        <button type="button" class="btn-save-expense" style="width:100%; font-size:12px;" onclick="handleAdminEntry()">進入總務管理</button>
       </div>
 
-      <!-- 加入旅程 -->
+      <!-- 區塊二：旅伴查看入口 -->
       <div class="lobby-box">
-        <span class="lobby-box-title">加入同行旅程 (旅伴查看)</span>
+        <span class="lobby-box-title">同行旅伴入口</span>
+        <p class="lobby-desc">僅需輸入總務分享的旅程代碼，即可直接檢視即時帳目與個人結算。</p>
         <div class="input-row">
-          <input type="text" id="joinRoomCodeInput" class="input-text" placeholder="輸入旅伴分享的代碼" style="font-family:monospace; text-transform:lowercase;">
-          <button type="button" class="btn-add" onclick="joinExistingRoom()">加入</button>
+          <input type="text" id="joinRoomCodeInput" class="input-text" placeholder="輸入旅程代碼" style="font-family:monospace; text-transform:lowercase;">
+          <button type="button" class="btn-add" onclick="joinExistingRoom()">查看</button>
         </div>
       </div>
     </div>
 
-    <!-- 1. 迷你公費卡片 (溫暖焦糖奶茶漸層) -->
+    <!-- 1. 迷你公費卡片 -->
     <div id="mainAppSection" style="display:flex; flex-direction:column; gap:13px;">
 
       <div class="card kitty-compact-card">
@@ -764,7 +741,7 @@
             <span class="kitty-amount" id="kittyBalanceDisplay">$0</span>
           </div>
           <div class="kitty-actions">
-            <button type="button" id="btnOpenKittyDeposit" class="btn-kitty-sm" onclick="openKittyModal()">繳存</button>
+            <button type="button" id="btnOpenKittyDeposit" class="btn-kitty-sm admin-only" onclick="openKittyModal()">繳存</button>
             <button type="button" class="btn-kitty-sm" onclick="toggleKittyDrawer()">紀錄 ▾</button>
           </div>
         </div>
@@ -779,17 +756,17 @@
         </div>
       </div>
 
-      <!-- 2. 旅伴收支小記 (預設精簡收合，點擊標題旁展開) -->
+      <!-- 2. 旅伴收支小記 -->
       <div class="card">
-        <div class="card-header" style="margin-bottom:0;" onclick="toggleStatsDrawer()">
-          <span class="card-title" style="cursor:pointer;">旅伴收支小記</span>
+        <div class="card-header" style="margin-bottom:0; cursor:pointer;" onclick="toggleStatsDrawer()">
+          <span class="card-title">旅伴收支小記</span>
           <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:10px; color:var(--text-light); letter-spacing:0.5px;">即時統計</span>
-            <button type="button" id="btnToggleStats" class="stats-toggle-btn">展開 ▾</button>
+            <span style="font-size:10px; color:var(--text-light);">即時統計</span>
+            <button type="button" id="btnToggleStats" class="card-action-btn" style="color:var(--milktea-soft);">展開 ▾</button>
           </div>
         </div>
         <div id="statsDrawer" style="display:none; margin-top:10px;">
-          <div id="memberStatsContainer" class="stats-grid">
+          <div id="memberStatsContainer" style="display:flex; flex-direction:column; gap:6px;">
             <p class="empty-hint">尚未加入同行旅伴</p>
           </div>
         </div>
@@ -805,7 +782,7 @@
           <input id="memberNameInput" type="text" class="input-text" placeholder="旅伴姓名 (例如：阿信)">
           <button type="button" class="btn-add" onclick="addMember()">加入</button>
         </div>
-        <div id="membersContainer" class="chips-box"></div>
+        <div id="membersContainer" class="chips-grid"></div>
       </div>
 
       <!-- 4. 記錄花費 (總務管理專用) -->
@@ -846,9 +823,9 @@
         <div class="form-group">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <label class="form-label" style="margin-bottom:0;">分攤旅伴</label>
-            <button type="button" onclick="toggleAllSplitters()" style="background:none; border:none; color:var(--milktea-dark); font-size:11px; letter-spacing:0.5px; font-weight:500; cursor:pointer;">全選 / 反選</button>
+            <button type="button" onclick="toggleAllSplitters()" style="background:none; border:none; color:var(--milktea-dark); font-size:11px; font-weight:500; cursor:pointer;">全選 / 反選</button>
           </div>
-          <div id="splitButtonsContainer" class="chips-box" style="margin-top:0;"></div>
+          <div id="splitButtonsContainer" class="chips-grid" style="margin-top:0;"></div>
         </div>
 
         <!-- 按鈕 -->
@@ -870,7 +847,7 @@
         <div id="expenseList"></div>
       </div>
 
-      <!-- 6. 結算明細 (清楚列出誰該給誰多少錢) -->
+      <!-- 6. 結算明細 -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">結算明細</span>
@@ -878,7 +855,6 @@
         </div>
         <div id="settlementList"></div>
 
-        <!-- 置底收款帳號專區 (防爆版設計) -->
         <div id="accountSection" style="margin-top:14px; padding-top:12px; border-top:1px dashed var(--border-soft);">
           <span class="card-title" style="display:block; margin-bottom:8px;">匯款帳號 (選填)</span>
           <div id="accountList"></div>
@@ -919,9 +895,9 @@
   <!-- 總務 PIN 驗證彈窗 -->
   <div id="pinModal" class="modal-overlay" style="display:none;">
     <div class="modal-box">
-      <div class="modal-title" id="pinModalTitle">總務身分驗證</div>
-      <p id="pinModalDesc" style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">請輸入 4 位數密碼以啟用管理權限：</p>
-      <input type="password" id="pinModalInput" maxlength="4" pattern="\d{4}" inputmode="numeric" class="input-text" style="width:100%; text-align:center; font-size:18px; font-family:monospace; letter-spacing:6px; margin-bottom:14px;" placeholder="••••">
+      <div class="modal-title">輸入總務密碼</div>
+      <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">此旅程設有管理保護，請輸入 4 碼數字密碼：</p>
+      <input type="password" id="pinModalInput" maxlength="4" pattern="\d{4}" inputmode="numeric" class="input-text" style="width:100%; text-align:center; font-size:20px; font-family:monospace; letter-spacing:4px; margin-bottom:14px;" placeholder="••••">
       <div style="display:flex; gap:8px;">
         <button type="button" class="btn-clear-form" style="flex:1;" onclick="cancelPinModal()">僅檢視</button>
         <button type="button" class="btn-save-expense" style="flex:1;" onclick="confirmPinModal()">確認解鎖</button>
@@ -929,10 +905,10 @@
     </div>
   </div>
 
-  <!-- 自訂確認彈窗 (取代 window.confirm) -->
+  <!-- 自訂確認彈窗 -->
   <div id="confirmModal" class="modal-overlay" style="display:none;">
     <div class="modal-box">
-      <div class="modal-title" style="margin-bottom:8px;">提示</div>
+      <div class="modal-title">提示</div>
       <p id="confirmModalMsg" style="font-size:13px; color:var(--text-main); margin-bottom:16px; line-height:1.5;"></p>
       <div style="display:flex; gap:8px;">
         <button type="button" class="btn-clear-form" style="flex:1;" id="btnConfirmCancel">取消</button>
@@ -941,7 +917,7 @@
     </div>
   </div>
 
-  <!-- 吐司提示器 (Toast) -->
+  <!-- 自訂吐司提示 -->
   <div id="toast" class="toast-container"></div>
 
   <script>
@@ -973,7 +949,7 @@
     let isAdmin = urlParams.get('admin') === '1';
 
     // ==========================================
-    // 2. 狀態資料模型
+    // 2. 狀態模型與自訂提示
     // ==========================================
     let state = {
       createdAt: null,
@@ -990,14 +966,14 @@
     let expandedExpenseId = null;
     let isStatsExpanded = false;
 
-    // 自訂 UI 提示函式 (徹底解決瀏覽器 alert/confirm 網址顯示問題)
     function showToast(msg) {
       const toast = document.getElementById('toast');
       toast.innerText = msg;
       toast.style.display = 'block';
-      setTimeout(() => {
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
         toast.style.display = 'none';
-      }, 2400);
+      }, 2300);
     }
 
     function showConfirm(msg, onOk, onCancel) {
@@ -1020,7 +996,7 @@
     }
 
     // ==========================================
-    // 3. 旅程大廳與自訂代碼 / PIN 驗證
+    // 3. 旅程大廳與總務身分驗證邏輯
     // ==========================================
     function generateRandomRoomCode() {
       const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
@@ -1031,46 +1007,52 @@
       document.getElementById('customRoomCodeInput').value = code;
     }
 
-    function createNewTripRoom() {
+    function handleAdminEntry() {
       const code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
       const pin = document.getElementById('customRoomPinInput').value.trim();
 
-      if (!code) return showToast('請填寫旅程代碼，或點選「隨機產生」');
+      if (!code) return showToast('請輸入旅程代碼');
       if (!/^[a-z0-9_-]+$/.test(code)) return showToast('代碼僅限英文、數字、- 或 _');
+      if (!/^\d{4}$/.test(pin)) return showToast('請輸入 4 位數純數字密碼');
 
-      if (db) {
-        db.ref('trips/' + code).once('value', (snap) => {
-          if (snap.exists() && snap.val() && snap.val().createdAt) {
-            const remotePin = snap.val().adminPin;
-            if (remotePin) {
-              if (pin === remotePin) {
-                window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
-              } else {
-                showToast('此旅程已存在，請輸入正確的 4 碼總務密碼');
-              }
-            } else {
+      if (!db) {
+        window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
+        return;
+      }
+
+      db.ref('trips/' + code).once('value', (snap) => {
+        const val = snap.val();
+        if (snap.exists() && val && val.createdAt) {
+          // 舊旅程：密碼驗證
+          if (val.adminPin) {
+            if (val.adminPin === pin) {
+              sessionStorage.setItem('godutch_auth_' + code, pin);
               window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
+            } else {
+              showToast('密碼錯誤，請確認後重新輸入');
             }
           } else {
-            if (!/^\d{4}$/.test(pin)) {
-              return showToast('請設定 4 位數純數字總務密碼');
-            }
-            db.ref('trips/' + code).set({
-              createdAt: Date.now(),
-              adminPin: pin,
-              members: [],
-              custodian: "",
-              kittyDeposits: [],
-              expenses: [],
-              memberBanks: {}
-            }, () => {
-              window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
-            });
+            // 若為舊無密碼資料，綁定新密碼
+            db.ref('trips/' + code + '/adminPin').set(pin);
+            sessionStorage.setItem('godutch_auth_' + code, pin);
+            window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
           }
-        });
-      } else {
-        window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
-      }
+        } else {
+          // 全新旅程：以該密碼建立
+          db.ref('trips/' + code).set({
+            createdAt: Date.now(),
+            adminPin: pin,
+            members: [],
+            custodian: "",
+            kittyDeposits: [],
+            expenses: [],
+            memberBanks: {}
+          }, () => {
+            sessionStorage.setItem('godutch_auth_' + code, pin);
+            window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
+          });
+        }
+      });
     }
 
     function joinExistingRoom() {
@@ -1080,8 +1062,7 @@
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
-            showToast(`找不到代碼為「${code}」的旅程`);
-            return;
+            return showToast(`找不到代碼為「${code}」的旅程`);
           }
           window.location.href = `${window.location.pathname}?trip=${code}`;
         });
@@ -1090,47 +1071,46 @@
       }
     }
 
-    // 需求 1：純旅伴查看連結分享
+    // 分享旅伴連結 (不帶密碼與 admin)
     function shareTripLinks() {
       const baseUrl = window.location.origin + window.location.pathname;
       const viewerUrl = `${baseUrl}?trip=${currentTripId}`;
-
       const msg = `【遠行時光・旅程分帳】\n旅程代碼：${currentTripId}\n\n👉 旅伴查看連結：\n${viewerUrl}`;
       copyToClipboard(msg, '已複製旅伴查看連結');
     }
 
-    // 需求 3：總務權限專屬分享（含 4 碼密碼）
+    // 移交總務權限 (含密碼與 admin)
     function shareAdminAccess() {
       const baseUrl = window.location.origin + window.location.pathname;
       const adminUrl = `${baseUrl}?trip=${currentTripId}&admin=1`;
-      const pinText = state.adminPin || '未設定';
-
-      const msg = `【遠行時光・旅程分帳】\n旅程代碼：${currentTripId}\n總務密碼：${pinText}\n\n👉 總務查看連結：\n${adminUrl}`;
+      const pin = state.adminPin || '未設定';
+      const msg = `【遠行時光・旅程分帳】\n旅程代碼：${currentTripId}\n總務密碼：${pin}\n\n👉 總務管理連結：\n${adminUrl}`;
       copyToClipboard(msg, '已複製總務管理連結與密碼');
     }
 
     // ==========================================
-    // 4. 資料同步與初始化 + PIN 驗證攔截
+    // 4. 資料同步與嚴格密碼驗證攔截
     // ==========================================
-    let pendingResolvePin = null;
+    let pinModalResolver = null;
 
-    function openPinModal() {
+    function requestPinFromModal() {
       return new Promise((resolve) => {
-        pendingResolvePin = resolve;
+        pinModalResolver = resolve;
         document.getElementById('pinModalInput').value = '';
         document.getElementById('pinModal').style.display = 'flex';
+        setTimeout(() => document.getElementById('pinModalInput').focus(), 100);
       });
     }
 
     function confirmPinModal() {
-      const inputPin = document.getElementById('pinModalInput').value.trim();
+      const val = document.getElementById('pinModalInput').value.trim();
       document.getElementById('pinModal').style.display = 'none';
-      if (pendingResolvePin) pendingResolvePin(inputPin);
+      if (pinModalResolver) pinModalResolver(val);
     }
 
     function cancelPinModal() {
       document.getElementById('pinModal').style.display = 'none';
-      if (pendingResolvePin) pendingResolvePin(null);
+      if (pinModalResolver) pinModalResolver(null);
     }
 
     async function initDataSync() {
@@ -1138,8 +1118,7 @@
         document.getElementById('roomLobbySection').style.display = 'block';
         document.getElementById('mainAppSection').style.display = 'none';
         document.getElementById('btnShareTrip').style.display = 'none';
-        document.getElementById('btnShareAdmin').style.display = 'none';
-        document.getElementById('btnResetTrip').style.display = 'none';
+        document.getElementById('adminHeaderBar').style.display = 'none';
         document.getElementById('roleBadge').style.display = 'none';
         return;
       }
@@ -1147,20 +1126,26 @@
       if (db) {
         const snap = await db.ref('trips/' + currentTripId).once('value');
         if (!snap.exists() || !snap.val()) {
-          showToast(`找不到代碼為「${currentTripId}」的旅程，將返回大廳。`);
+          showToast(`找不到代碼為「${currentTripId}」的旅程，將返回大廳`);
           setTimeout(() => { window.location.href = window.location.pathname; }, 1200);
           return;
         }
 
         const data = snap.val();
-        // 若帶有 admin 參數進入，驗證 PIN
+
+        // 總務權限嚴格比對
         if (isAdmin && data.adminPin) {
-          const inputPin = await openPinModal();
-          if (inputPin !== data.adminPin) {
-            showToast(inputPin ? '密碼錯誤，切換為旅伴檢視模式' : '已進入旅伴檢視模式');
-            isAdmin = false;
-            // 清理網址列的 admin 標籤，不重新整理
-            window.history.replaceState({}, '', `${window.location.pathname}?trip=${currentTripId}`);
+          const cachedPin = sessionStorage.getItem('godutch_auth_' + currentTripId);
+          if (cachedPin !== data.adminPin) {
+            const entered = await requestPinFromModal();
+            if (entered === data.adminPin) {
+              sessionStorage.setItem('godutch_auth_' + currentTripId, entered);
+              isAdmin = true;
+            } else {
+              isAdmin = false;
+              window.history.replaceState({}, '', `${window.location.pathname}?trip=${currentTripId}`);
+              showToast(entered ? '密碼錯誤，切換為旅伴檢視' : '已進入旅伴檢視模式');
+            }
           }
         }
       }
@@ -1207,17 +1192,13 @@
         roleBadge.innerText = '總務管理';
         roleBadge.className = 'role-badge role-admin';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
-        document.getElementById('btnShareAdmin').style.display = 'block';
-        document.getElementById('btnResetTrip').style.display = '';
-        document.getElementById('btnOpenKittyDeposit').style.display = '';
+        document.getElementById('adminHeaderBar').style.display = 'flex';
         document.getElementById('custodianSelect').disabled = false;
       } else {
         roleBadge.innerText = '旅伴檢視';
         roleBadge.className = 'role-badge role-viewer';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-        document.getElementById('btnShareAdmin').style.display = 'none';
-        document.getElementById('btnResetTrip').style.display = 'none';
-        document.getElementById('btnOpenKittyDeposit').style.display = 'none';
+        document.getElementById('adminHeaderBar').style.display = 'none';
         document.getElementById('custodianSelect').disabled = true;
       }
     }
@@ -1233,7 +1214,7 @@
     }
 
     // ==========================================
-    // 5. 公費計算邏輯
+    // 5. 公費與成員管理
     // ==========================================
     function getKittyBalance() {
       const inAmt = (state.kittyDeposits || []).reduce((acc, c) => acc + (Number(c.totalAmount) || 0), 0);
@@ -1267,10 +1248,7 @@
 
     function openKittyModal() {
       if (!isAdmin) return;
-      if (state.members.length === 0) {
-        showToast('請先在下方加入同行旅伴');
-        return;
-      }
+      if (state.members.length === 0) return showToast('請先在下方加入同行旅伴');
       document.getElementById('kittyAmountInput').value = '';
       switchDepositType(document.getElementById('kittyDepositType').value);
       document.getElementById('kittyModal').style.display = 'flex';
@@ -1302,10 +1280,7 @@
       if (!isAdmin) return;
       const type = document.getElementById('kittyDepositType').value;
       const amount = parseFloat(document.getElementById('kittyAmountInput').value);
-      if (isNaN(amount) || amount <= 0) {
-        showToast('請輸入有效金額');
-        return;
-      }
+      if (isNaN(amount) || amount <= 0) return showToast('請輸入有效金額');
 
       let payer = "全員";
       let totalAmount = amount;
@@ -1339,9 +1314,6 @@
       syncState();
     }
 
-    // ==========================================
-    // 6. 旅伴名單管理
-    // ==========================================
     function addMember() {
       if (!isAdmin) return;
       const input = document.getElementById('memberNameInput');
@@ -1381,7 +1353,7 @@
     }
 
     // ==========================================
-    // 7. 記錄花費 (總務優先抵公費 + 差額自動轉代墊)
+    // 6. 記錄花費 (自費、扣抵、分攤)
     // ==========================================
     function toggleCustomSection() {
       const area = document.getElementById('customArea');
@@ -1414,12 +1386,12 @@
       const c = document.getElementById('customList');
       c.innerHTML = customSplits.map((row, idx) => `
         <div class="custom-row">
-          <select onchange="customSplits[${idx}].person=this.value" class="form-select" style="width:auto; padding:5px 8px; font-size:12px;">
+          <select onchange="customSplits[${idx}].person=this.value" class="form-select" style="width:auto; padding:5px 6px; font-size:12px;">
             ${state.members.map(m => `<option value="${m}" ${m === row.person ? 'selected' : ''}>${m}</option>`).join('')}
           </select>
-          <span style="font-size:11px; white-space:nowrap; color:var(--text-muted);">自費</span>
-          <input type="number" value="${row.amount || ''}" oninput="customSplits[${idx}].amount=parseFloat(this.value)||0" placeholder="金額" class="input-text" style="width:75px; padding:5px 8px; font-size:12px;">
-          <span style="font-size:11px; white-space:nowrap; color:var(--text-muted);">元</span>
+          <span style="font-size:11px; color:var(--text-muted);">自費</span>
+          <input type="number" value="${row.amount || ''}" oninput="customSplits[${idx}].amount=parseFloat(this.value)||0" placeholder="金額" class="input-text" style="width:70px; padding:5px 6px; font-size:12px;">
+          <span style="font-size:11px; color:var(--text-muted);">元</span>
           <button type="button" onclick="removeCustomRow(${idx})" style="background:none; border:none; color:var(--rose-subtle); font-size:14px; cursor:pointer;">&times;</button>
         </div>
       `).join('');
@@ -1441,7 +1413,7 @@
     function renderSplitButtons() {
       const c = document.getElementById('splitButtonsContainer');
       if (state.members.length === 0) {
-        c.innerHTML = '<span style="font-size:11px; color:var(--text-light);">請先在上方加入成員</span>';
+        c.innerHTML = '<span style="font-size:11px; color:var(--text-light); grid-column:1/-1;">請先在上方加入旅伴</span>';
         return;
       }
       c.innerHTML = state.members.map(m => {
@@ -1528,7 +1500,7 @@
     }
 
     // ==========================================
-    // 8. 旅伴收支統計
+    // 7. 旅伴收支統計與結算演算法
     // ==========================================
     function computeMemberStatistics() {
       const stats = {};
@@ -1562,9 +1534,6 @@
       return stats;
     }
 
-    // ==========================================
-    // 9. 結算演算法
-    // ==========================================
     function computeSettlement() {
       const balance = {};
       state.members.forEach(m => balance[m] = 0);
@@ -1642,7 +1611,7 @@
     }
 
     // ==========================================
-    // 10. 畫面渲染
+    // 8. 畫面渲染
     // ==========================================
     function renderAll() {
       const kittyBal = getKittyBalance();
@@ -1676,29 +1645,29 @@
         statsBox.innerHTML = state.members.map(m => {
           const item = stats[m] || { totalSpent: 0, totalPaid: 0 };
           return `
-            <div class="stats-item">
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#FDFCFB; border:1px solid var(--border-soft); border-radius:var(--radius-sm); padding:7px 10px; font-size:12px;">
               <div>
-                <span class="stats-name">${m}</span>
+                <span style="font-weight:500;">${m}</span>
                 ${m === state.custodian ? '<span style="font-size:10px; background:var(--milktea-light); color:var(--milktea-dark); padding:1px 5px; border-radius:3px; margin-left:4px;">總務</span>' : ''}
               </div>
-              <div class="stats-details">
-                <span class="stats-spent">花費 $${Math.round(item.totalSpent).toLocaleString()}</span>
-                <span class="stats-paid">代墊 $${Math.round(item.totalPaid).toLocaleString()}</span>
+              <div style="display:flex; gap:10px; font-size:11px; font-family:monospace;">
+                <span style="color:var(--text-muted);">花費 $${Math.round(item.totalSpent).toLocaleString()}</span>
+                <span style="color:var(--milktea-dark); font-weight:600;">代墊 $${Math.round(item.totalPaid).toLocaleString()}</span>
               </div>
             </div>
           `;
         }).join('');
       }
 
-      // 成員標籤
+      // 成員網格名單 (消除右側畸零空間)
       document.getElementById('memberCountBadge').innerText = state.members.length;
       const mContainer = document.getElementById('membersContainer');
       mContainer.innerHTML = state.members.map(m => `
         <span class="member-chip">
-          ${m}
+          <span>${m}</span>
           ${isAdmin ? `<button type="button" class="chip-del" onclick="removeMember('${m}')">&times;</button>` : ''}
         </span>
-      `).join('') || '<span class="empty-hint" style="padding:0;">尚未加入任何旅伴</span>';
+      `).join('') || '<span class="empty-hint" style="grid-column:1/-1; padding:4px 0;">尚未加入任何旅伴</span>';
 
       // 付款人下拉選單
       const pSelect = document.getElementById('payerSelect');
@@ -1710,7 +1679,7 @@
       renderSplitButtons();
       renderCustomList();
 
-      // 消費明細列表
+      // 消費清單
       const expList = document.getElementById('expenseList');
       let total = 0;
       if (state.expenses.length === 0) {
@@ -1725,7 +1694,7 @@
             <div class="expense-item">
               <div class="expense-main-row">
                 <div>
-                  <span style="font-weight:500; color:var(--text-main);">${e.title}</span>
+                  <span style="font-weight:500;">${e.title}</span>
                   <span style="color:var(--milktea-dark); font-weight:600; font-family:monospace; margin-left:4px;">$${Math.round(e.amount).toLocaleString()}</span>
                 </div>
                 <div style="display:flex; align-items:center;">
@@ -1741,7 +1710,7 @@
               </div>
               ${isExpanded ? `
                 <div class="expense-detail-drawer">
-                  <div style="margin-bottom:4px;"><strong>分攤旅伴：</strong>${(e.splitWith || []).join('、 ')}</div>
+                  <div style="margin-bottom:3px;"><strong>分攤旅伴：</strong>${(e.splitWith || []).join('、 ')}</div>
                   ${(e.customSplits && e.customSplits.length) ? `<div><strong>特定自費：</strong>${e.customSplits.map(c=>`${c.person}$${c.amount}`).join('、 ')}</div>` : ''}
                 </div>
               ` : ''}
@@ -1751,7 +1720,7 @@
       }
       document.getElementById('totalCostDisplay').innerText = `累計：$${Math.round(total).toLocaleString()}`;
 
-      // 結算轉帳清單
+      // 結算列表
       const setList = document.getElementById('settlementList');
       const { transactions, creditors } = computeSettlement();
       if (transactions.length === 0) {
@@ -1765,7 +1734,7 @@
         `).join('');
       }
 
-      // 收款人帳號專區 (防爆版設計)
+      // 收款帳號列表
       const accList = document.getElementById('accountList');
       if (creditors.length === 0) {
         accList.innerHTML = '<span style="font-size:11px; color:var(--text-light);">尚無收款需求</span>';
@@ -1775,7 +1744,7 @@
           return `
             <div class="account-card">
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:12px; font-weight:600; color:var(--text-main);">${c.person}</span>
+                <span style="font-size:12px; font-weight:600;">${c.person}</span>
                 <span style="font-size:11px; color:var(--milktea-dark); font-weight:600;">應收：$${c.amount.toLocaleString()}</span>
               </div>
               <div class="account-row">
@@ -1798,7 +1767,7 @@
 
     function copyPureAccount(acc, name) {
       if (!acc) return showToast(`請先填寫 ${name} 的帳號`);
-      copyToClipboard(acc.replace(/[^0-9]/g, ''), `已複製 ${name} 的銀行帳號`);
+      copyToClipboard(acc.replace(/[^0-9]/g, ''), `已複製 ${name} 的帳號`);
     }
 
     function copyToClipboard(txt, msg) {
@@ -1852,7 +1821,7 @@
 
     function resetEntireTrip() {
       if (!isAdmin) return;
-      showConfirm('確定要清空這趟旅程的所有紀錄（人員、公費、帳目）嗎？', () => {
+      showConfirm('確定要清空這趟旅程的所有紀錄（人員、公費、花費）嗎？', () => {
         state.members = [];
         state.custodian = "";
         state.memberBanks = {};
