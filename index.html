@@ -232,7 +232,7 @@
       gap: 13px;
     }
 
-    /* 極簡湖山與「遠行與日常」交融設計區塊 */
+    /* 極簡湖山與「遠行與日常」交融設計區塊 (自然暈開無生硬直線收邊) */
     .lake-scene-container {
       position: relative;
       width: 100%;
@@ -868,7 +868,7 @@
     <!-- 0. 首頁大廳 (當網址未帶 trip 參數時呈現) -->
     <div id="roomLobbySection" class="room-lobby-card" style="display:none;">
       
-      <!-- 極簡寫意手繪湖山與標題交融區塊 -->
+      <!-- 極簡寫意手繪湖山與標題交融區塊 (無死板直線收邊) -->
       <div class="lake-scene-container">
         <svg class="lake-scene-svg" viewBox="0 0 320 215" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -1295,6 +1295,7 @@
       document.getElementById('customRoomCodeInput').value = code;
     }
 
+    // 🔒 建立旅程：若代碼已存在，提示「請從加入旅程登入」並切換至加入抽屜
     function createNewTripRoom() {
       const code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
       const password = document.getElementById('customRoomPassInput').value.trim();
@@ -1307,6 +1308,7 @@
         alert('代碼僅限英文、數字、連字號（-）或底線（_），不含空格與中文。');
         return;
       }
+      // 🔒 嚴格檢查正好 4 碼純數字
       if (!/^\d{4}$/.test(password)) {
         alert('管理密碼格式錯誤，請填寫正好「4碼純數字」(例如：1234)');
         return;
@@ -1315,10 +1317,15 @@
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (snap.exists() && snap.val() && snap.val().createdAt) {
-            alert(`旅程代碼「${code}」已被使用，請重新設定代碼。`);
+            // 💡 依據指示：重複代碼請他從「加入旅程」登入
+            alert(`此旅程代碼已存在！\n請至下方「2. 加入既有的旅程」進行登入。`);
+            
+            // 自動切換到加入旅程抽屜，並自動填好代碼
+            document.getElementById('joinRoomCodeInput').value = code;
+            toggleLobbyAccordion('join');
             return;
           } else {
-            // 同時寫入 adminPin 與 password，保證新舊架構完全相容
+            // 雙寫 adminPin 與 password，確保所有舊邏輯與新邏輯都相容
             db.ref('trips/' + code).set({
               createdAt: Date.now(),
               adminPin: password,
@@ -1338,7 +1345,7 @@
       }
     }
 
-    // 🌟 同時相容 adminPin 與 password 雙欄位
+    // 🔒 加入旅程：純粹簡短錯誤訊息，絕不暴露外部網址
     function joinExistingRoom() {
       const code = document.getElementById('joinRoomCodeInput').value.trim().toLowerCase();
       const inputPass = document.getElementById('joinRoomPassInput').value.trim();
@@ -1351,24 +1358,24 @@
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
-            alert(`找不到代碼為「${code}」的旅程，請確認代碼是否輸入正確。`);
+            alert(`找不到此旅程代碼，請確認代碼是否輸入正確。`);
             return;
           }
           
           const roomData = snap.val();
           if (inputPass) {
             if (!/^\d{4}$/.test(inputPass)) {
-              alert('密碼格式錯誤，應為正好 4 碼數字（例如：1234）。');
+              alert('管理密碼應為正好 4 碼數字（例如：1234）。');
               return;
             }
 
-            // 雙向相容：同時檢查 adminPin 與 password 兩個欄位
+            // 雙向相容：同時檢查 adminPin 與 password
             const rawDbPass = (roomData.adminPin !== undefined && roomData.adminPin !== "") 
                               ? roomData.adminPin 
                               : roomData.password;
 
             if (rawDbPass === undefined || rawDbPass === null || rawDbPass === "") {
-              alert(`旅程「${code}」尚未在資料庫設定密碼，請直接點選加入（不填密碼）以旅伴身分進入，或在 Firebase 後台補上 adminPin。`);
+              alert(`此旅程尚未設定管理密碼，請直接加入以旅伴身分瀏覽。`);
               return;
             }
 
@@ -1378,7 +1385,7 @@
             if (dbPass === userPass) {
               window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
             } else {
-              alert('管理密碼錯誤，請確認。若為一般旅伴請不要填寫密碼，直接加入。');
+              alert('管理密碼錯誤，請確認。若為一般旅伴請勿填寫密碼，直接加入即可。');
             }
           } else {
             window.location.href = `${window.location.pathname}?trip=${code}`;
