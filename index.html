@@ -40,6 +40,7 @@
       --art-ink-blur: #EFE6DF;
     }
 
+    /* 春天「初融櫻桃粉調」 */
     [data-theme="spring"] {
       --bg-warm: #FAF6F5;
       --theme-dark: #7A4242;
@@ -56,6 +57,7 @@
       --art-ink-blur: #F4EAE9;
     }
 
+    /* 夏天「茂密森活綠調」 */
     [data-theme="summer"] {
       --bg-warm: #F6F8F6;
       --theme-dark: #375243;
@@ -72,6 +74,7 @@
       --art-ink-blur: #E7EFEA;
     }
 
+    /* 冬天「靜謐雪霽藍調」 */
     [data-theme="winter"] {
       --bg-warm: #F5F7F9;
       --theme-dark: #38535F;
@@ -157,6 +160,7 @@
       border: 1px solid var(--border-soft);
     }
 
+    /* 季節切換點點 */
     .header-actions {
       display: flex;
       gap: 12px;
@@ -458,19 +462,6 @@
       color: var(--text-main);
     }
 
-    /* 公費停用時的狀態卡 */
-    .kitty-disabled-card {
-      background: #FDFCFB;
-      border: 1px dashed var(--border-soft);
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
     /* 彈窗樣式 */
     .modal-overlay {
       position: fixed;
@@ -499,7 +490,7 @@
       margin-bottom: 14px;
     }
 
-    /* 旅伴收支小記清單 */
+    /* 旅伴收支小記清單 (預設精簡收合) */
     .stats-toggle-btn {
       background: none;
       border: none;
@@ -678,7 +669,7 @@
       margin-top: 6px;
     }
 
-    /* 分攤旅伴按鈕 */
+    /* 分攤旅伴按鈕：極簡膠囊 */
     .split-chip {
       border: 1px solid var(--border-soft);
       background: #FDFCFB;
@@ -846,27 +837,30 @@
     }
 
     /* ==========================================
-       自訂精緻 Toast 提示 (徹底杜絕瀏覽器網址泡泡)
+       自訂精緻 Toast 提示 (無網址、文字排版平衡避免孤字)
        ========================================== */
     .app-toast-container {
       position: fixed;
       top: 24px;
       left: 50%;
       transform: translateX(-50%) translateY(-20px);
-      background: rgba(61, 53, 47, 0.92);
+      background: rgba(61, 53, 47, 0.94);
       color: #FAF8F5;
-      padding: 11px 20px;
-      border-radius: 30px;
+      padding: 10px 22px;
+      border-radius: 24px;
       font-size: 13px;
-      letter-spacing: 0.6px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      letter-spacing: 0.5px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
       z-index: 9999;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s ease, transform 0.25s ease;
-      max-width: 90%;
+      max-width: 86vw;
+      width: max-content;
       text-align: center;
       line-height: 1.5;
+      text-wrap: balance;
+      word-break: keep-all;
     }
     .app-toast-container.show {
       opacity: 1;
@@ -876,7 +870,7 @@
 </head>
 <body>
 
-  <!-- 自訂 Toast 容器 -->
+  <!-- 自訂 Toast 提示容器 -->
   <div id="appToast" class="app-toast-container"></div>
 
   <!-- 頂部導航 -->
@@ -901,10 +895,10 @@
 
   <div class="container">
 
-    <!-- 0. 首頁大廳 -->
+    <!-- 0. 首頁大廳 (當網址未帶 trip 參數時呈現) -->
     <div id="roomLobbySection" class="room-lobby-card" style="display:none;">
       
-      <!-- 手繪寫意多洛米堤湖山 SVG -->
+      <!-- 手繪寫意多洛米堤湖山 SVG (自然暈染無死板直線收邊) -->
       <div class="lake-scene-container">
         <svg class="lake-scene-svg" viewBox="0 0 320 215" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -915,14 +909,14 @@
             </filter>
           </defs>
 
-          <!-- 1. 不規則洗墨與墨暈效果 -->
+          <!-- 不規則洗墨與墨暈效果 -->
           <g filter="url(#naturalBleed)" opacity="0.45">
             <path d="M 20,110 Q 55,95 85,115 T 140,90 T 195,110 T 250,95 T 300,110 T 270,165 T 210,180 T 130,170 T 70,185 T 15,145 Z" fill="var(--art-ink-blur)" />
             <path d="M 45,100 Q 95,85 155,105 T 255,90 T 290,120 T 240,150 T 160,155 T 80,145 T 35,120 Z" fill="var(--art-ink-blur)" opacity="0.6" />
             <path d="M 12,120 Q 50,115 90,122 T 180,118 T 260,124 T 308,120 T 250,135 T 150,138 T 60,135 Z" fill="var(--art-stroke)" opacity="0.12" />
           </g>
 
-          <!-- 2. 手繪感潑墨與飛濺墨點點 -->
+          <!-- 手繪感潑墨與飛濺墨點 -->
           <g fill="var(--art-stroke)" opacity="0.22">
             <circle cx="12" cy="135" r="1.5" />
             <circle cx="28" cy="122" r="0.8" />
@@ -950,46 +944,46 @@
             <circle cx="198" cy="190" r="0.4" /><circle cx="255" cy="182" r="0.4" /><circle cx="288" cy="175" r="0.5" />
           </g>
 
-          <!-- 3. 手寫感雙圓太陽 -->
+          <!-- 手寫感雙圓太陽 -->
           <g stroke="var(--art-stroke)" stroke-width="0.8" fill="none" opacity="0.85">
             <circle cx="118" cy="38" r="12" stroke="var(--art-stroke)" stroke-width="1.1" />
             <circle cx="119" cy="37" r="13.5" stroke="var(--art-stroke)" stroke-width="0.75" opacity="0.8" />
             <path d="M118 21 L118 18 M118 53 L118 56 M101 38 L104 38 M132 38 L135 38 M106 25 L108 27 M129 25 L127 27 M106 49 L108 47 M129 49 L127 47 M109 20 L110 22 M126 20 L125 22 M102 31 L104 32 M134 31 L132 32 M102 44 L104 43 M134 44 L132 43 M109 54 L110 52 M126 54 L125 52" />
           </g>
 
-          <!-- 4. 極簡寫意山峰線條 -->
+          <!-- 極簡寫意山峰線條 -->
           <path d="M 12 118 Q 28 92 46 72 T 80 50 L 82 52 T 108 86 T 138 104" stroke="var(--art-stroke)" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.85" />
           <path d="M 80 50 Q 105 78 135 94 T 172 110" stroke="var(--art-stroke)" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4" />
           <path d="M 106 86 Q 138 65 174 54 T 212 40 L 214 42 T 245 72 T 282 86" stroke="var(--art-stroke)" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.9" />
           <path d="M 174 54 Q 195 76 225 90 T 260 102" stroke="var(--art-stroke)" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4" />
           <path d="M 212 40 Q 235 62 262 76 T 298 90 T 312 112" stroke="var(--art-stroke)" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.8" />
 
-          <!-- 5. 山脈肌理 -->
+          <!-- 山脈肌理 -->
           <path d="M 46 72 L 44 76 M 52 82 L 50 87 M 58 94 L 54 100 M 64 105 L 61 112 M 140 104 L 138 112 M 148 98 L 145 106" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.45" />
           <path d="M 245 72 L 243 78 M 252 84 L 248 91 M 262 92 L 257 101" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.45" />
           <path d="M 195 62 L 191 69 M 202 75 L 198 83 M 209 88 L 204 97 M 218 92 L 214 102" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.4" />
           <path d="M 132 80 L 129 86 M 120 90 L 117 96" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.4" />
           <path d="M 285 75 L 282 82 M 292 86 L 289 94" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.4" />
 
-          <!-- 6. 飄逸寫意雲霧 -->
+          <!-- 飄逸寫意雲霧 -->
           <path d="M 85 85 Q 98 75 112 80" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
           <path d="M 125 72 Q 138 65 152 70 Q 165 72 175 66" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.4" />
           <path d="M 242 66 Q 255 58 268 62" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.4" />
 
-          <!-- 7. 飛鳥與自然點綴 -->
+          <!-- 飛鳥點綴 -->
           <path d="M 160 52 Q 163 49 166 52 Q 169 49 172 52" stroke="var(--art-stroke)" stroke-width="0.75" stroke-linecap="round" fill="none" opacity="0.6" />
           <path d="M 180 44 Q 182 42 184 44 Q 186 42 188 44" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
           <path d="M 275 66 Q 277 64 279 66 Q 281 64 283 66" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
           <path d="M 288 56 Q 290 54 292 56 Q 294 54 296 56" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
 
-          <!-- 8. 水際與岸線 -->
+          <!-- 水際與岸線 -->
           <path d="M 12 118 C 40 115 80 113 130 115 C 180 117 240 114 272 113 C 285 113 302 115 311 116" stroke="var(--art-stroke)" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.7" />
           <path d="M 10 119 C 15 123 18 130 15 134 C 12 137 8 139 6 141" stroke="var(--art-stroke)" stroke-width="0.8" fill="none" opacity="0.6" />
           <path d="M 12 118 C 25 120 38 123 55 129 C 70 134 85 137 94 139" stroke="var(--art-stroke)" stroke-width="0.85" fill="none" opacity="0.6" stroke-dasharray="40 12" />
           <path d="M 252 114 C 258 118 268 124 282 129 C 295 134 308 132 314 129" stroke="var(--art-stroke)" stroke-width="0.8" fill="none" opacity="0.5" />
           <path d="M 280 113 C 285 117 290 122 298 127" stroke="var(--art-stroke)" stroke-width="0.6" fill="none" opacity="0.4" stroke-dasharray="10 6" />
 
-          <!-- 9. 手繪欄杆與松樹 -->
+          <!-- 手繪欄杆與松樹 -->
           <path d="M 222 115 L 225 111 M 227 115 L 230 110 M 232 115 L 235 111 M 238 115 L 241 110 M 245 115 L 248 111 M 253 115 L 256 110 M 259 115 L 262 111" stroke="var(--art-stroke)" stroke-width="0.6" opacity="0.5" />
           <path d="M 221 114 Q 240 113 261 113" stroke="var(--art-stroke)" stroke-width="0.5" fill="none" opacity="0.5" />
 
@@ -1002,7 +996,7 @@
           <path d="M 296 99 L 298 119 M 291 113 L 303 113 M 294 106 L 300 106" stroke="var(--art-stroke)" stroke-width="1.2" opacity="0.8" />
           <path d="M 305 107 L 306 119 M 302 115 L 308 115" stroke="var(--art-stroke)" stroke-width="0.8" opacity="0.65" />
 
-          <!-- 10. 湖中盪漾的小木舟 -->
+          <!-- 湖中小木舟 -->
           <g opacity="0.75" stroke="var(--art-stroke)" fill="none" stroke-linecap="round">
             <path d="M 130 130 Q 140 134 152 130 Q 140 131 130 130 Z" stroke-width="1" />
             <path d="M 134 131 L 131 134 M 136 131 L 140 135" stroke-width="0.6" />
@@ -1014,7 +1008,7 @@
             <path d="M 189 135 C 199 137 209 137 219 135" stroke-dasharray="1 2" stroke-width="0.6" />
           </g>
 
-          <!-- 11. 自然漸隱、不封口的水波紋 -->
+          <!-- 自然漸隱水波紋 -->
           <path d="M 40 126 C 100 123 180 123 280 126" stroke="var(--art-stroke)" stroke-width="0.7" opacity="0.45" />
           <path d="M 28 132 C 80 128 160 128 240 132" stroke="var(--art-stroke)" stroke-width="0.65" opacity="0.4" stroke-dasharray="120 40 60 0" />
           <path d="M 55 139 C 110 135 190 135 275 139" stroke="var(--art-stroke)" stroke-width="0.6" opacity="0.38" />
@@ -1034,7 +1028,7 @@
         </svg>
       </div>
 
-      <!-- 1. 開啟一段新旅程 -->
+      <!-- 1. 開啟一段新旅程 (摺疊卡片) -->
       <button type="button" class="lobby-accordion-btn" onclick="toggleLobbyAccordion('create')">
         <span>1. 開啟一段新旅程</span>
         <span class="lobby-accordion-arrow" id="arrow-create">▾</span>
@@ -1051,7 +1045,7 @@
         <button type="button" class="lobby-btn-sub" onclick="createNewTripRoom()">建立並以總務身分進入</button>
       </div>
 
-      <!-- 2. 加入既有的旅程 -->
+      <!-- 2. 加入既有的旅程 (摺疊卡片) -->
       <button type="button" class="lobby-accordion-btn" onclick="toggleLobbyAccordion('join')">
         <span>2. 加入既有的旅程</span>
         <span class="lobby-accordion-arrow" id="arrow-join">▾</span>
@@ -1069,11 +1063,10 @@
 
     </div>
 
-    <!-- 1. 公費卡片區塊 (支援 kittyEnabled 開關) -->
+    <!-- 1. 迷你公費卡片 -->
     <div id="mainAppSection" style="display:flex; flex-direction:column; gap:13px;">
 
-      <!-- 情況 A: 公費已啟用時顯示完整卡片 -->
-      <div class="card kitty-compact-card" id="kittyCardActive" style="display:none;">
+      <div class="card kitty-compact-card">
         <div class="kitty-row">
           <div class="kitty-left">
             <span class="kitty-label">公費餘額</span>
@@ -1082,7 +1075,6 @@
           <div class="kitty-actions">
             <button type="button" id="btnOpenKittyDeposit" class="btn-kitty-sm" onclick="openKittyModal()">繳存</button>
             <button type="button" class="btn-kitty-sm" onclick="toggleKittyDrawer()">紀錄 ▾</button>
-            <button type="button" class="btn-kitty-sm admin-only" onclick="toggleKittyEnabled(false)" style="opacity:0.85;" title="關閉公基金功能">關閉公費</button>
           </div>
         </div>
         <div class="kitty-custodian-bar">
@@ -1096,13 +1088,7 @@
         </div>
       </div>
 
-      <!-- 情況 B: 公費已停用時 (僅總務看得到重新啟用卡) -->
-      <div class="kitty-disabled-card admin-only" id="kittyCardDisabled" style="display:none;">
-        <span>目前已關閉「公基金功能」</span>
-        <button type="button" class="btn-kitty-sm" style="background:var(--theme-main); border:none;" onclick="toggleKittyEnabled(true)">啟用公費</button>
-      </div>
-
-      <!-- 2. 旅伴收支小記 -->
+      <!-- 2. 旅伴收支小記 (預設精簡收合) -->
       <div class="card">
         <div class="card-header" style="margin-bottom:0;" onclick="toggleStatsDrawer()">
           <span class="card-title" style="cursor:pointer;">旅伴收支小記</span>
@@ -1118,7 +1104,7 @@
         </div>
       </div>
 
-      <!-- 3. 同行旅伴名單 -->
+      <!-- 3. 同行旅伴名單 (總務管理專用) -->
       <div class="card admin-only" id="memberManageCard">
         <div class="card-header">
           <span class="card-title">同行旅伴 (<span id="memberCountBadge">0</span>)</span>
@@ -1131,7 +1117,7 @@
         <div id="membersContainer" class="chips-box"></div>
       </div>
 
-      <!-- 4. 記錄花費 -->
+      <!-- 4. 記錄花費 (總務管理專用) -->
       <div class="card admin-only" id="expenseFormCard">
         <div class="card-header">
           <span class="card-title">記錄花費</span>
@@ -1193,7 +1179,7 @@
         <div id="expenseList"></div>
       </div>
 
-      <!-- 6. 結算明細 -->
+      <!-- 6. 結算明細 (清楚列出誰該給誰多少錢) -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">結算明細</span>
@@ -1201,7 +1187,7 @@
         </div>
         <div id="settlementList"></div>
 
-        <!-- 置底收款帳號專區 -->
+        <!-- 置底收款帳號專區 (防爆版設計) -->
         <div id="accountSection" style="margin-top:14px; padding-top:12px; border-top:1px dashed var(--border-soft);">
           <span class="card-title" style="display:block; margin-bottom:8px;">匯款帳號 (選填)</span>
           <div id="accountList"></div>
@@ -1241,7 +1227,7 @@
 
   <script>
     // ==========================================
-    // 0. 自訂優雅 Toast (徹底替代原生 alert，不出現網址)
+    // 0. 自訂優雅 Toast (無網址外框、精簡且避免孤字)
     // ==========================================
     let toastTimer = null;
     function showToast(msg) {
@@ -1251,11 +1237,11 @@
       if (toastTimer) clearTimeout(toastTimer);
       toastTimer = setTimeout(() => {
         toast.classList.remove('show');
-      }, 3000);
+      }, 2600);
     }
 
     // ==========================================
-    // 1. Firebase 連線設定
+    // 1. Firebase 連線設定 (固定專案金鑰)
     // ==========================================
     const firebaseConfig = {
       apiKey: "AIzaSyDZEhQNAmZLDa-VRclvFLqUL7cZkvUKUjs",
@@ -1282,13 +1268,12 @@
     const isAdmin = urlParams.get('admin') === '1';
 
     // ==========================================
-    // 2. 狀態資料模型 (保留 kittyEnabled)
+    // 2. 狀態資料模型
     // ==========================================
     let state = {
       createdAt: null,
-      adminPin: "",         
-      password: "",         
-      kittyEnabled: true,   
+      adminPin: "",
+      password: "",
       members: [],          
       custodian: "",        
       memberBanks: {},      
@@ -1299,19 +1284,21 @@
     let selectedSplitters = [];
     let customSplits = [];
     let expandedExpenseId = null;
-    let isStatsExpanded = false; 
+    let isStatsExpanded = false; // 預設收合旅伴收支小記
 
     // ==========================================
-    // 3. 四季主題切換
+    // 3. 四季主題切換 (Theme Toggle)
     // ==========================================
     function setSeasonTheme(season) {
       document.documentElement.setAttribute('data-theme', season);
       localStorage.setItem('godutch_preferred_season', season);
     }
 
+    // 載入預設或儲存的主題
     const savedSeason = localStorage.getItem('godutch_preferred_season') || 'autumn';
     setSeasonTheme(savedSeason);
 
+    // 大廳手風琴 Accordion 動態折疊
     function toggleLobbyAccordion(type) {
       const drawerCreate = document.getElementById('drawer-create');
       const drawerJoin = document.getElementById('drawer-join');
@@ -1353,28 +1340,28 @@
       document.getElementById('customRoomCodeInput').value = code;
     }
 
-    // 建立新旅程：無網址泡泡提示，重複時自動切換
+    // 建立旅程：重複時精簡提示並自動引導切換
     function createNewTripRoom() {
       const code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
       const password = document.getElementById('customRoomPassInput').value.trim();
       
       if (!code) {
-        showToast('請填寫自訂旅程代碼，或點選「隨機」');
+        showToast('請填寫自訂旅程代碼');
         return;
       }
       if (!/^[a-z0-9_-]+$/.test(code)) {
-        showToast('代碼僅限英文、數字、連字號（-）或底線（_）');
+        showToast('代碼限英數字或連字號');
         return;
       }
       if (!/^\d{4}$/.test(password)) {
-        showToast('管理密碼格式錯誤，請填寫正好「4碼純數字」');
+        showToast('密碼請填正好4碼數字');
         return;
       }
 
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (snap.exists() && snap.val() && snap.val().createdAt) {
-            showToast('此旅程代碼已存在！請至下方「2. 加入既有的旅程」進行登入。');
+            showToast('此代碼已存在，請由下方加入旅程');
             document.getElementById('joinRoomCodeInput').value = code;
             toggleLobbyAccordion('join');
             return;
@@ -1383,7 +1370,6 @@
               createdAt: Date.now(),
               adminPin: password,
               password: password,
-              kittyEnabled: true,
               members: [],
               custodian: "",
               kittyDeposits: [],
@@ -1399,7 +1385,7 @@
       }
     }
 
-    // 加入既有旅程：無網址泡泡提示
+    // 加入既有旅程：精簡提示，相容 adminPin 與 password
     function joinExistingRoom() {
       const code = document.getElementById('joinRoomCodeInput').value.trim().toLowerCase();
       const inputPass = document.getElementById('joinRoomPassInput').value.trim();
@@ -1412,14 +1398,14 @@
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
-            showToast('找不到此旅程代碼，請確認代碼是否輸入正確。');
+            showToast('查無此旅程，請確認代碼');
             return;
           }
           
           const roomData = snap.val();
           if (inputPass) {
             if (!/^\d{4}$/.test(inputPass)) {
-              showToast('管理密碼應為正好 4 碼數字');
+              showToast('管理密碼需為4碼數字');
               return;
             }
 
@@ -1428,7 +1414,7 @@
                               : roomData.password;
 
             if (rawDbPass === undefined || rawDbPass === null || rawDbPass === "") {
-              showToast('此旅程尚未設定管理密碼，請直接加入以旅伴身分瀏覽。');
+              showToast('此旅程無密碼，請直接加入');
               return;
             }
 
@@ -1438,7 +1424,7 @@
             if (dbPass === userPass) {
               window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
             } else {
-              showToast('管理密碼錯誤，若為一般旅伴請勿填寫密碼，直接加入即可。');
+              showToast('密碼錯誤，一般旅伴免填密碼');
             }
           } else {
             window.location.href = `${window.location.pathname}?trip=${code}`;
@@ -1475,7 +1461,7 @@
         db.ref('trips/' + currentTripId).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
             if (!isAdmin) {
-              showToast('找不到代碼為「' + currentTripId + '」的旅程，將返回大廳。');
+              showToast('查無此旅程，返回大廳');
               setTimeout(() => {
                 window.location.href = window.location.pathname;
               }, 1200);
@@ -1515,14 +1501,13 @@
             state.createdAt = val.createdAt || Date.now();
             state.adminPin = val.adminPin || val.password || "";
             state.password = val.password || val.adminPin || "";
-            state.kittyEnabled = (val.kittyEnabled !== undefined) ? !!val.kittyEnabled : true;
             state.members = Array.isArray(val.members) ? val.members : [];
             state.custodian = val.custodian || "";
             state.memberBanks = val.memberBanks || {};
             state.kittyDeposits = Array.isArray(val.kittyDeposits) ? val.kittyDeposits : [];
             state.expenses = Array.isArray(val.expenses) ? val.expenses : [];
           } else {
-            state = { createdAt: Date.now(), adminPin: "", password: "", kittyEnabled: true, members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
+            state = { createdAt: Date.now(), adminPin: "", password: "", members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
           }
           selectedSplitters = state.members.slice();
           renderAll();
@@ -1549,19 +1534,9 @@
     }
 
     // ==========================================
-    // 6. 公費功能控制與計算
+    // 6. 公費計算邏輯
     // ==========================================
-    function toggleKittyEnabled(enabled) {
-      if (!isAdmin) return;
-      state.kittyEnabled = enabled;
-      if (tripRef) {
-        tripRef.child('kittyEnabled').set(enabled);
-      }
-      syncState();
-    }
-
     function getKittyBalance() {
-      if (!state.kittyEnabled) return 0;
       const inAmt = (state.kittyDeposits || []).reduce((acc, c) => acc + (Number(c.totalAmount) || 0), 0);
       const outAmt = (state.expenses || []).reduce((acc, c) => acc + (Number(c.kittyDeduction) || 0), 0);
       return inAmt - outAmt;
@@ -1578,6 +1553,7 @@
       drawer.style.display = (drawer.style.display === 'none') ? 'block' : 'none';
     }
 
+    /* 收支小記展開/收合切換 */
     function toggleStatsDrawer() {
       isStatsExpanded = !isStatsExpanded;
       const drawer = document.getElementById('statsDrawer');
@@ -1594,7 +1570,7 @@
     function openKittyModal() {
       if (!isAdmin) return;
       if (state.members.length === 0) {
-        showToast('請先在下方加入同行旅伴');
+        showToast('請先加入同行旅伴');
         return;
       }
       document.getElementById('kittyAmountInput').value = '';
@@ -1629,7 +1605,7 @@
       const type = document.getElementById('kittyDepositType').value;
       const amount = parseFloat(document.getElementById('kittyAmountInput').value);
       if (isNaN(amount) || amount <= 0) {
-        showToast('請輸入有效金額');
+        showToast('請填寫有效金額');
         return;
       }
 
@@ -1672,8 +1648,8 @@
       if (!isAdmin) return;
       const input = document.getElementById('memberNameInput');
       const name = input.value ? input.value.trim() : '';
-      if (!name) return showToast('請輸入旅伴姓名');
-      if (state.members.includes(name)) return showToast('旅伴姓名重複');
+      if (!name) return showToast('請填寫旅伴姓名');
+      if (state.members.includes(name)) return showToast('旅伴姓名已重複');
 
       state.members.push(name);
       selectedSplitters.push(name);
@@ -1685,7 +1661,7 @@
     function removeMember(name) {
       if (!isAdmin) return;
       const inUse = state.expenses.some(e => e.payer === name || (e.splitWith && e.splitWith.includes(name)));
-      if (inUse) return showToast(`「${name}」在紀錄中已有帳目，請先刪除該項花費。`);
+      if (inUse) return showToast(`「${name}」已有帳目，請先刪除花費`);
 
       state.members = state.members.filter(m => m !== name);
       selectedSplitters = selectedSplitters.filter(n => n !== name);
@@ -1702,7 +1678,7 @@
       state.memberBanks = {};
       selectedSplitters = [];
       syncState();
-      showToast('已清空所有同行旅伴');
+      showToast('已清空同行旅伴');
     }
 
     // ==========================================
@@ -1763,6 +1739,7 @@
       renderSplitButtons();
     }
 
+    /* 渲染極簡膠囊按鈕 */
     function renderSplitButtons() {
       const c = document.getElementById('splitButtonsContainer');
       if (state.members.length === 0) {
@@ -1804,17 +1781,17 @@
       const payer = payerSelect.value;
 
       if (!title) return showToast('請填寫支出品項');
-      if (isNaN(amount) || amount <= 0) return showToast('請輸入有效金額');
+      if (isNaN(amount) || amount <= 0) return showToast('請填寫有效金額');
       if (!payer) return showToast('請選擇付款人');
 
       const customSum = customSplits.reduce((acc, c) => acc + (Number(c.amount) || 0), 0);
-      if (customSum > amount) return showToast('自費總和不能大於支出金額');
-      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return showToast('請至少勾選一位分攤旅伴');
+      if (customSum > amount) return showToast('自費金額大於總支出');
+      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return showToast('請選擇分攤旅伴');
 
       let kittyDeduction = 0;
       let personalPaid = amount;
 
-      if (state.kittyEnabled && payer === state.custodian) {
+      if (payer === state.custodian) {
         const currentKitty = getKittyBalance();
         if (currentKitty > 0) {
           kittyDeduction = Math.min(amount, currentKitty);
@@ -1835,7 +1812,7 @@
 
       clearExpenseForm();
       syncState();
-      showToast('已成功記錄花費');
+      showToast('花費記錄完成');
     }
 
     function deleteExpense(id) {
@@ -1850,11 +1827,11 @@
       if (state.expenses.length === 0) return;
       state.expenses = [];
       syncState();
-      showToast('已清空所有花費紀錄');
+      showToast('已清空花費紀錄');
     }
 
     // ==========================================
-    // 9. 旅伴收支統計
+    // 9. 旅伴收支統計 (僅統計純花費與個人代墊)
     // ==========================================
     function computeMemberStatistics() {
       const stats = {};
@@ -1919,7 +1896,7 @@
       });
 
       const kittyBal = getKittyBalance();
-      if (state.kittyEnabled && state.members.length > 0 && kittyBal > 0) {
+      if (state.members.length > 0 && kittyBal > 0) {
         const refundPerPerson = kittyBal / state.members.length;
         state.members.forEach(m => balance[m] += refundPerPerson);
         if (state.custodian && balance[state.custodian] !== undefined) {
@@ -1956,7 +1933,7 @@
         if (cr.amount === 0) j++;
       }
 
-      return { transactions, creditors, kittyLeftover: state.kittyEnabled ? kittyBal : 0 };
+      return { transactions, creditors, kittyLeftover: kittyBal };
     }
 
     function updateMemberBank(person, field, val) {
@@ -1971,41 +1948,29 @@
     // 11. 畫面渲染
     // ==========================================
     function renderAll() {
-      const cardActive = document.getElementById('kittyCardActive');
-      const cardDisabled = document.getElementById('kittyCardDisabled');
+      const kittyBal = getKittyBalance();
+      document.getElementById('kittyBalanceDisplay').innerText = `$${Math.round(kittyBal).toLocaleString()}`;
 
-      if (state.kittyEnabled) {
-        cardActive.style.display = 'block';
-        cardDisabled.style.display = 'none';
+      // 保管人選單
+      const cSelect = document.getElementById('custodianSelect');
+      cSelect.innerHTML = `<option value="">未指定</option>` + state.members.map(m => 
+        `<option value="${m}" ${state.custodian === m ? 'selected' : ''}>${m}</option>`
+      ).join('');
 
-        const kittyBal = getKittyBalance();
-        document.getElementById('kittyBalanceDisplay').innerText = `$${Math.round(kittyBal).toLocaleString()}`;
-
-        const cSelect = document.getElementById('custodianSelect');
-        cSelect.innerHTML = `<option value="">未指定</option>` + state.members.map(m => 
-          `<option value="${m}" ${state.custodian === m ? 'selected' : ''}>${m}</option>`
-        ).join('');
-
-        const kLogs = document.getElementById('kittyDepositLogs');
-        if (!state.kittyDeposits || state.kittyDeposits.length === 0) {
-          kLogs.innerHTML = '<span style="opacity:0.7;">尚無公費繳存紀錄</span>';
-        } else {
-          kLogs.innerHTML = state.kittyDeposits.map(k => `
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0;">
-              <span>${k.time} · ${k.payer} · $${k.totalAmount.toLocaleString()}</span>
-              ${isAdmin ? `<button type="button" onclick="deleteKittyDeposit('${k.id}')" style="background:none; border:none; color:var(--rose-subtle); cursor:pointer;">&times;</button>` : ''}
-            </div>
-          `).join('');
-        }
+      // 公費紀錄抽屜
+      const kLogs = document.getElementById('kittyDepositLogs');
+      if (!state.kittyDeposits || state.kittyDeposits.length === 0) {
+        kLogs.innerHTML = '<span style="opacity:0.7;">尚無公費繳存紀錄</span>';
       } else {
-        cardActive.style.display = 'none';
-        if (isAdmin) {
-          cardDisabled.style.display = 'flex';
-        } else {
-          cardDisabled.style.display = 'none';
-        }
+        kLogs.innerHTML = state.kittyDeposits.map(k => `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0;">
+            <span>${k.time} · ${k.payer} · $${k.totalAmount.toLocaleString()}</span>
+            ${isAdmin ? `<button type="button" onclick="deleteKittyDeposit('${k.id}')" style="background:none; border:none; color:var(--rose-subtle); cursor:pointer;">&times;</button>` : ''}
+          </div>
+        `).join('');
       }
 
+      // 旅伴收支小記
       const stats = computeMemberStatistics();
       const statsBox = document.getElementById('memberStatsContainer');
       if (state.members.length === 0) {
@@ -2018,7 +1983,7 @@
             <div class="stats-item">
               <div>
                 <span class="stats-name">${m}</span>
-                ${(state.kittyEnabled && m === state.custodian) ? '<span style="font-size:10px; background:var(--theme-light); color:var(--theme-dark); padding:1px 5px; border-radius:3px; margin-left:4px;">總務</span>' : ''}
+                ${m === state.custodian ? '<span style="font-size:10px; background:var(--theme-light); color:var(--theme-dark); padding:1px 5px; border-radius:3px; margin-left:4px;">總務</span>' : ''}
               </div>
               <div class="stats-details">
                 <span class="stats-spent">花費 $${Math.round(item.totalSpent).toLocaleString()}</span>
@@ -2029,6 +1994,7 @@
         }).join('');
       }
 
+      // 成員標籤
       document.getElementById('memberCountBadge').innerText = state.members.length;
       const mContainer = document.getElementById('membersContainer');
       mContainer.innerHTML = state.members.map(m => `
@@ -2038,17 +2004,17 @@
         </span>
       `).join('') || '<span class="empty-hint" style="padding:0;">尚未加入任何旅伴</span>';
 
+      // 付款人下拉選單
       const pSelect = document.getElementById('payerSelect');
       const curPayer = pSelect.value;
-      pSelect.innerHTML = state.members.map(m => {
-        const isSelected = (curPayer === m || (!curPayer && m === state.custodian));
-        const kittyLabel = (state.kittyEnabled && m === state.custodian) ? ' (公費優先扣抵)' : '';
-        return `<option value="${m}" ${isSelected ? 'selected' : ''}>${m}${kittyLabel}</option>`;
-      }).join('');
+      pSelect.innerHTML = state.members.map(m => 
+        `<option value="${m}" ${(curPayer === m || (!curPayer && m === state.custodian)) ? 'selected' : ''}>${m}${m === state.custodian ? ' (公費優先扣抵)' : ''}</option>`
+      ).join('');
 
       renderSplitButtons();
       renderCustomList();
 
+      // 消費明細列表
       const expList = document.getElementById('expenseList');
       let total = 0;
       if (state.expenses.length === 0) {
@@ -2057,7 +2023,7 @@
         expList.innerHTML = state.expenses.slice().reverse().map(e => {
           total += Number(e.amount) || 0;
           const isExpanded = expandedExpenseId === e.id;
-          const hasKitty = (Number(e.kittyDeduction) || 0) > 0;
+          const hasKitty = e.kittyDeduction > 0;
 
           return `
             <div class="expense-item">
@@ -2089,6 +2055,7 @@
       }
       document.getElementById('totalCostDisplay').innerText = `累計：$${Math.round(total).toLocaleString()}`;
 
+      // 結算轉帳清單
       const setList = document.getElementById('settlementList');
       const { transactions, creditors } = computeSettlement();
       if (transactions.length === 0) {
@@ -2102,6 +2069,7 @@
         `).join('');
       }
 
+      // 收款人帳號專區
       const accList = document.getElementById('accountList');
       if (creditors.length === 0) {
         accList.innerHTML = '<span style="font-size:11px; color:var(--text-light);">尚無收款需求</span>';
@@ -2145,23 +2113,23 @@
       input.select();
       try {
         document.execCommand('copy');
-        showToast(msg || '已複製');
+        showToast(msg || '已成功複製');
       } catch (err) {
-        showToast('複製失敗，請手動長按選取');
+        showToast('複製失敗，請手動長按');
       }
       document.body.removeChild(input);
     }
 
     function copySettlementSummary() {
       const { transactions, creditors, kittyLeftover } = computeSettlement();
-      if (transactions.length === 0) return showToast('目前無須轉帳');
+      if (transactions.length === 0) return showToast('目前帳目平衡，無須轉帳');
 
       let out = '🌾【旅途結算清單】\n';
       transactions.forEach(t => {
         out += `👉 ${t.from} 應轉給 ${t.to}：$${t.amount.toLocaleString()} 元\n`;
       });
 
-      if (state.kittyEnabled && kittyLeftover > 0 && state.custodian) {
+      if (kittyLeftover > 0 && state.custodian) {
         out += `\n💡 備註：公費剩餘現鈔 $${Math.round(kittyLeftover).toLocaleString()} 已由總務【${state.custodian}】直接抵銷。\n`;
       }
 
@@ -2171,16 +2139,16 @@
         out += `🏦 ${c.person}：銀行代碼 ${b.code || '未填'} 帳號 ${b.account || '未填'}\n`;
       });
 
-      copyToClipboard(out, '已複製結算清單，可直接貼至 LINE 群組！');
+      copyToClipboard(out, '已複製結算清單至剪貼簿');
     }
 
     function resetEntireTrip() {
       if (!isAdmin) return;
-      state = { createdAt: Date.now(), adminPin: "", password: "", kittyEnabled: true, members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
+      state = { createdAt: Date.now(), adminPin: "", password: "", members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
       selectedSplitters = [];
       customSplits = [];
       syncState();
-      showToast('已清空這趟旅程的所有紀錄');
+      showToast('已清空旅程所有紀錄');
     }
 
     // 啟動初始化
