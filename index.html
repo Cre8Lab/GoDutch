@@ -10,24 +10,71 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <style>
+    /* ========================================================
+       低飽和、粉柔樸實色系定義 (莫蘭迪粉系：淺藍、淺綠、淺黃、淺紅)
+       ======================================================== */
     :root {
-      /* 日光晨陽色系：清爽、透亮、朝氣 */
-      --bg-warm: #FFFDF9;
+      --bg-warm: #FAF8F6;
       --card-bg: #FFFFFF;
-      --text-main: #2D2621;
-      --text-muted: #736961;
-      --text-light: #A89E96;
-      --sun-dark: #B45309;
-      --sun-main: #F59E0B;
-      --sun-hover: #D97706;
-      --sun-soft: #FDE68A;
-      --sun-light: #FEF3C7;
-      --warm-border: #FEEBC8;
-      --border-soft: #F3EFEA;
-      --rose-subtle: #E11D48;
+      --text-main: #3C3835;
+      --text-muted: #7E7670;
+      --text-light: #B2AAA4;
+      --border-soft: #EDE8E3;
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
+
+      /* 預設為淺藍 (粉柔霧藍) */
+      --theme-main: #7B9EA8;
+      --theme-dark: #58757E;
+      --theme-light: #E9F1F3;
+      --theme-border: #D1E1E5;
+      --kitty-gradient-1: #8BAAB3;
+      --kitty-gradient-2: #6C8E98;
+    }
+
+    /* 1. 淺藍 (粉柔霧藍) */
+    body[data-theme="blue"] {
+      --bg-warm: #F8FAFB;
+      --theme-main: #7B9EA8;
+      --theme-dark: #58757E;
+      --theme-light: #EBF2F4;
+      --theme-border: #D2E2E6;
+      --kitty-gradient-1: #8CAAB3;
+      --kitty-gradient-2: #6D8E98;
+    }
+
+    /* 2. 淺綠 (粉柔鼠尾草綠) */
+    body[data-theme="green"] {
+      --bg-warm: #F8FAF8;
+      --theme-main: #7D9D8B;
+      --theme-dark: #577564;
+      --theme-light: #EBF2ED;
+      --theme-border: #D2E3D7;
+      --kitty-gradient-1: #8EAC9B;
+      --kitty-gradient-2: #6B8C7A;
+    }
+
+    /* 3. 淺黃 (粉柔奶杏鵝黃) */
+    body[data-theme="yellow"] {
+      --bg-warm: #FAF9F6;
+      --theme-main: #BFA06E;
+      --theme-dark: #917548;
+      --theme-light: #F7F2EA;
+      --theme-border: #EADBCA;
+      --kitty-gradient-1: #C9AD7F;
+      --kitty-gradient-2: #A88B5B;
+    }
+
+    /* 4. 淺紅 (粉柔乾燥玫瑰紅) */
+    body[data-theme="rose"] {
+      --bg-warm: #FAF8F8;
+      --theme-main: #B97F7F;
+      --theme-dark: #8C5757;
+      --theme-light: #F6EEEE;
+      --theme-border: #E8D3D3;
+      --kitty-gradient-1: #C58F8F;
+      --kitty-gradient-2: #A56C6C;
     }
 
     * {
@@ -44,6 +91,7 @@
       padding-bottom: 96px;
       -webkit-tap-highlight-color: transparent;
       line-height: 1.5;
+      transition: background-color 0.3s ease;
     }
 
     /* 頂部導航 */
@@ -60,22 +108,22 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     .header-brand {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       min-width: 0;
     }
     .brand-leaf {
       display: inline-block;
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: var(--sun-main);
-      box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+      background: var(--theme-main);
       flex-shrink: 0;
+      transition: background 0.3s ease;
     }
     .header h1 {
       font-size: 15px;
@@ -88,7 +136,7 @@
     }
     .role-badge {
       font-size: 10px;
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 12px;
       letter-spacing: 0.5px;
       font-weight: 500;
@@ -96,15 +144,44 @@
       flex-shrink: 0;
     }
     .role-admin {
-      background: var(--sun-light);
-      color: var(--sun-dark);
-      border: 1px solid var(--warm-border);
+      background: var(--theme-light);
+      color: var(--theme-dark);
+      border: 1px solid var(--theme-border);
     }
     .role-viewer {
       background: #F4F1EE;
       color: var(--text-muted);
       border: 1px solid var(--border-soft);
     }
+
+    /* 頂部 4 顆小圓球切換按鈕 */
+    .theme-picker-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-shrink: 0;
+      padding: 2px 4px;
+    }
+    .theme-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      outline: none;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .theme-dot:active {
+      transform: scale(0.9);
+    }
+    .theme-dot.active {
+      border-color: #3C3835;
+      transform: scale(1.15);
+    }
+    .theme-dot-blue   { background-color: #8BAAB3; }
+    .theme-dot-green  { background-color: #8EAC9B; }
+    .theme-dot-yellow { background-color: #C9AD7F; }
+    .theme-dot-rose   { background-color: #C58F8F; }
 
     .header-actions-row {
       display: flex;
@@ -117,17 +194,15 @@
     }
     .btn-header-link {
       font-size: 11px;
-      color: var(--sun-dark);
-      background: var(--sun-light);
-      border: 1px solid var(--warm-border);
+      color: var(--theme-dark);
+      background: var(--theme-light);
+      border: 1px solid var(--theme-border);
       padding: 5px 12px;
       border-radius: 16px;
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s;
-    }
-    .btn-header-link:hover {
-      background: #FDE68A;
+      flex-shrink: 0;
     }
     .btn-header-sub {
       font-size: 11px;
@@ -141,7 +216,7 @@
       transition: all 0.2s;
     }
     .btn-header-sub:hover {
-      background: #FFFDF9;
+      background: var(--bg-warm);
       color: var(--text-main);
     }
     .btn-reset-all {
@@ -156,7 +231,7 @@
       transition: color 0.2s;
     }
     .btn-reset-all:hover {
-      color: var(--rose-subtle);
+      color: #BA7C7C;
     }
 
     .container {
@@ -174,7 +249,7 @@
       border-radius: var(--radius-lg);
       border: 1px solid var(--border-soft);
       padding: 24px 18px;
-      box-shadow: 0 4px 20px rgba(45, 38, 33, 0.03);
+      box-shadow: 0 4px 20px rgba(60, 56, 53, 0.02);
       margin-top: 4px;
     }
     .room-lobby-title {
@@ -193,7 +268,7 @@
       letter-spacing: 0.5px;
     }
     .lobby-box {
-      background: #FFFDF9;
+      background: var(--bg-warm);
       border: 1px solid var(--border-soft);
       padding: 14px 14px;
       border-radius: var(--radius-md);
@@ -202,7 +277,7 @@
     .lobby-box-title {
       font-size: 13px;
       font-weight: 600;
-      color: var(--sun-dark);
+      color: var(--theme-dark);
       display: block;
       margin-bottom: 4px;
     }
@@ -219,7 +294,7 @@
       border-radius: var(--radius-md);
       border: 1px solid var(--border-soft);
       padding: 14px 15px;
-      box-shadow: 0 2px 10px rgba(45, 38, 33, 0.02);
+      box-shadow: 0 2px 10px rgba(60, 56, 53, 0.02);
     }
     .card-header {
       display: flex;
@@ -246,13 +321,13 @@
       transition: color 0.2s;
     }
     .card-action-btn:hover {
-      color: var(--rose-subtle);
+      color: #BA7C7C;
     }
 
-    /* 公基金啟用開關列 (未啟用時呈現) */
+    /* 公基金未啟用開關列 */
     .kitty-toggle-banner {
-      background: #FFFDF9;
-      border: 1px dashed var(--warm-border);
+      background: var(--bg-warm);
+      border: 1px dashed var(--theme-border);
       border-radius: var(--radius-md);
       padding: 11px 14px;
       display: flex;
@@ -262,18 +337,18 @@
       transition: all 0.2s;
     }
     .kitty-toggle-banner:hover {
-      background: var(--sun-light);
+      background: var(--theme-light);
     }
     .kitty-toggle-title {
       font-size: 12px;
       font-weight: 500;
-      color: var(--sun-dark);
+      color: var(--theme-dark);
       display: flex;
       align-items: center;
       gap: 6px;
     }
     .kitty-toggle-btn {
-      background: var(--sun-main);
+      background: var(--theme-main);
       color: #FFF;
       font-size: 11px;
       padding: 4px 10px;
@@ -283,13 +358,14 @@
       font-weight: 500;
     }
 
-    /* 日光晨陽公基金卡片 */
+    /* 粉柔漸層公基金卡片 */
     .kitty-compact-card {
-      background: linear-gradient(135deg, #F59E0B, #D97706);
+      background: linear-gradient(135deg, var(--kitty-gradient-1), var(--kitty-gradient-2));
       color: #FFFFFF;
       border: none;
       padding: 15px 16px;
-      box-shadow: 0 6px 18px rgba(245, 158, 11, 0.25);
+      box-shadow: 0 4px 14px rgba(60, 56, 53, 0.08);
+      transition: background 0.3s ease;
     }
     .kitty-row {
       display: flex;
@@ -324,7 +400,7 @@
       flex-shrink: 0;
     }
     .btn-kitty-sm {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.22);
       border: 1px solid rgba(255, 255, 255, 0.35);
       color: #FFFFFF;
       font-size: 11px;
@@ -341,7 +417,7 @@
     .kitty-custodian-bar {
       margin-top: 10px;
       padding-top: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.22);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -374,14 +450,15 @@
       justify-content: center;
       align-items: center;
       position: relative;
-      background: var(--sun-light);
-      border: 1px solid var(--warm-border);
+      background: var(--theme-light);
+      border: 1px solid var(--theme-border);
       padding: 6px 18px 6px 8px;
       border-radius: 16px;
       font-size: 12px;
-      color: var(--sun-dark);
+      color: var(--theme-dark);
       min-width: 0;
       text-align: center;
+      transition: all 0.3s ease;
     }
     .member-chip span {
       overflow: hidden;
@@ -403,13 +480,13 @@
       line-height: 1;
     }
     .chip-del:hover {
-      color: var(--rose-subtle);
+      color: #BA7C7C;
     }
 
     /* 分攤旅伴按鈕：自適應網格等寬排列、文字居中 */
     .split-chip {
       border: 1px solid var(--border-soft);
-      background: #FFFDF9;
+      background: var(--bg-warm);
       color: var(--text-muted);
       font-size: 12px;
       padding: 6px 6px;
@@ -424,9 +501,9 @@
       width: 100%;
     }
     .split-chip.active {
-      background: var(--sun-light);
-      border-color: var(--warm-border);
-      color: var(--sun-dark);
+      background: var(--theme-light);
+      border-color: var(--theme-border);
+      color: var(--theme-dark);
       font-weight: 600;
     }
 
@@ -440,7 +517,7 @@
       flex: 1;
       min-width: 0;
       border: 1px solid var(--border-soft);
-      background: #FFFDF9;
+      background: var(--bg-warm);
       border-radius: var(--radius-sm);
       padding: 8px 10px;
       font-size: 13px;
@@ -449,12 +526,12 @@
       transition: border-color 0.2s, background 0.2s;
     }
     .input-text:focus {
-      border-color: var(--sun-main);
+      border-color: var(--theme-main);
       background: #FFFFFF;
     }
     
     .btn-add {
-      background: var(--sun-main);
+      background: var(--theme-main);
       color: #FFFFFF;
       border: none;
       padding: 8px 15px;
@@ -465,10 +542,10 @@
       cursor: pointer;
       white-space: nowrap;
       flex-shrink: 0;
-      transition: background 0.2s;
+      transition: opacity 0.2s;
     }
     .btn-add:hover {
-      background: var(--sun-hover);
+      opacity: 0.88;
     }
 
     /* 表單區 */
@@ -486,7 +563,7 @@
     .form-select {
       width: 100%;
       border: 1px solid var(--border-soft);
-      background: #FFFDF9;
+      background: var(--bg-warm);
       border-radius: var(--radius-sm);
       padding: 8px 8px;
       font-size: 13px;
@@ -501,7 +578,7 @@
 
     /* 自費設定區 */
     .custom-box {
-      background: #FFFDF9;
+      background: var(--bg-warm);
       border: 1px solid var(--border-soft);
       border-radius: var(--radius-sm);
       padding: 10px 10px;
@@ -515,7 +592,7 @@
     .btn-toggle-custom {
       background: none;
       border: none;
-      color: var(--sun-dark);
+      color: var(--theme-dark);
       font-size: 11px;
       font-weight: 500;
       cursor: pointer;
@@ -535,7 +612,7 @@
       margin-top: 10px;
     }
     .btn-clear-form {
-      background: #F8F5F1;
+      background: #F4F1EE;
       border: 1px solid var(--border-soft);
       color: var(--text-muted);
       padding: 9px 0;
@@ -547,7 +624,7 @@
       white-space: nowrap;
     }
     .btn-save-expense {
-      background: var(--sun-main);
+      background: var(--theme-main);
       color: #FFFFFF;
       border: none;
       padding: 9px 0;
@@ -558,10 +635,10 @@
       cursor: pointer;
       text-align: center;
       white-space: nowrap;
-      transition: background 0.2s;
+      transition: opacity 0.2s;
     }
     .btn-save-expense:hover {
-      background: var(--sun-hover);
+      opacity: 0.9;
     }
 
     /* 消費明細 */
@@ -581,13 +658,13 @@
     .btn-del-expense {
       background: none;
       border: none;
-      color: var(--rose-subtle);
+      color: #BA7C7C;
       font-size: 11px;
       cursor: pointer;
       margin-left: 8px;
     }
     .expense-detail-drawer {
-      background: #FFFDF9;
+      background: var(--bg-warm);
       border: 1px solid var(--border-soft);
       border-radius: var(--radius-sm);
       padding: 8px 10px;
@@ -598,7 +675,7 @@
 
     /* 結算明細卡片 */
     .settle-card {
-      background: #FFFDF9;
+      background: var(--bg-warm);
       border: 1px solid var(--border-soft);
       padding: 10px 12px;
       border-radius: var(--radius-sm);
@@ -608,7 +685,7 @@
       align-items: center;
     }
     .settle-amount {
-      color: var(--sun-dark);
+      color: var(--theme-dark);
       font-size: 14px;
       font-weight: 600;
       font-family: "SF Mono", Menlo, Consolas, monospace;
@@ -617,7 +694,7 @@
 
     /* 收款帳號 */
     .account-card {
-      background: #FFFDF9;
+      background: var(--bg-warm);
       border: 1px solid var(--border-soft);
       border-radius: var(--radius-sm);
       padding: 10px 12px;
@@ -654,8 +731,8 @@
     .btn-copy-sm {
       flex-shrink: 0;
       background: #FFFFFF;
-      border: 1px solid var(--warm-border);
-      color: var(--sun-dark);
+      border: 1px solid var(--theme-border);
+      color: var(--theme-dark);
       padding: 6px 10px;
       border-radius: 6px;
       font-size: 11px;
@@ -674,7 +751,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(45, 38, 33, 0.45);
+      background: rgba(60, 56, 53, 0.45);
       backdrop-filter: blur(4px);
       display: flex;
       justify-content: center;
@@ -704,7 +781,7 @@
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(45, 38, 33, 0.94);
+      background: rgba(60, 56, 53, 0.94);
       color: #FFF;
       font-size: 12px;
       padding: 9px 18px;
@@ -724,7 +801,7 @@
     }
   </style>
 </head>
-<body>
+<body data-theme="blue">
 
   <!-- 頂部導航 -->
   <header class="header">
@@ -734,12 +811,21 @@
         <h1 id="tripTitleDisplay">遠行時光</h1>
         <span id="roleBadge" class="role-badge role-viewer">旅伴檢視</span>
       </div>
+
+      <!-- 四顆小圓球切換色系按鈕 (淺藍、淺綠、淺黃、淺紅) -->
+      <div class="theme-picker-group">
+        <button type="button" class="theme-dot theme-dot-blue active" title="淺藍" onclick="setAppTheme('blue')"></button>
+        <button type="button" class="theme-dot theme-dot-green" title="淺綠" onclick="setAppTheme('green')"></button>
+        <button type="button" class="theme-dot theme-dot-yellow" title="淺黃" onclick="setAppTheme('yellow')"></button>
+        <button type="button" class="theme-dot theme-dot-rose" title="淺紅" onclick="setAppTheme('rose')"></button>
+      </div>
+
       <button type="button" id="btnShareTrip" class="btn-header-link" onclick="shareTripLinks()" style="display:none;">分享旅程</button>
     </div>
-    <!-- 總務專用次功能列 -->
+
+    <!-- 總務專用次功能列 (已移除下載按鈕) -->
     <div class="header-actions-row admin-only" id="adminHeaderBar" style="display:none;">
       <button type="button" class="btn-header-sub" onclick="shareAdminAccess()">移交總務</button>
-      <button type="button" id="btnDownloadCode" class="btn-header-sub" onclick="downloadCurrentHtml()">下載 HTML</button>
       <button type="button" class="btn-reset-all" onclick="resetEntireTrip()">清空旅程</button>
     </div>
   </header>
@@ -776,7 +862,7 @@
       </div>
     </div>
 
-    <!-- 1. 公基金模組 (可隨時開啟或隱藏) -->
+    <!-- 1. 公基金模組 (可隨時開啟或收合) -->
     <div id="mainAppSection" style="display:flex; flex-direction:column; gap:13px;">
 
       <!-- A. 公基金未啟用開關列 -->
@@ -815,7 +901,7 @@
           <span class="card-title">旅伴收支小記</span>
           <div style="display:flex; align-items:center; gap:8px;">
             <span style="font-size:10px; color:var(--text-light);">即時統計</span>
-            <button type="button" id="btnToggleStats" class="card-action-btn" style="color:var(--sun-dark);">展開 ▾</button>
+            <button type="button" id="btnToggleStats" class="card-action-btn" style="color:var(--theme-dark);">展開 ▾</button>
           </div>
         </div>
         <div id="statsDrawer" style="display:none; margin-top:10px;">
@@ -876,7 +962,7 @@
         <div class="form-group">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <label class="form-label" style="margin-bottom:0;">分攤旅伴 (可點選)</label>
-            <button type="button" onclick="toggleAllSplitters()" style="background:none; border:none; color:var(--sun-dark); font-size:11px; font-weight:500; cursor:pointer;">全選 / 反選</button>
+            <button type="button" onclick="toggleAllSplitters()" style="background:none; border:none; color:var(--theme-dark); font-size:11px; font-weight:500; cursor:pointer;">全選 / 反選</button>
           </div>
           <div id="splitButtonsContainer" class="chips-grid" style="margin-top:0;"></div>
         </div>
@@ -893,7 +979,7 @@
         <div class="card-header">
           <span class="card-title">花費動態</span>
           <div style="display:flex; gap:8px; align-items:center;">
-            <span id="totalCostDisplay" style="color:var(--sun-dark); font-family:monospace; font-size:11px; font-weight:600;">累計：$0</span>
+            <span id="totalCostDisplay" style="color:var(--theme-dark); font-family:monospace; font-size:11px; font-weight:600;">累計：$0</span>
             <button type="button" id="btnClearExpenses" class="card-action-btn admin-only" onclick="clearAllExpenses()">清空花費</button>
           </div>
         </div>
@@ -904,7 +990,7 @@
       <div class="card">
         <div class="card-header">
           <span class="card-title">結算明細</span>
-          <button type="button" onclick="copySettlementSummary()" style="background:#FFFDF9; border:1px solid var(--border-soft); padding:3px 9px; border-radius:4px; font-size:10px; cursor:pointer; color:var(--text-muted);">複製清單</button>
+          <button type="button" onclick="copySettlementSummary()" style="background:var(--bg-warm); border:1px solid var(--border-soft); padding:3px 9px; border-radius:4px; font-size:10px; cursor:pointer; color:var(--text-muted);">複製清單</button>
         </div>
         <div id="settlementList"></div>
 
@@ -975,6 +1061,26 @@
 
   <script>
     // ==========================================
+    // 0. 色系切換 (淺藍 blue / 淺綠 green / 淺黃 yellow / 淺紅 rose)
+    // ==========================================
+    function setAppTheme(themeName) {
+      document.body.setAttribute('data-theme', themeName);
+      localStorage.setItem('godutch_theme', themeName);
+
+      // 更新按鈕 active 樣式
+      document.querySelectorAll('.theme-dot').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.classList.contains('theme-dot-' + themeName)) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    // 初始化讀取使用者偏好色系 (預設為淺藍)
+    const savedTheme = localStorage.getItem('godutch_theme') || 'blue';
+    setAppTheme(savedTheme);
+
+    // ==========================================
     // 1. Firebase 連線設定
     // ==========================================
     const firebaseConfig = {
@@ -1002,12 +1108,12 @@
     let isAdmin = urlParams.get('admin') === '1';
 
     // ==========================================
-    // 2. 狀態模型與提示函式
+    // 2. 狀態模型與自訂提示
     // ==========================================
     let state = {
       createdAt: null,
       adminPin: "",
-      kittyEnabled: false, // 公基金功能切換開關 (預設為 false 關閉，改為純代墊)
+      kittyEnabled: false, // 預設關閉公基金 (純代墊模式)
       members: [],          
       custodian: "",        
       memberBanks: {},      
@@ -1138,20 +1244,8 @@
       copyToClipboard(msg, '已複製總務管理連結與密碼');
     }
 
-    function downloadCurrentHtml() {
-      const htmlContent = document.documentElement.outerHTML;
-      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'index.html';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      showToast('已下載 index.html');
-    }
-
     // ==========================================
-    // 4. 資料同步與嚴格驗證
+    // 4. 資料同步與驗證
     // ==========================================
     let pinModalResolver = null;
 
@@ -1470,7 +1564,7 @@
           <span style="font-size:11px; color:var(--text-muted);">自費</span>
           <input type="number" value="${row.amount || ''}" oninput="customSplits[${idx}].amount=parseFloat(this.value)||0" placeholder="金額" class="input-text" style="width:70px; padding:5px 6px; font-size:12px;">
           <span style="font-size:11px; color:var(--text-muted);">元</span>
-          <button type="button" onclick="removeCustomRow(${idx})" style="background:none; border:none; color:var(--rose-subtle); font-size:14px; cursor:pointer;">&times;</button>
+          <button type="button" onclick="removeCustomRow(${idx})" style="background:none; border:none; color:#BA7C7C; font-size:14px; cursor:pointer;">&times;</button>
         </div>
       `).join('');
     }
@@ -1539,7 +1633,6 @@
       let kittyDeduction = 0;
       let personalPaid = amount;
 
-      // 只有在「啟用公基金」且付款人是總務時，才觸發公基金抵扣
       if (state.kittyEnabled && payer === state.custodian) {
         const currentKitty = getKittyBalance();
         if (currentKitty > 0) {
@@ -1693,7 +1786,6 @@
     // 8. 畫面渲染
     // ==========================================
     function renderAll() {
-      // 公基金顯示狀態控制
       const inactiveBanner = document.getElementById('kittyInactiveBanner');
       const activeCard = document.getElementById('kittyActiveCard');
 
@@ -1722,7 +1814,7 @@
         kLogs.innerHTML = state.kittyDeposits.map(k => `
           <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0;">
             <span>${k.time} · ${k.payer} · $${k.totalAmount.toLocaleString()}</span>
-            ${isAdmin ? `<button type="button" onclick="deleteKittyDeposit('${k.id}')" style="background:none; border:none; color:var(--rose-subtle); cursor:pointer;">&times;</button>` : ''}
+            ${isAdmin ? `<button type="button" onclick="deleteKittyDeposit('${k.id}')" style="background:none; border:none; color:#BA7C7C; cursor:pointer;">&times;</button>` : ''}
           </div>
         `).join('');
       }
@@ -1736,14 +1828,14 @@
         statsBox.innerHTML = state.members.map(m => {
           const item = stats[m] || { totalSpent: 0, totalPaid: 0 };
           return `
-            <div style="display:flex; justify-content:space-between; align-items:center; background:#FFFDF9; border:1px solid var(--border-soft); border-radius:var(--radius-sm); padding:7px 10px; font-size:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-warm); border:1px solid var(--border-soft); border-radius:var(--radius-sm); padding:7px 10px; font-size:12px;">
               <div>
                 <span style="font-weight:500;">${m}</span>
-                ${(state.kittyEnabled && m === state.custodian) ? '<span style="font-size:10px; background:var(--sun-light); color:var(--sun-dark); padding:1px 5px; border-radius:3px; margin-left:4px;">總務</span>' : ''}
+                ${(state.kittyEnabled && m === state.custodian) ? '<span style="font-size:10px; background:var(--theme-light); color:var(--theme-dark); padding:1px 5px; border-radius:3px; margin-left:4px;">總務</span>' : ''}
               </div>
               <div style="display:flex; gap:10px; font-size:11px; font-family:monospace;">
                 <span style="color:var(--text-muted);">花費 $${Math.round(item.totalSpent).toLocaleString()}</span>
-                <span style="color:var(--sun-dark); font-weight:600;">代墊 $${Math.round(item.totalPaid).toLocaleString()}</span>
+                <span style="color:var(--theme-dark); font-weight:600;">代墊 $${Math.round(item.totalPaid).toLocaleString()}</span>
               </div>
             </div>
           `;
@@ -1760,7 +1852,7 @@
         </span>
       `).join('') || '<span class="empty-hint" style="grid-column:1/-1; padding:4px 0;">尚未加入任何旅伴</span>';
 
-      // 付款人下拉選單 (依公基金啟用狀態微調標示)
+      // 付款人下拉選單
       const pSelect = document.getElementById('payerSelect');
       const curPayer = pSelect.value;
       pSelect.innerHTML = state.members.map(m => {
@@ -1787,10 +1879,10 @@
               <div class="expense-main-row">
                 <div>
                   <span style="font-weight:500;">${e.title}</span>
-                  <span style="color:var(--sun-dark); font-weight:600; font-family:monospace; margin-left:4px;">$${Math.round(e.amount).toLocaleString()}</span>
+                  <span style="color:var(--theme-dark); font-weight:600; font-family:monospace; margin-left:4px;">$${Math.round(e.amount).toLocaleString()}</span>
                 </div>
                 <div style="display:flex; align-items:center;">
-                  <button type="button" onclick="toggleExpandExpense('${e.id}')" style="background:none; border:none; color:var(--sun-dark); font-size:11px; cursor:pointer;">
+                  <button type="button" onclick="toggleExpandExpense('${e.id}')" style="background:none; border:none; color:var(--theme-dark); font-size:11px; cursor:pointer;">
                     ${isExpanded ? '收合 ▴' : '明細 ▾'}
                   </button>
                   ${isAdmin ? `<button type="button" class="btn-del-expense" onclick="deleteExpense('${e.id}')">刪除</button>` : ''}
@@ -1798,7 +1890,7 @@
               </div>
               <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">
                 ${e.payer} 付 · ${(e.splitWith || []).length} 人分攤
-                ${hasKitty ? ` · <span style="color:var(--sun-dark);">(公基金扣抵 $${Math.round(e.kittyDeduction).toLocaleString()}${e.personalPaid > 0 ? ` + 個人代墊 $${Math.round(e.personalPaid).toLocaleString()}` : ''})</span>` : ''}
+                ${hasKitty ? ` · <span style="color:var(--theme-dark);">(公基金扣抵 $${Math.round(e.kittyDeduction).toLocaleString()}${e.personalPaid > 0 ? ` + 個人代墊 $${Math.round(e.personalPaid).toLocaleString()}` : ''})</span>` : ''}
               </div>
               ${isExpanded ? `
                 <div class="expense-detail-drawer">
@@ -1837,7 +1929,7 @@
             <div class="account-card">
               <div style="display:flex; justify-content:space-between; align-items:center;">
                 <span style="font-size:12px; font-weight:600;">${c.person}</span>
-                <span style="font-size:11px; color:var(--sun-dark); font-weight:600;">應收：$${c.amount.toLocaleString()}</span>
+                <span style="font-size:11px; color:var(--theme-dark); font-weight:600;">應收：$${c.amount.toLocaleString()}</span>
               </div>
               <div class="account-row">
                 <input type="text" maxlength="3" class="bank-code-input" placeholder="代碼" value="${bankData.code || ''}" 
