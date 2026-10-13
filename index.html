@@ -32,9 +32,9 @@
       --kitty-gradient-1: #D29898;
       --kitty-gradient-2: #B37474;
 
-      /* 水墨湖山四季聯動調色 */
-      --art-stroke: #9E6161;
-      --art-ink-blur: #F4EAE9;
+      /* 水墨山水聯動色 */
+      --art-stroke: #C88A8A;
+      --art-ink-blur: #F7EEEE;
     }
 
     /* 🌸 春・櫻落粉 (Spring) */
@@ -46,8 +46,8 @@
       --theme-border: #E8D3D3;
       --kitty-gradient-1: #D29898;
       --kitty-gradient-2: #B37474;
-      --art-stroke: #9E6161;
-      --art-ink-blur: #F4EAE9;
+      --art-stroke: #C88A8A;
+      --art-ink-blur: #F7EEEE;
     }
 
     /* 🌿 夏・夏木綠 (Summer) */
@@ -59,8 +59,8 @@
       --theme-border: #D2E3D7;
       --kitty-gradient-1: #8EAC9B;
       --kitty-gradient-2: #6B8C7A;
-      --art-stroke: #4F6E5C;
-      --art-ink-blur: #E7EFEA;
+      --art-stroke: #7D9D8B;
+      --art-ink-blur: #EBF2ED;
     }
 
     /* 🍁 秋・銀杏黃 (Autumn) */
@@ -72,8 +72,8 @@
       --theme-border: #EADBCA;
       --kitty-gradient-1: #C9AD7F;
       --kitty-gradient-2: #A88B5B;
-      --art-stroke: #8C6751;
-      --art-ink-blur: #EFE6DF;
+      --art-stroke: #BFA06E;
+      --art-ink-blur: #F7F2EA;
     }
 
     /* ❄️ 冬・暮雪藍 (Winter) */
@@ -85,8 +85,8 @@
       --theme-border: #D2E2E6;
       --kitty-gradient-1: #8CAAB3;
       --kitty-gradient-2: #6D8E98;
-      --art-stroke: #4D6D7A;
-      --art-ink-blur: #E8EFF3;
+      --art-stroke: #7B9EA8;
+      --art-ink-blur: #EBF2F4;
     }
 
     * {
@@ -255,11 +255,11 @@
       gap: 13px;
     }
 
-    /* 極簡湖山手繪景致 (自然無直線收邊) */
+    /* 首頁水墨湖山景致 (標題浮於其上) */
     .lake-scene-container {
       position: relative;
       width: 100%;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -272,49 +272,82 @@
       display: block;
     }
 
-    /* 首頁：啟程大廳 */
+    /* 首頁：啟程大廳卡片 */
     .room-lobby-card {
       background: var(--card-bg);
       border-radius: var(--radius-lg);
       border: 1px solid var(--border-soft);
-      padding: 20px 18px 24px 18px;
+      padding: 18px 16px 24px 16px;
       box-shadow: 0 4px 20px rgba(60, 56, 53, 0.02);
       margin-top: 4px;
     }
-    .room-lobby-title {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.8px;
-      color: var(--text-main);
-      text-align: center;
-      margin-bottom: 4px;
-    }
-    .room-lobby-sub {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-align: center;
-      margin-bottom: 20px;
-      letter-spacing: 0.5px;
-    }
-    .lobby-box {
+
+    /* 手風琴摺疊大按鈕 */
+    .lobby-accordion-btn {
+      width: 100%;
       background: var(--bg-warm);
       border: 1px solid var(--border-soft);
-      padding: 14px 14px;
       border-radius: var(--radius-md);
-      margin-bottom: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.25s ease;
+      outline: none;
     }
-    .lobby-box-title {
-      font-size: 13px;
+    .lobby-accordion-btn:hover {
+      background: var(--theme-light);
+      border-color: var(--theme-border);
+    }
+    .lobby-accordion-btn span {
+      font-size: 13.5px;
       font-weight: 600;
       color: var(--theme-dark);
-      display: block;
-      margin-bottom: 4px;
+      letter-spacing: 0.3px;
     }
-    .lobby-desc {
+    .lobby-accordion-arrow {
+      font-size: 12px;
+      color: var(--text-muted);
+      transition: transform 0.25s ease;
+    }
+    .lobby-accordion-btn.active {
+      background: var(--theme-light);
+      border-color: var(--theme-border);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      margin-bottom: 0;
+    }
+    .lobby-accordion-btn.active .lobby-accordion-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* 摺疊抽屜內容區 */
+    .lobby-accordion-drawer {
+      display: none;
+      background: #FFFFFF;
+      border: 1px solid var(--border-soft);
+      border-top: none;
+      border-bottom-left-radius: var(--radius-md);
+      border-bottom-right-radius: var(--radius-md);
+      padding: 16px 14px 18px 14px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+    .lobby-box-title {
       font-size: 11px;
       color: var(--text-muted);
       line-height: 1.5;
+      display: block;
       margin-bottom: 10px;
+      letter-spacing: 0.3px;
+    }
+    .lobby-form-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
     }
 
     /* 卡片共用樣式 */
@@ -804,28 +837,25 @@
       margin-bottom: 10px;
     }
 
-    /* 自訂優雅 Toast (無網址外框、精簡且避免孤字) */
+    /* 自訂優雅 Toast (無網址、單行不折行、不留孤字) */
     .toast-container {
       position: fixed;
       top: 24px;
       left: 50%;
-      transform: translateX(-50%) translateY(-20px);
+      transform: translateX(-50%) translateY(-12px);
       background: rgba(60, 56, 53, 0.94);
-      color: #FFF;
-      font-size: 13px;
-      padding: 10px 22px;
-      border-radius: 24px;
-      z-index: 200;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      color: #FFFFFF;
+      font-size: 12.5px;
+      padding: 9px 20px;
+      border-radius: 20px;
+      z-index: 9999;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.16);
       pointer-events: none;
       opacity: 0;
       letter-spacing: 0.5px;
-      max-width: 86vw;
-      width: max-content;
+      white-space: nowrap;
       text-align: center;
-      line-height: 1.5;
-      text-wrap: balance;
-      word-break: keep-all;
+      line-height: 1.4;
       transition: opacity 0.25s ease, transform 0.25s ease;
     }
     .toast-container.show {
@@ -836,7 +866,7 @@
 </head>
 <body data-theme="spring">
 
-  <!-- 自訂 Toast 容器 -->
+  <!-- 自訂 Toast 提示容器 -->
   <div id="toast" class="toast-container"></div>
 
   <!-- 頂部導航 -->
@@ -871,7 +901,7 @@
     <!-- 0. 首頁大廳 -->
     <div id="roomLobbySection" class="room-lobby-card" style="display:none;">
       
-      <!-- 手繪寫意多洛米堤湖山景致 -->
+      <!-- 手繪寫意多洛米堤湖山景致 (標題自然浮於水面上) -->
       <div class="lake-scene-container">
         <svg class="lake-scene-svg" viewBox="0 0 320 215" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -1001,32 +1031,39 @@
         </svg>
       </div>
 
-      <h2 class="room-lobby-title">遠行與日常</h2>
-      <p class="room-lobby-sub">隨手記錄帳目。時間留予旅途</p>
-
-      <!-- 區塊一：總務管理入口 -->
-      <div class="lobby-box">
-        <span class="lobby-box-title">總務管理入口</span>
-        <p class="lobby-desc">初次發起旅程請設定一組代號+密碼<br>若旅程已建立，請填入原密碼以總務身分進入</p>
-        <div style="display:flex; gap:6px; margin-bottom:8px;">
+      <!-- 1. 開啟一段新旅程 (摺疊手風琴) -->
+      <button type="button" class="lobby-accordion-btn" id="btn-accordion-create" onclick="toggleLobbyAccordion('create')">
+        <span>1. 開啟一段新旅程</span>
+        <span class="lobby-accordion-arrow">▾</span>
+      </button>
+      <div id="drawer-create" class="lobby-accordion-drawer">
+        <span class="lobby-box-title">初次發起旅程請設定一組代號+4碼數字密碼。</span>
+        <div class="lobby-form-row">
           <input type="text" id="customRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
-          <button type="button" class="btn-clear-form" style="padding:0 10px; font-size:11px; flex-shrink:0;" onclick="generateRandomRoomCode()">隨機</button>
+          <button type="button" class="btn-clear-form" style="padding:0 12px; font-size:11px; flex-shrink:0;" onclick="generateRandomRoomCode()">隨機</button>
         </div>
         <div style="margin-bottom:10px;">
-          <input type="password" id="customRoomPinInput" maxlength="4" pattern="\d{4}" inputmode="numeric" class="input-text" style="width:100%; font-family:monospace;" placeholder="總務密碼 (4碼數字)">
+          <input type="password" maxlength="4" pattern="\d{4}" inputmode="numeric" id="customRoomPinInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="總務密碼 (4碼數字)">
         </div>
-        <button type="button" class="btn-save-expense" style="width:100%; font-size:12px;" onclick="handleAdminEntry()">開始旅程</button>
+        <button type="button" class="btn-save-expense" style="width:100%; font-size:12px;" onclick="createNewTripRoom()">建立並以總務身分進入</button>
       </div>
 
-      <!-- 區塊二：旅伴查看入口 -->
-      <div class="lobby-box">
-        <span class="lobby-box-title">同行旅伴入口</span>
-        <p class="lobby-desc">輸入總務分享的旅程代碼，可即時瞭解帳目與支出</p>
-        <div class="input-row">
+      <!-- 2. 加入既有的旅程 (摺疊手風琴) -->
+      <button type="button" class="lobby-accordion-btn" id="btn-accordion-join" onclick="toggleLobbyAccordion('join')">
+        <span>2. 加入既有的旅程</span>
+        <span class="lobby-accordion-arrow">▾</span>
+      </button>
+      <div id="drawer-join" class="lobby-accordion-drawer">
+        <span class="lobby-box-title">輸入代碼可直接檢視；填寫密碼則以總務身分登入。</span>
+        <div class="lobby-form-row" style="margin-bottom:8px;">
           <input type="text" id="joinRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
-          <button type="button" class="btn-add" onclick="joinExistingRoom()">查看</button>
         </div>
+        <div style="margin-bottom:10px;">
+          <input type="password" maxlength="4" pattern="\d{4}" inputmode="numeric" id="joinRoomPinInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="總務密碼 (一般旅伴免填，總務請填4碼)">
+        </div>
+        <button type="button" class="btn-save-expense" style="width:100%; font-size:12px;" onclick="joinExistingRoom()">進入旅程</button>
       </div>
+
     </div>
 
     <!-- 1. 公基金模組 (可隨時開啟或收合) -->
@@ -1225,13 +1262,12 @@
 
   <script>
     // ==========================================
-    // 0. 四季色盤切換 (春 spring / 夏 summer / 秋 autumn / 冬 winter)
+    // 0. 四季色盤切換
     // ==========================================
     function setAppTheme(themeName) {
       document.body.setAttribute('data-theme', themeName);
       localStorage.setItem('godutch_theme', themeName);
 
-      // 更新按鈕 active 樣式
       document.querySelectorAll('.theme-dot').forEach(btn => {
         btn.classList.remove('active');
         if (btn.classList.contains('theme-dot-' + themeName)) {
@@ -1271,13 +1307,13 @@
     let isAdmin = urlParams.get('admin') === '1';
 
     // ==========================================
-    // 2. 狀態模型與自訂優雅提示 (無網址、無孤字)
+    // 2. 狀態模型與自訂優雅提示 (無網址外框、單行不留孤字)
     // ==========================================
     let state = {
       createdAt: null,
       adminPin: "",
       password: "",
-      kittyEnabled: false, // 預設關閉公基金 (純代墊模式)
+      kittyEnabled: false,
       members: [],          
       custodian: "",        
       memberBanks: {},      
@@ -1321,8 +1357,31 @@
     }
 
     // ==========================================
-    // 3. 旅程大廳與登入邏輯
+    // 3. 首頁手風琴摺疊與登入邏輯
     // ==========================================
+    function toggleLobbyAccordion(type) {
+      const drawerCreate = document.getElementById('drawer-create');
+      const drawerJoin = document.getElementById('drawer-join');
+      const btnCreate = document.getElementById('btn-accordion-create');
+      const btnJoin = document.getElementById('btn-accordion-join');
+
+      if (type === 'create') {
+        const isOpen = drawerCreate.style.display === 'block';
+        drawerCreate.style.display = isOpen ? 'none' : 'block';
+        btnCreate.classList.toggle('active', !isOpen);
+
+        drawerJoin.style.display = 'none';
+        btnJoin.classList.remove('active');
+      } else {
+        const isOpen = drawerJoin.style.display === 'block';
+        drawerJoin.style.display = isOpen ? 'none' : 'block';
+        btnJoin.classList.toggle('active', !isOpen);
+
+        drawerCreate.style.display = 'none';
+        btnCreate.classList.remove('active');
+      }
+    }
+
     function generateRandomRoomCode() {
       const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
       let code = '';
@@ -1332,13 +1391,14 @@
       document.getElementById('customRoomCodeInput').value = code;
     }
 
-    function handleAdminEntry() {
+    // 1. 開啟新旅程：若代碼已存在，提示並自動切換至「加入」
+    function createNewTripRoom() {
       const code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
       const pin = document.getElementById('customRoomPinInput').value.trim();
 
       if (!code) return showToast('請填寫旅程代碼');
       if (!/^[a-z0-9_-]+$/.test(code)) return showToast('代碼限英數字或連字號');
-      if (!/^\d{4}$/.test(pin)) return showToast('密碼請填剛好4位純數字');
+      if (!/^\d{4}$/.test(pin)) return showToast('密碼請填 4 碼純數字');
 
       if (!db) {
         window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
@@ -1348,20 +1408,9 @@
       db.ref('trips/' + code).once('value', (snap) => {
         const val = snap.val();
         if (snap.exists() && val && val.createdAt) {
-          const storedPin = String(val.adminPin || val.password || "").trim();
-          if (storedPin) {
-            if (storedPin === String(pin).trim()) {
-              sessionStorage.setItem('godutch_auth_' + code, pin);
-              window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
-            } else {
-              showToast('密碼錯誤，請重新確認');
-            }
-          } else {
-            db.ref('trips/' + code + '/adminPin').set(pin);
-            db.ref('trips/' + code + '/password').set(pin);
-            sessionStorage.setItem('godutch_auth_' + code, pin);
-            window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
-          }
+          showToast('此代碼已存在，請由此加入旅程');
+          document.getElementById('joinRoomCodeInput').value = code;
+          toggleLobbyAccordion('join');
         } else {
           db.ref('trips/' + code).set({
             createdAt: Date.now(),
@@ -1381,8 +1430,11 @@
       });
     }
 
+    // 2. 加入既有旅程：輸入代碼可檢視、輸入正確密碼則以總務身分進入
     function joinExistingRoom() {
       const code = document.getElementById('joinRoomCodeInput').value.trim().toLowerCase();
+      const inputPass = document.getElementById('joinRoomPinInput').value.trim();
+
       if (!code) return showToast('請輸入旅程代碼');
 
       if (db) {
@@ -1390,7 +1442,33 @@
           if (!snap.exists() || !snap.val()) {
             return showToast('查無此旅程，請確認代碼');
           }
-          window.location.href = `${window.location.pathname}?trip=${code}`;
+          
+          const roomData = snap.val();
+          if (inputPass) {
+            if (!/^\d{4}$/.test(inputPass)) {
+              return showToast('管理密碼需為 4 碼純數字');
+            }
+
+            const rawDbPass = (roomData.adminPin !== undefined && roomData.adminPin !== "") 
+                              ? roomData.adminPin 
+                              : roomData.password;
+
+            if (rawDbPass === undefined || rawDbPass === null || rawDbPass === "") {
+              return showToast('此旅程無密碼，請直接加入');
+            }
+
+            const dbPass = String(rawDbPass).trim();
+            const userPass = String(inputPass).trim();
+
+            if (dbPass === userPass) {
+              sessionStorage.setItem('godutch_auth_' + code, userPass);
+              window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
+            } else {
+              showToast('管理密碼錯誤，請重新確認');
+            }
+          } else {
+            window.location.href = `${window.location.pathname}?trip=${code}`;
+          }
         });
       } else {
         window.location.href = `${window.location.pathname}?trip=${code}`;
@@ -1622,7 +1700,7 @@
       if (!isAdmin) return;
       const type = document.getElementById('kittyDepositType').value;
       const amount = parseFloat(document.getElementById('kittyAmountInput').value);
-      if (isNaN(amount) || amount <= 0) return showToast('請填寫有效金額');
+      if (isNaN(amount) || amount <= 0) return showToast('請輸入有效金額');
 
       let payer = "全員";
       let totalAmount = amount;
@@ -1660,8 +1738,8 @@
       if (!isAdmin) return;
       const input = document.getElementById('memberNameInput');
       const name = input.value ? input.value.trim() : '';
-      if (!name) return showToast('請填寫旅伴姓名');
-      if (state.members.includes(name)) return showToast('旅伴姓名已重複');
+      if (!name) return showToast('請輸入旅伴姓名');
+      if (state.members.includes(name)) return showToast('旅伴姓名重複');
 
       state.members.push(name);
       selectedSplitters.push(name);
@@ -1673,7 +1751,7 @@
     function removeMember(name) {
       if (!isAdmin) return;
       const inUse = state.expenses.some(e => e.payer === name || (e.splitWith && e.splitWith.includes(name)));
-      if (inUse) return showToast(`「${name}」已有帳目，請先刪除花費紀錄`);
+      if (inUse) return showToast(`此旅伴已有帳目，無法刪除`);
 
       state.members = state.members.filter(m => m !== name);
       selectedSplitters = selectedSplitters.filter(n => n !== name);
@@ -1793,12 +1871,12 @@
       const payer = payerSelect.value;
 
       if (!title) return showToast('請填寫支出品項');
-      if (isNaN(amount) || amount <= 0) return showToast('請填寫有效金額');
+      if (isNaN(amount) || amount <= 0) return showToast('請輸入有效金額');
       if (!payer) return showToast('請選擇付款人');
 
       const customSum = customSplits.reduce((acc, c) => acc + (Number(c.amount) || 0), 0);
       if (customSum > amount) return showToast('自費金額大於總支出');
-      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return showToast('請至少選擇一位分攤旅伴');
+      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return showToast('請選擇分攤旅伴');
 
       let kittyDeduction = 0;
       let personalPaid = amount;
@@ -1824,14 +1902,12 @@
 
       clearExpenseForm();
       syncState();
-      showToast('支出已成功記錄');
     }
 
     function deleteExpense(id) {
       if (!isAdmin) return;
       state.expenses = state.expenses.filter(e => e.id !== String(id));
       syncState();
-      showToast('已刪除支出紀錄');
     }
 
     function clearAllExpenses() {
