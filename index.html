@@ -44,7 +44,7 @@
       line-height: 1.5;
     }
 
-    /* 頂部導航：上下分層結構，解決手機寬度不足排版擠壓問題 */
+    /* 頂部導航：上下分層結構 */
     .header {
       background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(10px);
@@ -187,6 +187,7 @@
       color: var(--text-muted);
       text-align: center;
       margin-bottom: 20px;
+      letter-spacing: 0.5px;
     }
     .lobby-box {
       background: #FDFCFB;
@@ -205,7 +206,7 @@
     .lobby-desc {
       font-size: 11px;
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.5;
       margin-bottom: 10px;
     }
 
@@ -323,7 +324,7 @@
       color: var(--text-main);
     }
 
-    /* 旅伴網格系統：徹底解決右側畸零空白問題 */
+    /* 旅伴網格系統：文字居中且截斷防爆版 */
     .chips-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
@@ -333,42 +334,47 @@
     }
     .member-chip {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
+      position: relative;
       background: var(--milktea-light);
       border: 1px solid var(--warm-border);
-      padding: 5px 8px;
+      padding: 6px 18px 6px 8px;
       border-radius: 16px;
       font-size: 12px;
       color: var(--milktea-dark);
       min-width: 0;
+      text-align: center;
     }
     .member-chip span {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      margin-right: 4px;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
     }
     .chip-del {
+      position: absolute;
+      right: 6px;
       background: none;
       border: none;
       color: var(--text-light);
       font-size: 13px;
       cursor: pointer;
       line-height: 1;
-      flex-shrink: 0;
     }
     .chip-del:hover {
       color: var(--rose-subtle);
     }
 
-    /* 分攤旅伴按鈕：自適應網格等寬排列 */
+    /* 分攤旅伴按鈕：自適應網格等寬排列、文字居中 */
     .split-chip {
       border: 1px solid var(--border-soft);
       background: #FDFCFB;
       color: var(--text-muted);
       font-size: 12px;
-      padding: 6px 4px;
+      padding: 6px 6px;
       border-radius: 16px;
       cursor: pointer;
       text-align: center;
@@ -704,28 +710,28 @@
     <!-- 0. 首頁大廳 -->
     <div id="roomLobbySection" class="room-lobby-card" style="display:none;">
       <h2 class="room-lobby-title">遠行與日常</h2>
-      <p class="room-lobby-sub">把心思留給風景，帳目輕輕記下</p>
+      <p class="room-lobby-sub">隨手記錄帳目。時間留予旅途</p>
 
       <!-- 區塊一：總務管理入口 -->
       <div class="lobby-box">
         <span class="lobby-box-title">總務管理入口</span>
-        <p class="lobby-desc">初次發起旅程請設定一組代號與密碼；若旅程已建立，請填入原密碼以總務身分進入管理。</p>
+        <p class="lobby-desc">初次發起旅程請設定一組代號+密碼<br>若旅程已建立，請填入原密碼以總務身分進入</p>
         <div style="display:flex; gap:6px; margin-bottom:8px;">
           <input type="text" id="customRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
           <button type="button" class="btn-clear-form" style="padding:0 10px; font-size:11px; flex-shrink:0;" onclick="generateRandomRoomCode()">隨機</button>
         </div>
         <div style="margin-bottom:10px;">
-          <input type="password" id="customRoomPinInput" maxlength="4" pattern="\d{4}" inputmode="numeric" class="input-text" style="width:100%; font-family:monospace;" placeholder="總務密碼 (4 碼純數字)">
+          <input type="password" id="customRoomPinInput" maxlength="4" pattern="\d{4}" inputmode="numeric" class="input-text" style="width:100%; font-family:monospace;" placeholder="總務密碼 (4碼數字)">
         </div>
-        <button type="button" class="btn-save-expense" style="width:100%; font-size:12px;" onclick="handleAdminEntry()">進入總務管理</button>
+        <button type="button" class="btn-save-expense" style="width:100%; font-size:12px;" onclick="handleAdminEntry()">開始旅程</button>
       </div>
 
       <!-- 區塊二：旅伴查看入口 -->
       <div class="lobby-box">
         <span class="lobby-box-title">同行旅伴入口</span>
-        <p class="lobby-desc">僅需輸入總務分享的旅程代碼，即可直接檢視即時帳目與個人結算。</p>
+        <p class="lobby-desc">輸入總務分享的旅程代碼，可即時瞭解帳目與支出</p>
         <div class="input-row">
-          <input type="text" id="joinRoomCodeInput" class="input-text" placeholder="輸入旅程代碼" style="font-family:monospace; text-transform:lowercase;">
+          <input type="text" id="joinRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
           <button type="button" class="btn-add" onclick="joinExistingRoom()">查看</button>
         </div>
       </div>
@@ -741,7 +747,7 @@
             <span class="kitty-amount" id="kittyBalanceDisplay">$0</span>
           </div>
           <div class="kitty-actions">
-            <button type="button" id="btnOpenKittyDeposit" class="btn-kitty-sm admin-only" onclick="openKittyModal()">繳存</button>
+            <button type="button" id="btnOpenKittyDeposit" class="btn-kitty-sm admin-only" onclick="openKittyModal()">收款</button>
             <button type="button" class="btn-kitty-sm" onclick="toggleKittyDrawer()">紀錄 ▾</button>
           </div>
         </div>
@@ -822,7 +828,7 @@
         <!-- 分攤旅伴 -->
         <div class="form-group">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <label class="form-label" style="margin-bottom:0;">分攤旅伴</label>
+            <label class="form-label" style="margin-bottom:0;">分攤旅伴 (可點選)</label>
             <button type="button" onclick="toggleAllSplitters()" style="background:none; border:none; color:var(--milktea-dark); font-size:11px; font-weight:500; cursor:pointer;">全選 / 反選</button>
           </div>
           <div id="splitButtonsContainer" class="chips-grid" style="margin-top:0;"></div>
@@ -831,7 +837,7 @@
         <!-- 按鈕 -->
         <div class="btn-submit-row">
           <button type="button" class="btn-clear-form" onclick="clearExpenseForm()">清除重填</button>
-          <button type="button" class="btn-save-expense" onclick="addExpense()">儲存花費</button>
+          <button type="button" class="btn-save-expense" onclick="addExpense()">記錄支出</button>
         </div>
       </div>
 
@@ -865,20 +871,20 @@
 
   </div>
 
-  <!-- 繳存公費彈窗 -->
+  <!-- 公費收款彈窗 -->
   <div id="kittyModal" class="modal-overlay" style="display:none;">
     <div class="modal-box">
-      <div class="modal-title">繳存公費</div>
+      <div class="modal-title">公費收款</div>
       <div class="form-group">
-        <label class="form-label">繳存方式</label>
+        <label class="form-label">收款方式</label>
         <select id="kittyDepositType" class="form-select" onchange="switchDepositType(this.value)">
-          <option value="all">全員平均繳存</option>
-          <option value="single">單一旅伴補繳</option>
-          <option value="custom">自訂存入金額</option>
+          <option value="all">全員平均收款</option>
+          <option value="single">向特定旅伴收款</option>
+          <option value="custom">自訂收款金額</option>
         </select>
       </div>
       <div id="kittySingleTargetGroup" class="form-group" style="display:none;">
-        <label class="form-label">補繳旅伴</label>
+        <label class="form-label">收款對象</label>
         <select id="kittySingleTarget" class="form-select"></select>
       </div>
       <div class="form-group">
@@ -887,7 +893,7 @@
       </div>
       <div style="display:flex; gap:8px; margin-top:16px;">
         <button type="button" class="btn-clear-form" style="flex:1;" onclick="closeKittyModal()">取消</button>
-        <button type="button" class="btn-save-expense" style="flex:1;" onclick="submitKittyDeposit()">確認存入</button>
+        <button type="button" class="btn-save-expense" style="flex:1;" onclick="submitKittyDeposit()">確認收款</button>
       </div>
     </div>
   </div>
@@ -1023,7 +1029,6 @@
       db.ref('trips/' + code).once('value', (snap) => {
         const val = snap.val();
         if (snap.exists() && val && val.createdAt) {
-          // 舊旅程：密碼驗證
           if (val.adminPin) {
             if (val.adminPin === pin) {
               sessionStorage.setItem('godutch_auth_' + code, pin);
@@ -1032,13 +1037,11 @@
               showToast('密碼錯誤，請確認後重新輸入');
             }
           } else {
-            // 若為舊無密碼資料，綁定新密碼
             db.ref('trips/' + code + '/adminPin').set(pin);
             sessionStorage.setItem('godutch_auth_' + code, pin);
             window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
           }
         } else {
-          // 全新旅程：以該密碼建立
           db.ref('trips/' + code).set({
             createdAt: Date.now(),
             adminPin: pin,
@@ -1071,7 +1074,6 @@
       }
     }
 
-    // 分享旅伴連結 (不帶密碼與 admin)
     function shareTripLinks() {
       const baseUrl = window.location.origin + window.location.pathname;
       const viewerUrl = `${baseUrl}?trip=${currentTripId}`;
@@ -1079,7 +1081,6 @@
       copyToClipboard(msg, '已複製旅伴查看連結');
     }
 
-    // 移交總務權限 (含密碼與 admin)
     function shareAdminAccess() {
       const baseUrl = window.location.origin + window.location.pathname;
       const adminUrl = `${baseUrl}?trip=${currentTripId}&admin=1`;
@@ -1089,7 +1090,7 @@
     }
 
     // ==========================================
-    // 4. 資料同步與嚴格密碼驗證攔截
+    // 4. 資料同步與嚴格密碼驗證
     // ==========================================
     let pinModalResolver = null;
 
@@ -1133,7 +1134,6 @@
 
         const data = snap.val();
 
-        // 總務權限嚴格比對
         if (isAdmin && data.adminPin) {
           const cachedPin = sessionStorage.getItem('godutch_auth_' + currentTripId);
           if (cachedPin !== data.adminPin) {
@@ -1266,10 +1266,10 @@
       if (type === 'single') {
         targetGroup.style.display = 'block';
         targetSelect.innerHTML = state.members.map(m => `<option value="${m}">${m}</option>`).join('');
-        label.innerText = '補繳金額';
+        label.innerText = '收款金額';
       } else if (type === 'custom') {
         targetGroup.style.display = 'none';
-        label.innerText = '存入總額';
+        label.innerText = '收款總額';
       } else {
         targetGroup.style.display = 'none';
         label.innerText = '每人金額';
@@ -1291,7 +1291,7 @@
         payer = document.getElementById('kittySingleTarget').value;
         totalAmount = amount;
       } else {
-        payer = "自訂存入";
+        payer = "自訂收款";
         totalAmount = amount;
       }
 
@@ -1626,7 +1626,7 @@
       // 公費紀錄抽屜
       const kLogs = document.getElementById('kittyDepositLogs');
       if (!state.kittyDeposits || state.kittyDeposits.length === 0) {
-        kLogs.innerHTML = '<span style="opacity:0.7;">尚無公費繳存紀錄</span>';
+        kLogs.innerHTML = '<span style="opacity:0.7;">尚無公費收款紀錄</span>';
       } else {
         kLogs.innerHTML = state.kittyDeposits.map(k => `
           <div style="display:flex; justify-content:space-between; align-items:center; padding:3px 0;">
@@ -1659,7 +1659,7 @@
         }).join('');
       }
 
-      // 成員網格名單 (消除右側畸零空間)
+      // 成員網格名單 (文字置中 + 截斷防爆版)
       document.getElementById('memberCountBadge').innerText = state.members.length;
       const mContainer = document.getElementById('membersContainer');
       mContainer.innerHTML = state.members.map(m => `
