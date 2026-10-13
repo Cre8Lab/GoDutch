@@ -458,7 +458,7 @@
       color: var(--text-main);
     }
 
-    /* 公費停用時的狀態卡 (總務管理端提示) */
+    /* 公費停用時的狀態卡 */
     .kitty-disabled-card {
       background: #FDFCFB;
       border: 1px dashed var(--border-soft);
@@ -844,9 +844,40 @@
       padding: 14px 0;
       letter-spacing: 0.5px;
     }
+
+    /* ==========================================
+       自訂精緻 Toast 提示 (徹底杜絕瀏覽器網址泡泡)
+       ========================================== */
+    .app-toast-container {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: rgba(61, 53, 47, 0.92);
+      color: #FAF8F5;
+      padding: 11px 20px;
+      border-radius: 30px;
+      font-size: 13px;
+      letter-spacing: 0.6px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      max-width: 90%;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .app-toast-container.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body>
+
+  <!-- 自訂 Toast 容器 -->
+  <div id="appToast" class="app-toast-container"></div>
 
   <!-- 頂部導航 -->
   <header class="header">
@@ -1210,6 +1241,20 @@
 
   <script>
     // ==========================================
+    // 0. 自訂優雅 Toast (徹底替代原生 alert，不出現網址)
+    // ==========================================
+    let toastTimer = null;
+    function showToast(msg) {
+      const toast = document.getElementById('appToast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // ==========================================
     // 1. Firebase 連線設定
     // ==========================================
     const firebaseConfig = {
@@ -1243,7 +1288,7 @@
       createdAt: null,
       adminPin: "",         
       password: "",         
-      kittyEnabled: true,   // 💡 預設開啟公費功能
+      kittyEnabled: true,   
       members: [],          
       custodian: "",        
       memberBanks: {},      
@@ -1308,28 +1353,28 @@
       document.getElementById('customRoomCodeInput').value = code;
     }
 
-    // 建立新旅程：重複代碼時自動引導至「加入」
+    // 建立新旅程：無網址泡泡提示，重複時自動切換
     function createNewTripRoom() {
       const code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
       const password = document.getElementById('customRoomPassInput').value.trim();
       
       if (!code) {
-        alert('請填寫自訂旅程代碼，或點選「隨機」');
+        showToast('請填寫自訂旅程代碼，或點選「隨機」');
         return;
       }
       if (!/^[a-z0-9_-]+$/.test(code)) {
-        alert('代碼僅限英文、數字、連字號（-）或底線（_），不含空格與中文。');
+        showToast('代碼僅限英文、數字、連字號（-）或底線（_）');
         return;
       }
       if (!/^\d{4}$/.test(password)) {
-        alert('管理密碼格式錯誤，請填寫正好「4碼純數字」(例如：1234)');
+        showToast('管理密碼格式錯誤，請填寫正好「4碼純數字」');
         return;
       }
 
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (snap.exists() && snap.val() && snap.val().createdAt) {
-            alert(`此旅程代碼已存在！\n請至下方「2. 加入既有的旅程」進行登入。`);
+            showToast('此旅程代碼已存在！請至下方「2. 加入既有的旅程」進行登入。');
             document.getElementById('joinRoomCodeInput').value = code;
             toggleLobbyAccordion('join');
             return;
@@ -1354,27 +1399,27 @@
       }
     }
 
-    // 加入既有旅程：精簡提示，相容 adminPin 與 password
+    // 加入既有旅程：無網址泡泡提示
     function joinExistingRoom() {
       const code = document.getElementById('joinRoomCodeInput').value.trim().toLowerCase();
       const inputPass = document.getElementById('joinRoomPassInput').value.trim();
 
       if (!code) {
-        alert('請輸入旅程代碼');
+        showToast('請輸入旅程代碼');
         return;
       }
 
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
-            alert(`找不到此旅程代碼，請確認代碼是否輸入正確。`);
+            showToast('找不到此旅程代碼，請確認代碼是否輸入正確。');
             return;
           }
           
           const roomData = snap.val();
           if (inputPass) {
             if (!/^\d{4}$/.test(inputPass)) {
-              alert('管理密碼應為正好 4 碼數字（例如：1234）。');
+              showToast('管理密碼應為正好 4 碼數字');
               return;
             }
 
@@ -1383,7 +1428,7 @@
                               : roomData.password;
 
             if (rawDbPass === undefined || rawDbPass === null || rawDbPass === "") {
-              alert(`此旅程尚未設定管理密碼，請直接加入以旅伴身分瀏覽。`);
+              showToast('此旅程尚未設定管理密碼，請直接加入以旅伴身分瀏覽。');
               return;
             }
 
@@ -1393,7 +1438,7 @@
             if (dbPass === userPass) {
               window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
             } else {
-              alert('管理密碼錯誤，請確認。若為一般旅伴請勿填寫密碼，直接加入即可。');
+              showToast('管理密碼錯誤，若為一般旅伴請勿填寫密碼，直接加入即可。');
             }
           } else {
             window.location.href = `${window.location.pathname}?trip=${code}`;
@@ -1430,8 +1475,10 @@
         db.ref('trips/' + currentTripId).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
             if (!isAdmin) {
-              alert(`找不到代碼為「${currentTripId}」的旅程，將返回大廳。`);
-              window.location.href = window.location.pathname;
+              showToast('找不到代碼為「' + currentTripId + '」的旅程，將返回大廳。');
+              setTimeout(() => {
+                window.location.href = window.location.pathname;
+              }, 1200);
               return;
             }
           }
@@ -1468,7 +1515,6 @@
             state.createdAt = val.createdAt || Date.now();
             state.adminPin = val.adminPin || val.password || "";
             state.password = val.password || val.adminPin || "";
-            // 💡 讀取 kittyEnabled，預設為 true
             state.kittyEnabled = (val.kittyEnabled !== undefined) ? !!val.kittyEnabled : true;
             state.members = Array.isArray(val.members) ? val.members : [];
             state.custodian = val.custodian || "";
@@ -1505,7 +1551,6 @@
     // ==========================================
     // 6. 公費功能控制與計算
     // ==========================================
-    // 💡 公基金開關切換函數
     function toggleKittyEnabled(enabled) {
       if (!isAdmin) return;
       state.kittyEnabled = enabled;
@@ -1549,7 +1594,7 @@
     function openKittyModal() {
       if (!isAdmin) return;
       if (state.members.length === 0) {
-        alert('請先在下方加入同行旅伴');
+        showToast('請先在下方加入同行旅伴');
         return;
       }
       document.getElementById('kittyAmountInput').value = '';
@@ -1584,7 +1629,7 @@
       const type = document.getElementById('kittyDepositType').value;
       const amount = parseFloat(document.getElementById('kittyAmountInput').value);
       if (isNaN(amount) || amount <= 0) {
-        alert('請輸入有效金額');
+        showToast('請輸入有效金額');
         return;
       }
 
@@ -1627,8 +1672,8 @@
       if (!isAdmin) return;
       const input = document.getElementById('memberNameInput');
       const name = input.value ? input.value.trim() : '';
-      if (!name) return alert('請輸入旅伴姓名');
-      if (state.members.includes(name)) return alert('旅伴姓名重複');
+      if (!name) return showToast('請輸入旅伴姓名');
+      if (state.members.includes(name)) return showToast('旅伴姓名重複');
 
       state.members.push(name);
       selectedSplitters.push(name);
@@ -1640,7 +1685,7 @@
     function removeMember(name) {
       if (!isAdmin) return;
       const inUse = state.expenses.some(e => e.payer === name || (e.splitWith && e.splitWith.includes(name)));
-      if (inUse) return alert(`「${name}」在紀錄中已有帳目，請先刪除該項花費。`);
+      if (inUse) return showToast(`「${name}」在紀錄中已有帳目，請先刪除該項花費。`);
 
       state.members = state.members.filter(m => m !== name);
       selectedSplitters = selectedSplitters.filter(n => n !== name);
@@ -1651,14 +1696,13 @@
 
     function clearAllMembers() {
       if (!isAdmin) return;
-      if (state.expenses.length > 0) return alert('已有消費紀錄，請先清空花費');
-      if (confirm('確定清空所有同行旅伴？')) {
-        state.members = [];
-        state.custodian = "";
-        state.memberBanks = {};
-        selectedSplitters = [];
-        syncState();
-      }
+      if (state.expenses.length > 0) return showToast('已有消費紀錄，請先清空花費');
+      state.members = [];
+      state.custodian = "";
+      state.memberBanks = {};
+      selectedSplitters = [];
+      syncState();
+      showToast('已清空所有同行旅伴');
     }
 
     // ==========================================
@@ -1668,7 +1712,7 @@
       const area = document.getElementById('customArea');
       const btn = document.getElementById('customToggleBtn');
       if (area.style.display === 'none') {
-        if (state.members.length === 0) return alert('請先加入同行旅伴');
+        if (state.members.length === 0) return showToast('請先加入同行旅伴');
         area.style.display = 'block';
         btn.innerText = '取消自費';
         if (customSplits.length === 0) addCustomRow();
@@ -1749,7 +1793,7 @@
 
     function addExpense() {
       if (!isAdmin) return;
-      if (state.members.length === 0) return alert('請先加入同行旅伴');
+      if (state.members.length === 0) return showToast('請先加入同行旅伴');
 
       const titleInput = document.getElementById('itemTitle');
       const amountInput = document.getElementById('itemAmount');
@@ -1759,18 +1803,17 @@
       const amount = parseFloat(amountInput.value);
       const payer = payerSelect.value;
 
-      if (!title) return alert('請填寫支出品項');
-      if (isNaN(amount) || amount <= 0) return alert('請輸入有效金額');
-      if (!payer) return alert('請選擇付款人');
+      if (!title) return showToast('請填寫支出品項');
+      if (isNaN(amount) || amount <= 0) return showToast('請輸入有效金額');
+      if (!payer) return showToast('請選擇付款人');
 
       const customSum = customSplits.reduce((acc, c) => acc + (Number(c.amount) || 0), 0);
-      if (customSum > amount) return alert('自費總和不能大於支出金額');
-      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return alert('請至少勾選一位分攤旅伴');
+      if (customSum > amount) return showToast('自費總和不能大於支出金額');
+      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return showToast('請至少勾選一位分攤旅伴');
 
       let kittyDeduction = 0;
       let personalPaid = amount;
 
-      // 只有在啟用公費時，才做公費自動抵扣
       if (state.kittyEnabled && payer === state.custodian) {
         const currentKitty = getKittyBalance();
         if (currentKitty > 0) {
@@ -1792,21 +1835,22 @@
 
       clearExpenseForm();
       syncState();
+      showToast('已成功記錄花費');
     }
 
     function deleteExpense(id) {
       if (!isAdmin) return;
       state.expenses = state.expenses.filter(e => e.id !== String(id));
       syncState();
+      showToast('已刪除花費紀錄');
     }
 
     function clearAllExpenses() {
       if (!isAdmin) return;
       if (state.expenses.length === 0) return;
-      if (confirm('確定清空所有花費紀錄？')) {
-        state.expenses = [];
-        syncState();
-      }
+      state.expenses = [];
+      syncState();
+      showToast('已清空所有花費紀錄');
     }
 
     // ==========================================
@@ -1875,7 +1919,6 @@
       });
 
       const kittyBal = getKittyBalance();
-      // 只有在啟用公費且有餘額時才計算公費退還
       if (state.kittyEnabled && state.members.length > 0 && kittyBal > 0) {
         const refundPerPerson = kittyBal / state.members.length;
         state.members.forEach(m => balance[m] += refundPerPerson);
@@ -1928,7 +1971,6 @@
     // 11. 畫面渲染
     // ==========================================
     function renderAll() {
-      // 公費卡顯示切換
       const cardActive = document.getElementById('kittyCardActive');
       const cardDisabled = document.getElementById('kittyCardDisabled');
 
@@ -1939,13 +1981,11 @@
         const kittyBal = getKittyBalance();
         document.getElementById('kittyBalanceDisplay').innerText = `$${Math.round(kittyBal).toLocaleString()}`;
 
-        // 公費保管人
         const cSelect = document.getElementById('custodianSelect');
         cSelect.innerHTML = `<option value="">未指定</option>` + state.members.map(m => 
           `<option value="${m}" ${state.custodian === m ? 'selected' : ''}>${m}</option>`
         ).join('');
 
-        // 公費紀錄抽屜
         const kLogs = document.getElementById('kittyDepositLogs');
         if (!state.kittyDeposits || state.kittyDeposits.length === 0) {
           kLogs.innerHTML = '<span style="opacity:0.7;">尚無公費繳存紀錄</span>';
@@ -1958,7 +1998,6 @@
           `).join('');
         }
       } else {
-        // 公費已停用
         cardActive.style.display = 'none';
         if (isAdmin) {
           cardDisabled.style.display = 'flex';
@@ -1967,7 +2006,6 @@
         }
       }
 
-      // 旅伴收支小記
       const stats = computeMemberStatistics();
       const statsBox = document.getElementById('memberStatsContainer');
       if (state.members.length === 0) {
@@ -1991,7 +2029,6 @@
         }).join('');
       }
 
-      // 成員標籤
       document.getElementById('memberCountBadge').innerText = state.members.length;
       const mContainer = document.getElementById('membersContainer');
       mContainer.innerHTML = state.members.map(m => `
@@ -2001,7 +2038,6 @@
         </span>
       `).join('') || '<span class="empty-hint" style="padding:0;">尚未加入任何旅伴</span>';
 
-      // 付款人選單 (停用公費時不顯示抵扣註記)
       const pSelect = document.getElementById('payerSelect');
       const curPayer = pSelect.value;
       pSelect.innerHTML = state.members.map(m => {
@@ -2013,7 +2049,6 @@
       renderSplitButtons();
       renderCustomList();
 
-      // 消費明細列表
       const expList = document.getElementById('expenseList');
       let total = 0;
       if (state.expenses.length === 0) {
@@ -2054,7 +2089,6 @@
       }
       document.getElementById('totalCostDisplay').innerText = `累計：$${Math.round(total).toLocaleString()}`;
 
-      // 結算轉帳清單
       const setList = document.getElementById('settlementList');
       const { transactions, creditors } = computeSettlement();
       if (transactions.length === 0) {
@@ -2068,7 +2102,6 @@
         `).join('');
       }
 
-      // 收款人帳號專區
       const accList = document.getElementById('accountList');
       if (creditors.length === 0) {
         accList.innerHTML = '<span style="font-size:11px; color:var(--text-light);">尚無收款需求</span>';
@@ -2100,7 +2133,7 @@
     }
 
     function copyPureAccount(acc, name) {
-      if (!acc) return alert(`請先填寫 ${name} 的帳號`);
+      if (!acc) return showToast(`請先填寫 ${name} 的帳號`);
       copyToClipboard(acc.replace(/[^0-9]/g, ''), `已複製 ${name} 的銀行帳號`);
     }
 
@@ -2112,16 +2145,16 @@
       input.select();
       try {
         document.execCommand('copy');
-        alert(msg || '已複製');
+        showToast(msg || '已複製');
       } catch (err) {
-        prompt('請長按複製：', txt);
+        showToast('複製失敗，請手動長按選取');
       }
       document.body.removeChild(input);
     }
 
     function copySettlementSummary() {
       const { transactions, creditors, kittyLeftover } = computeSettlement();
-      if (transactions.length === 0) return alert('目前無須轉帳');
+      if (transactions.length === 0) return showToast('目前無須轉帳');
 
       let out = '🌾【旅途結算清單】\n';
       transactions.forEach(t => {
@@ -2143,12 +2176,11 @@
 
     function resetEntireTrip() {
       if (!isAdmin) return;
-      if (confirm('確定要清空這趟旅程的所有紀錄（人員、公費、帳目）嗎？')) {
-        state = { createdAt: Date.now(), adminPin: "", password: "", kittyEnabled: true, members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
-        selectedSplitters = [];
-        customSplits = [];
-        syncState();
-      }
+      state = { createdAt: Date.now(), adminPin: "", password: "", kittyEnabled: true, members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
+      selectedSplitters = [];
+      customSplits = [];
+      syncState();
+      showToast('已清空這趟旅程的所有紀錄');
     }
 
     // 啟動初始化
