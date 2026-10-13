@@ -882,18 +882,15 @@
             </filter>
           </defs>
 
-          <!-- 1. 不規則洗墨與墨暈效果 (Bleeding wash layers, 完全拋棄直角直線底色色塊) -->
+          <!-- 1. 不規則洗墨與墨暈效果 -->
           <g filter="url(#naturalBleed)" opacity="0.45">
-            <!-- 運用多個不規則曲型疊加，不打直線，不寫死下框 -->
             <path d="M 20,110 Q 55,95 85,115 T 140,90 T 195,110 T 250,95 T 300,110 T 270,165 T 210,180 T 130,170 T 70,185 T 15,145 Z" fill="var(--art-ink-blur)" />
             <path d="M 45,100 Q 95,85 155,105 T 255,90 T 290,120 T 240,150 T 160,155 T 80,145 T 35,120 Z" fill="var(--art-ink-blur)" opacity="0.6" />
-            <!-- 山麓下方的自然深暈 -->
             <path d="M 12,120 Q 50,115 90,122 T 180,118 T 260,124 T 308,120 T 250,135 T 150,138 T 60,135 Z" fill="var(--art-stroke)" opacity="0.12" />
           </g>
 
-          <!-- 2. 手繪感潑墨與飛濺墨點點 (Natural Splotches & Splatters) -->
+          <!-- 2. 手繪感潑墨與飛濺墨點點 -->
           <g fill="var(--art-stroke)" opacity="0.22">
-            <!-- 底部與兩側的邊界，全部碎裂化為顆粒狀，消散至背景 -->
             <circle cx="12" cy="135" r="1.5" />
             <circle cx="28" cy="122" r="0.8" />
             <circle cx="45" cy="142" r="1.2" />
@@ -915,28 +912,26 @@
             <circle cx="295" cy="158" r="0.5" />
             <circle cx="308" cy="165" r="1.4" />
             <circle cx="314" cy="145" r="0.7" />
-            <!-- 小細濺點 -->
             <circle cx="22" cy="148" r="0.4" /><circle cx="32" cy="152" r="0.4" /><circle cx="50" cy="158" r="0.5" />
             <circle cx="72" cy="175" r="0.4" /><circle cx="120" cy="192" r="0.4" /><circle cx="158" cy="192" r="0.5" />
             <circle cx="198" cy="190" r="0.4" /><circle cx="255" cy="182" r="0.4" /><circle cx="288" cy="175" r="0.5" />
           </g>
 
-          <!-- 3. 手寫感雙圓太陽 (Sun Sketch) -->
+          <!-- 3. 手寫感雙圓太陽 -->
           <g stroke="var(--art-stroke)" stroke-width="0.8" fill="none" opacity="0.85">
             <circle cx="118" cy="38" r="12" stroke="var(--art-stroke)" stroke-width="1.1" />
             <circle cx="119" cy="37" r="13.5" stroke="var(--art-stroke)" stroke-width="0.75" opacity="0.8" />
-            <!-- 手繪細微光芒 -->
             <path d="M118 21 L118 18 M118 53 L118 56 M101 38 L104 38 M132 38 L135 38 M106 25 L108 27 M129 25 L127 27 M106 49 L108 47 M129 49 L127 47 M109 20 L110 22 M126 20 L125 22 M102 31 L104 32 M134 31 L132 32 M102 44 L104 43 M134 44 L132 43 M109 54 L110 52 M126 54 L125 52" />
           </g>
 
-          <!-- 4. 極簡寫意山峰線條 (鋼筆手抖感起伏，漸漸細碎) -->
+          <!-- 4. 極簡寫意山峰線條 -->
           <path d="M 12 118 Q 28 92 46 72 T 80 50 L 82 52 T 108 86 T 138 104" stroke="var(--art-stroke)" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.85" />
           <path d="M 80 50 Q 105 78 135 94 T 172 110" stroke="var(--art-stroke)" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4" />
           <path d="M 106 86 Q 138 65 174 54 T 212 40 L 214 42 T 245 72 T 282 86" stroke="var(--art-stroke)" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.9" />
           <path d="M 174 54 Q 195 76 225 90 T 260 102" stroke="var(--art-stroke)" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4" />
           <path d="M 212 40 Q 235 62 262 76 T 298 90 T 312 112" stroke="var(--art-stroke)" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.8" />
 
-          <!-- 5. 山脈細密陰影與層次肌理 -->
+          <!-- 5. 山脈肌理 -->
           <path d="M 46 72 L 44 76 M 52 82 L 50 87 M 58 94 L 54 100 M 64 105 L 61 112 M 140 104 L 138 112 M 148 98 L 145 106" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.45" />
           <path d="M 245 72 L 243 78 M 252 84 L 248 91 M 262 92 L 257 101" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.45" />
           <path d="M 195 62 L 191 69 M 202 75 L 198 83 M 209 88 L 204 97 M 218 92 L 214 102" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.4" />
@@ -954,14 +949,14 @@
           <path d="M 275 66 Q 277 64 279 66 Q 281 64 283 66" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
           <path d="M 288 56 Q 290 54 292 56 Q 294 54 296 56" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
 
-          <!-- 8. 水際與岸線 (長短不齊、散落式 Fading，解決直線死板問題) -->
+          <!-- 8. 水際與岸線 -->
           <path d="M 12 118 C 40 115 80 113 130 115 C 180 117 240 114 272 113 C 285 113 302 115 311 116" stroke="var(--art-stroke)" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.7" />
           <path d="M 10 119 C 15 123 18 130 15 134 C 12 137 8 139 6 141" stroke="var(--art-stroke)" stroke-width="0.8" fill="none" opacity="0.6" />
           <path d="M 12 118 C 25 120 38 123 55 129 C 70 134 85 137 94 139" stroke="var(--art-stroke)" stroke-width="0.85" fill="none" opacity="0.6" stroke-dasharray="40 12" />
           <path d="M 252 114 C 258 118 268 124 282 129 C 295 134 308 132 314 129" stroke="var(--art-stroke)" stroke-width="0.8" fill="none" opacity="0.5" />
           <path d="M 280 113 C 285 117 290 122 298 127" stroke="var(--art-stroke)" stroke-width="0.6" fill="none" opacity="0.4" stroke-dasharray="10 6" />
 
-          <!-- 9. 兩側手繪柵欄與三角形松林 -->
+          <!-- 9. 手繪欄杆與松樹 -->
           <path d="M 222 115 L 225 111 M 227 115 L 230 110 M 232 115 L 235 111 M 238 115 L 241 110 M 245 115 L 248 111 M 253 115 L 256 110 M 259 115 L 262 111" stroke="var(--art-stroke)" stroke-width="0.6" opacity="0.5" />
           <path d="M 221 114 Q 240 113 261 113" stroke="var(--art-stroke)" stroke-width="0.5" fill="none" opacity="0.5" />
 
@@ -986,7 +981,7 @@
             <path d="M 189 135 C 199 137 209 137 219 135" stroke-dasharray="1 2" stroke-width="0.6" />
           </g>
 
-          <!-- 11. 自然漸隱、不封口的水波紋 (參差不一、極力消除左右及底部直線收邊) -->
+          <!-- 11. 自然漸隱、不封口的水波紋 -->
           <path d="M 40 126 C 100 123 180 123 280 126" stroke="var(--art-stroke)" stroke-width="0.7" opacity="0.45" />
           <path d="M 28 132 C 80 128 160 128 240 132" stroke="var(--art-stroke)" stroke-width="0.65" opacity="0.4" stroke-dasharray="120 40 60 0" />
           <path d="M 55 139 C 110 135 190 135 275 139" stroke="var(--art-stroke)" stroke-width="0.6" opacity="0.38" />
@@ -1013,14 +1008,14 @@
         <span class="lobby-accordion-arrow" id="arrow-create">▾</span>
       </button>
       <div id="drawer-create" class="lobby-accordion-drawer">
-        <span class="lobby-box-title">提示：設定一組原創的旅程代碼與密碼，建立並管理這趟旅程的帳目。</span>
+        <span class="lobby-box-title">提示：設定一組原創的旅程代碼與 4 碼數字管理密碼。</span>
         <div class="lobby-form-row">
           <input type="text" id="customRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
           <button type="button" class="btn-add" style="font-size:11px; padding:0 12px;" onclick="generateRandomRoomCode()">隨機</button>
         </div>
         <div>
-          <!-- 💡 這裡已經為您更新成 "管理密碼 (4碼數字)" -->
-          <input type="password" id="customRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (4碼數字)">
+          <!-- 🔒 已限定 maxlength="4" 並加上 4 碼數字規格檢驗提示 -->
+          <input type="password" maxlength="4" id="customRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (4碼數字)">
         </div>
         <button type="button" class="lobby-btn-sub" onclick="createNewTripRoom()">建立並以總務身分進入</button>
       </div>
@@ -1031,13 +1026,13 @@
         <span class="lobby-accordion-arrow" id="arrow-join">▾</span>
       </button>
       <div id="drawer-join" class="lobby-accordion-drawer">
-        <span class="lobby-box-title">提示：輸入旅伴分享的旅程代碼。若您是總務並持有密碼，可填入密碼以管理身分登入。</span>
+        <span class="lobby-box-title">提示：輸入旅伴分享的旅程代碼。若您是總務，需填入 4 碼數字密碼進行認證。</span>
         <div class="lobby-form-row" style="margin-bottom:6px;">
           <input type="text" id="joinRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
         </div>
         <div>
-          <!-- 💡 這裡也統一更新成 "管理密碼 (4碼數字)" -->
-          <input type="password" id="joinRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (4碼數字，一般旅伴免填)">
+          <!-- 🔒 加入同樣限制正好 4 碼數字，一般旅伴可以不填，但填了就必須滿足 4 碼 -->
+          <input type="password" maxlength="4" id="joinRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (4碼數字，一般旅伴免填)">
         </div>
         <button type="button" class="lobby-btn-sub" onclick="joinExistingRoom()">加入這趟旅程</button>
       </div>
@@ -1069,7 +1064,7 @@
         </div>
       </div>
 
-      <!-- 2. 旅伴收支小記 (預設精簡收合) -->
+      <!-- 2. 旅伴收支小記 -->
       <div class="card">
         <div class="card-header" style="margin-bottom:0;" onclick="toggleStatsDrawer()">
           <span class="card-title" style="cursor:pointer;">旅伴收支小記</span>
@@ -1085,7 +1080,7 @@
         </div>
       </div>
 
-      <!-- 3. 同行旅伴名單 (總務管理專用) -->
+      <!-- 3. 同行旅伴名單 -->
       <div class="card admin-only" id="memberManageCard">
         <div class="card-header">
           <span class="card-title">同行旅伴 (<span id="memberCountBadge">0</span>)</span>
@@ -1098,7 +1093,7 @@
         <div id="membersContainer" class="chips-box"></div>
       </div>
 
-      <!-- 4. 記錄花費 (總務管理專用) -->
+      <!-- 4. 記錄花費 -->
       <div class="card admin-only" id="expenseFormCard">
         <div class="card-header">
           <span class="card-title">記錄花費</span>
@@ -1168,7 +1163,7 @@
         </div>
         <div id="settlementList"></div>
 
-        <!-- 置底收款帳號專區 (防爆版設計) -->
+        <!-- 置底收款帳號專區 -->
         <div id="accountSection" style="margin-top:14px; padding-top:12px; border-top:1px dashed var(--border-soft);">
           <span class="card-title" style="display:block; margin-bottom:8px;">匯款帳號 (選填)</span>
           <div id="accountList"></div>
@@ -1253,7 +1248,7 @@
     let isStatsExpanded = false; 
 
     // ==========================================
-    // 3. 四季主題切換 (Theme Toggle)
+    // 3. 四季主題切換
     // ==========================================
     function setSeasonTheme(season) {
       document.documentElement.setAttribute('data-theme', season);
@@ -1263,7 +1258,7 @@
     const savedSeason = localStorage.getItem('godutch_preferred_season') || 'autumn';
     setSeasonTheme(savedSeason);
 
-    // 大廳手風琴 Accordion 動態折疊
+    // 手風琴摺疊
     function toggleLobbyAccordion(type) {
       const drawerCreate = document.getElementById('drawer-create');
       const drawerJoin = document.getElementById('drawer-join');
@@ -1305,9 +1300,10 @@
       document.getElementById('customRoomCodeInput').value = code;
     }
 
+    // 🔒 深度修復與安全卡點：100% 擋下所有非 4 碼數字的管理密碼建立
     function createNewTripRoom() {
-      let code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
-      let password = document.getElementById('customRoomPassInput').value.trim();
+      const code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
+      const password = document.getElementById('customRoomPassInput').value.trim();
       
       if (!code) {
         alert('請填寫自訂旅程代碼，或點選「隨機」');
@@ -1317,8 +1313,9 @@
         alert('代碼僅限英文、數字、連字號（-）或底線（_），不含空格與中文。');
         return;
       }
-      if (!password) {
-        alert('請填寫總務管理密碼（日後以管理身分登入的憑證）');
+      // 🔒 執行極度嚴格的 Regular Expression 檢查：必須為正好 4 個純數字 (不允許中英文、不允許空字元)
+      if (!/^\d{4}$/.test(password)) {
+        alert('安全管理密碼不合規格，請填寫正好「4碼純數字」(例如：1234)');
         return;
       }
 
@@ -1330,7 +1327,7 @@
           } else {
             db.ref('trips/' + code).set({
               createdAt: Date.now(),
-              password: password,
+              password: password, // 保存合規的 4 碼純數字密碼
               members: [],
               custodian: "",
               kittyDeposits: [],
@@ -1346,6 +1343,7 @@
       }
     }
 
+    // 🔒 深度修復比對卡點：加入時不合 4 碼直接阻絕，不再因後台微小空格或變數型別失誤產生 Bug
     function joinExistingRoom() {
       const code = document.getElementById('joinRoomCodeInput').value.trim().toLowerCase();
       const inputPass = document.getElementById('joinRoomPassInput').value.trim();
@@ -1358,18 +1356,29 @@
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
-            alert(`找不到代碼為「${code}」的旅程，將返回大廳。`);
+            alert(`找不到代碼為「${code}」的旅程，請確認代碼是否輸入正確。`);
             return;
           }
           
           const roomData = snap.val();
           if (inputPass) {
-            if (roomData.password === inputPass) {
+            // 🔒 強制驗證加入者輸入的密碼，若非正好 4 碼數字直接阻絕
+            if (!/^\d{4}$/.test(inputPass)) {
+              alert('密碼格式錯誤，應為正好 4 碼數字（例如：1234）。');
+              return;
+            }
+
+            // 🌟 極致相容與精準匹配演算法：去除首尾、強制字串化
+            const dbPass = roomData.password !== undefined ? String(roomData.password).trim() : "";
+            const userPass = String(inputPass).trim();
+
+            if (dbPass === userPass) {
               window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
             } else {
-              alert('管理密碼錯誤，請確認，或不填密碼以旅伴檢視身分進入');
+              alert('管理密碼錯誤，請確認。若為一般旅伴請不要填寫密碼，直接加入。');
             }
           } else {
+            // 無密碼以檢視身分加入
             window.location.href = `${window.location.pathname}?trip=${code}`;
           }
         });
