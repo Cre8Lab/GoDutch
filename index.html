@@ -496,7 +496,7 @@
       margin-bottom: 14px;
     }
 
-    /* 旅伴收支小記清單 (預設精簡收合) */
+    /* 旅伴收支小記清單 */
     .stats-toggle-btn {
       background: none;
       border: none;
@@ -946,7 +946,7 @@
             <path d="M 189 135 C 199 137 209 137 219 135" stroke-dasharray="1 2" stroke-width="0.6" />
           </g>
 
-          <!-- 11. 自然漸隱的手繪水波紋 (層層圍繞、穿過標題與副標) -->
+          <!-- 11. 自然漸隱的手繪水波紋 -->
           <path d="M 40 126 C 100 123 180 123 280 126" stroke="var(--art-stroke)" stroke-width="0.7" opacity="0.45" />
           <path d="M 18 132 C 80 128 160 128 240 132" stroke="var(--art-stroke)" stroke-width="0.65" opacity="0.4" />
           <path d="M 45 139 C 110 135 190 135 295 139" stroke="var(--art-stroke)" stroke-width="0.6" opacity="0.38" />
@@ -1118,7 +1118,7 @@
         <div id="expenseList"></div>
       </div>
 
-      <!-- 6. 結算明細 (清楚列出誰該給誰多少錢) -->
+      <!-- 6. 結算明細 -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">結算明細</span>
@@ -1197,7 +1197,7 @@
     // ==========================================
     let state = {
       createdAt: null,
-      password: "",         // 儲存總務的管理密碼
+      password: "",         
       members: [],          
       custodian: "",        
       memberBanks: {},      
@@ -1208,7 +1208,7 @@
     let selectedSplitters = [];
     let customSplits = [];
     let expandedExpenseId = null;
-    let isStatsExpanded = false; // 預設收合旅伴收支小記
+    let isStatsExpanded = false; 
 
     // ==========================================
     // 3. 四季主題切換 (Theme Toggle)
@@ -2001,4 +2001,55 @@
       copyToClipboard(acc.replace(/[^0-9]/g, ''), `已複製 ${name} 的銀行帳號`);
     }
 
-    function copyToClipboard(txt
+    function copyToClipboard(txt, msg) {
+      if (!txt) return;
+      const input = document.createElement('textarea');
+      input.value = txt;
+      document.body.appendChild(input);
+      input.select();
+      try {
+        document.execCommand('copy');
+        alert(msg || '已複製');
+      } catch (err) {
+        prompt('請長按複製：', txt);
+      }
+      document.body.removeChild(input);
+    }
+
+    function copySettlementSummary() {
+      const { transactions, creditors, kittyLeftover } = computeSettlement();
+      if (transactions.length === 0) return alert('目前無須轉帳');
+
+      let out = '🌾【旅途結算清單】\n';
+      transactions.forEach(t => {
+        out += `👉 ${t.from} 應轉給 ${t.to}：$${t.amount.toLocaleString()} 元\n`;
+      });
+
+      if (kittyLeftover > 0 && state.custodian) {
+        out += `\n💡 備註：公費剩餘現鈔 $${Math.round(kittyLeftover).toLocaleString()} 已由總務【${state.custodian}】直接抵銷。\n`;
+      }
+
+      out += '\n【收款人帳號】\n';
+      creditors.forEach(c => {
+        const b = state.memberBanks[c.person] || { code: "", account: "" };
+        out += `🏦 ${c.person}：銀行代碼 ${b.code || '未填'} 帳號 ${b.account || '未填'}\n`;
+      });
+
+      copyToClipboard(out, '已複製結算清單，可直接貼至 LINE 群組！');
+    }
+
+    function resetEntireTrip() {
+      if (!isAdmin) return;
+      if (confirm('確定要清空這趟旅程的所有紀錄（人員、公費、帳目）嗎？')) {
+        state = { createdAt: Date.now(), password: "", members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
+        selectedSplitters = [];
+        customSplits = [];
+        syncState();
+      }
+    }
+
+    // 啟動初始化
+    initDataSync();
+  </script>
+</body>
+</html>
