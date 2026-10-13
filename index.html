@@ -1019,7 +1019,8 @@
           <button type="button" class="btn-add" style="font-size:11px; padding:0 12px;" onclick="generateRandomRoomCode()">隨機</button>
         </div>
         <div>
-          <input type="password" id="customRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (例如 4 碼數字)">
+          <!-- 💡 這裡已經為您更新成 "管理密碼 (4碼數字)" -->
+          <input type="password" id="customRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (4碼數字)">
         </div>
         <button type="button" class="lobby-btn-sub" onclick="createNewTripRoom()">建立並以總務身分進入</button>
       </div>
@@ -1035,7 +1036,8 @@
           <input type="text" id="joinRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
         </div>
         <div>
-          <input type="password" id="joinRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (一般旅伴免填，僅總務需要)">
+          <!-- 💡 這裡也統一更新成 "管理密碼 (4碼數字)" -->
+          <input type="password" id="joinRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (4碼數字，一般旅伴免填)">
         </div>
         <button type="button" class="lobby-btn-sub" onclick="joinExistingRoom()">加入這趟旅程</button>
       </div>
