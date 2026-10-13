@@ -33,11 +33,13 @@
       --radius-md: 14px;
       --radius-lg: 20px;
       
-      /* 極簡寫意手繪湖山調色 */
-      --art-stroke: #8C6751;
-      --art-mountain-fill: #EFE6DF;
-      --art-sun: #C49767;
-      --art-ink-blur: #EFE6DF;
+      /* 抽象多洛米堤 SVG 季節著色 */
+      --art-sky-glow: rgba(230, 192, 160, 0.25);
+      --art-mountain-base: #EDE6DF;
+      --art-mountain-shade: #8C6751;
+      --art-lake-glow: rgba(140, 103, 81, 0.15);
+      --art-forest-shade: #6E4F3B;
+      --art-dot: #A67C5E;
     }
 
     /* 春天「初融櫻桃粉調」 */
@@ -51,10 +53,13 @@
       --border-soft: #F2EBEB;
       --rose-subtle: #BD6060;
       
-      --art-stroke: #9E6161;
-      --art-mountain-fill: #F4EAE9;
-      --art-sun: #D99B9B;
-      --art-ink-blur: #F4EAE9;
+      /* 插畫春天著色 */
+      --art-sky-glow: rgba(248, 204, 204, 0.28);
+      --art-mountain-base: #F2EAE9;
+      --art-mountain-shade: #9E6161;
+      --art-lake-glow: rgba(158, 97, 97, 0.14);
+      --art-forest-shade: #7A4242;
+      --art-dot: #B87C7C;
     }
 
     /* 夏天「茂密森活綠調」 */
@@ -68,10 +73,13 @@
       --border-soft: #E5EDE7;
       --rose-subtle: #BD6060;
       
-      --art-stroke: #4F6E5C;
-      --art-mountain-fill: #E7EFEA;
-      --art-sun: #88B29A;
-      --art-ink-blur: #E7EFEA;
+      /* 插畫夏天著色 */
+      --art-sky-glow: rgba(180, 215, 195, 0.28);
+      --art-mountain-base: #EAECE9;
+      --art-mountain-shade: #4F6E5C;
+      --art-lake-glow: rgba(79, 110, 92, 0.16);
+      --art-forest-shade: #375243;
+      --art-dot: #6A8D77;
     }
 
     /* 冬天「靜謐雪霽藍調」 */
@@ -85,10 +93,13 @@
       --border-soft: #E2EBF0;
       --rose-subtle: #BD6060;
       
-      --art-stroke: #4D6D7A;
-      --art-mountain-fill: #E8EFF3;
-      --art-sun: #96B4C2;
-      --art-ink-blur: #E8EFF3;
+      /* 插畫冬天著色 */
+      --art-sky-glow: rgba(190, 215, 225, 0.3);
+      --art-mountain-base: #EAEFF2;
+      --art-mountain-shade: #4D6D7A;
+      --art-lake-glow: rgba(77, 109, 122, 0.14);
+      --art-forest-shade: #38535F;
+      --art-dot: #688C9B;
     }
 
     * {
@@ -160,7 +171,7 @@
       border: 1px solid var(--border-soft);
     }
 
-    /* 季節切換點點 */
+    /* 季切切換點點 (Theme Selector) */
     .header-actions {
       display: flex;
       gap: 12px;
@@ -188,6 +199,7 @@
     .dot.autumn { background-color: #C49767; }
     .dot.winter { background-color: #829DA7; }
 
+    /* 選中狀態 border 加粗，使用對應的深色點點 */
     [data-theme="spring"] .dot.spring { border-color: #5E2A2A; transform: scale(1.1); }
     [data-theme="summer"] .dot.summer { border-color: #2F4238; transform: scale(1.1); }
     [data-theme="autumn"] .dot.autumn { border-color: #4D3321; transform: scale(1.1); }
@@ -229,21 +241,18 @@
       gap: 13px;
     }
 
-    /* 極簡湖山與「遠行與日常」交融設計區塊 */
-    .lake-scene-container {
-      position: relative;
+    /* 抽象多洛米堤 輕盈手繪景致 */
+    .art-illustration-wrapper {
       width: 100%;
-      margin-bottom: 4px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow: hidden;
+      justify-content: center;
+      margin-bottom: 6px;
+      padding-top: 10px;
     }
-    .lake-scene-svg {
+    .art-svg {
       width: 100%;
-      max-width: 330px;
+      max-width: 290px;
       height: auto;
-      display: block;
     }
 
     /* 首頁：啟程大廳 */
@@ -251,13 +260,27 @@
       background: var(--card-bg);
       border-radius: var(--radius-lg);
       border: 1px solid var(--border-soft);
-      padding: 12px 16px 28px 16px;
+      padding: 24px 20px 32px 20px;
       box-shadow: 0 4px 20px rgba(61, 53, 47, 0.02);
       text-align: center;
-      margin-top: 4px;
+      margin-top: 8px;
       transition: all 0.4s ease;
     }
+    .room-lobby-title {
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .room-lobby-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.6px;
+      margin-bottom: 24px;
+    }
 
+    /* 2026 手風琴摺疊大按鈕 (Accordion) */
     .lobby-accordion-btn {
       width: 100%;
       background: var(--bg-warm);
@@ -288,6 +311,7 @@
       transition: transform 0.3s ease;
     }
     
+    /* 展開時狀態 */
     .lobby-accordion-btn.active {
       background: var(--theme-light);
       border-color: var(--warm-border);
@@ -299,6 +323,7 @@
       transform: rotate(180deg);
     }
 
+    /* 摺疊內容抽屜 */
     .lobby-accordion-drawer {
       display: none;
       background: var(--card-bg);
@@ -321,6 +346,7 @@
       margin-bottom: 14px;
     }
 
+    /* 填寫區樣式與防呆 */
     .lobby-form-row {
       display: flex;
       gap: 6px;
@@ -382,7 +408,7 @@
       color: var(--rose-subtle);
     }
 
-    /* 溫和公費卡片 */
+    /* 溫和公費卡片 (與主題色彩完全聯動的漸層) */
     .kitty-compact-card {
       background: linear-gradient(135deg, var(--theme-soft), var(--theme-dark));
       color: #FFFFFF;
@@ -835,43 +861,9 @@
       padding: 14px 0;
       letter-spacing: 0.5px;
     }
-
-    /* ==========================================
-       自訂精緻 Toast 提示 (無網址、文字排版平衡避免孤字)
-       ========================================== */
-    .app-toast-container {
-      position: fixed;
-      top: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-20px);
-      background: rgba(61, 53, 47, 0.94);
-      color: #FAF8F5;
-      padding: 10px 22px;
-      border-radius: 24px;
-      font-size: 13px;
-      letter-spacing: 0.5px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      max-width: 86vw;
-      width: max-content;
-      text-align: center;
-      line-height: 1.5;
-      text-wrap: balance;
-      word-break: keep-all;
-    }
-    .app-toast-container.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
   </style>
 </head>
 <body>
-
-  <!-- 自訂 Toast 提示容器 -->
-  <div id="appToast" class="app-toast-container"></div>
 
   <!-- 頂部導航 -->
   <header class="header">
@@ -898,135 +890,34 @@
     <!-- 0. 首頁大廳 (當網址未帶 trip 參數時呈現) -->
     <div id="roomLobbySection" class="room-lobby-card" style="display:none;">
       
-      <!-- 手繪寫意多洛米堤湖山 SVG (自然暈染無死板直線收邊) -->
-      <div class="lake-scene-container">
-        <svg class="lake-scene-svg" viewBox="0 0 320 215" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <filter id="naturalBleed" x="-10%" y="-10%" width="120%" height="120%">
-              <feGaussianBlur stdDeviation="7" result="blur" />
-              <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
-              <feDisplacementMap in="blur" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-          </defs>
-
-          <!-- 不規則洗墨與墨暈效果 -->
-          <g filter="url(#naturalBleed)" opacity="0.45">
-            <path d="M 20,110 Q 55,95 85,115 T 140,90 T 195,110 T 250,95 T 300,110 T 270,165 T 210,180 T 130,170 T 70,185 T 15,145 Z" fill="var(--art-ink-blur)" />
-            <path d="M 45,100 Q 95,85 155,105 T 255,90 T 290,120 T 240,150 T 160,155 T 80,145 T 35,120 Z" fill="var(--art-ink-blur)" opacity="0.6" />
-            <path d="M 12,120 Q 50,115 90,122 T 180,118 T 260,124 T 308,120 T 250,135 T 150,138 T 60,135 Z" fill="var(--art-stroke)" opacity="0.12" />
-          </g>
-
-          <!-- 手繪感潑墨與飛濺墨點 -->
-          <g fill="var(--art-stroke)" opacity="0.22">
-            <circle cx="12" cy="135" r="1.5" />
-            <circle cx="28" cy="122" r="0.8" />
-            <circle cx="45" cy="142" r="1.2" />
-            <circle cx="15" cy="155" r="0.6" />
-            <circle cx="38" cy="165" r="1.4" />
-            <circle cx="58" cy="172" r="0.8" />
-            <circle cx="82" cy="182" r="2.0" />
-            <circle cx="95" cy="168" r="0.6" />
-            <circle cx="112" cy="188" r="1.1" />
-            <circle cx="128" cy="195" r="0.8" />
-            <circle cx="145" cy="185" r="0.5" />
-            <circle cx="168" cy="202" r="1.6" />
-            <circle cx="188" cy="182" r="0.7" />
-            <circle cx="212" cy="195" r="1.5" />
-            <circle cx="230" cy="180" r="0.8" />
-            <circle cx="248" cy="188" r="1.3" />
-            <circle cx="262" cy="172" r="0.9" />
-            <circle cx="278" cy="185" r="1.8" />
-            <circle cx="295" cy="158" r="0.5" />
-            <circle cx="308" cy="165" r="1.4" />
-            <circle cx="314" cy="145" r="0.7" />
-            <circle cx="22" cy="148" r="0.4" /><circle cx="32" cy="152" r="0.4" /><circle cx="50" cy="158" r="0.5" />
-            <circle cx="72" cy="175" r="0.4" /><circle cx="120" cy="192" r="0.4" /><circle cx="158" cy="192" r="0.5" />
-            <circle cx="198" cy="190" r="0.4" /><circle cx="255" cy="182" r="0.4" /><circle cx="288" cy="175" r="0.5" />
-          </g>
-
-          <!-- 手寫感雙圓太陽 -->
-          <g stroke="var(--art-stroke)" stroke-width="0.8" fill="none" opacity="0.85">
-            <circle cx="118" cy="38" r="12" stroke="var(--art-stroke)" stroke-width="1.1" />
-            <circle cx="119" cy="37" r="13.5" stroke="var(--art-stroke)" stroke-width="0.75" opacity="0.8" />
-            <path d="M118 21 L118 18 M118 53 L118 56 M101 38 L104 38 M132 38 L135 38 M106 25 L108 27 M129 25 L127 27 M106 49 L108 47 M129 49 L127 47 M109 20 L110 22 M126 20 L125 22 M102 31 L104 32 M134 31 L132 32 M102 44 L104 43 M134 44 L132 43 M109 54 L110 52 M126 54 L125 52" />
-          </g>
-
-          <!-- 極簡寫意山峰線條 -->
-          <path d="M 12 118 Q 28 92 46 72 T 80 50 L 82 52 T 108 86 T 138 104" stroke="var(--art-stroke)" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.85" />
-          <path d="M 80 50 Q 105 78 135 94 T 172 110" stroke="var(--art-stroke)" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4" />
-          <path d="M 106 86 Q 138 65 174 54 T 212 40 L 214 42 T 245 72 T 282 86" stroke="var(--art-stroke)" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.9" />
-          <path d="M 174 54 Q 195 76 225 90 T 260 102" stroke="var(--art-stroke)" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4" />
-          <path d="M 212 40 Q 235 62 262 76 T 298 90 T 312 112" stroke="var(--art-stroke)" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.8" />
-
-          <!-- 山脈肌理 -->
-          <path d="M 46 72 L 44 76 M 52 82 L 50 87 M 58 94 L 54 100 M 64 105 L 61 112 M 140 104 L 138 112 M 148 98 L 145 106" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.45" />
-          <path d="M 245 72 L 243 78 M 252 84 L 248 91 M 262 92 L 257 101" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.45" />
-          <path d="M 195 62 L 191 69 M 202 75 L 198 83 M 209 88 L 204 97 M 218 92 L 214 102" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.4" />
-          <path d="M 132 80 L 129 86 M 120 90 L 117 96" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.4" />
-          <path d="M 285 75 L 282 82 M 292 86 L 289 94" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.4" />
-
-          <!-- 飄逸寫意雲霧 -->
-          <path d="M 85 85 Q 98 75 112 80" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
-          <path d="M 125 72 Q 138 65 152 70 Q 165 72 175 66" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.4" />
-          <path d="M 242 66 Q 255 58 268 62" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.4" />
-
-          <!-- 飛鳥點綴 -->
-          <path d="M 160 52 Q 163 49 166 52 Q 169 49 172 52" stroke="var(--art-stroke)" stroke-width="0.75" stroke-linecap="round" fill="none" opacity="0.6" />
-          <path d="M 180 44 Q 182 42 184 44 Q 186 42 188 44" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
-          <path d="M 275 66 Q 277 64 279 66 Q 281 64 283 66" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
-          <path d="M 288 56 Q 290 54 292 56 Q 294 54 296 56" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
-
-          <!-- 水際與岸線 -->
-          <path d="M 12 118 C 40 115 80 113 130 115 C 180 117 240 114 272 113 C 285 113 302 115 311 116" stroke="var(--art-stroke)" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.7" />
-          <path d="M 10 119 C 15 123 18 130 15 134 C 12 137 8 139 6 141" stroke="var(--art-stroke)" stroke-width="0.8" fill="none" opacity="0.6" />
-          <path d="M 12 118 C 25 120 38 123 55 129 C 70 134 85 137 94 139" stroke="var(--art-stroke)" stroke-width="0.85" fill="none" opacity="0.6" stroke-dasharray="40 12" />
-          <path d="M 252 114 C 258 118 268 124 282 129 C 295 134 308 132 314 129" stroke="var(--art-stroke)" stroke-width="0.8" fill="none" opacity="0.5" />
-          <path d="M 280 113 C 285 117 290 122 298 127" stroke="var(--art-stroke)" stroke-width="0.6" fill="none" opacity="0.4" stroke-dasharray="10 6" />
-
-          <!-- 手繪欄杆與松樹 -->
-          <path d="M 222 115 L 225 111 M 227 115 L 230 110 M 232 115 L 235 111 M 238 115 L 241 110 M 245 115 L 248 111 M 253 115 L 256 110 M 259 115 L 262 111" stroke="var(--art-stroke)" stroke-width="0.6" opacity="0.5" />
-          <path d="M 221 114 Q 240 113 261 113" stroke="var(--art-stroke)" stroke-width="0.5" fill="none" opacity="0.5" />
-
-          <path d="M 12 108 L 14 119 M 10 115 L 16 115 M 12 111 L 15 111" stroke="var(--art-stroke)" stroke-width="0.9" opacity="0.75" />
-          <path d="M 18 103 L 20 119 M 15 114 L 23 114 M 17 108 L 21 108" stroke="var(--art-stroke)" stroke-width="1.1" opacity="0.8" />
-          <path d="M 24 110 L 25 119 M 22 116 L 27 116 M 23 113 L 26 113" stroke="var(--art-stroke)" stroke-width="0.8" opacity="0.7" />
-          <path d="M 32 116 L 33 122 M 30 120 L 35 120" stroke="var(--art-stroke)" stroke-width="0.7" opacity="0.6" />
-
-          <path d="M 288 102 L 290 119 M 285 114 L 293 114 M 287 108 L 291 108" stroke="var(--art-stroke)" stroke-width="1" opacity="0.7" />
-          <path d="M 296 99 L 298 119 M 291 113 L 303 113 M 294 106 L 300 106" stroke="var(--art-stroke)" stroke-width="1.2" opacity="0.8" />
-          <path d="M 305 107 L 306 119 M 302 115 L 308 115" stroke="var(--art-stroke)" stroke-width="0.8" opacity="0.65" />
-
-          <!-- 湖中小木舟 -->
-          <g opacity="0.75" stroke="var(--art-stroke)" fill="none" stroke-linecap="round">
-            <path d="M 130 130 Q 140 134 152 130 Q 140 131 130 130 Z" stroke-width="1" />
-            <path d="M 134 131 L 131 134 M 136 131 L 140 135" stroke-width="0.6" />
-            <path d="M 125 133 C 135 135 145 135 155 133" stroke-dasharray="1 2" stroke-width="0.6" />
-          </g>
-          <g opacity="0.75" stroke="var(--art-stroke)" fill="none" stroke-linecap="round">
-            <path d="M 194 132 Q 204 136 216 132 Q 204 133 194 132 Z" stroke-width="1" />
-            <path d="M 198 133 L 195 136 M 200 133 L 204 137" stroke-width="0.6" />
-            <path d="M 189 135 C 199 137 209 137 219 135" stroke-dasharray="1 2" stroke-width="0.6" />
-          </g>
-
-          <!-- 自然漸隱水波紋 -->
-          <path d="M 40 126 C 100 123 180 123 280 126" stroke="var(--art-stroke)" stroke-width="0.7" opacity="0.45" />
-          <path d="M 28 132 C 80 128 160 128 240 132" stroke="var(--art-stroke)" stroke-width="0.65" opacity="0.4" stroke-dasharray="120 40 60 0" />
-          <path d="M 55 139 C 110 135 190 135 275 139" stroke="var(--art-stroke)" stroke-width="0.6" opacity="0.38" />
-          <path d="M 18 146 C 70 141 150 141 210 146 Q 248 145 282 147" stroke="var(--art-stroke)" stroke-width="0.55" opacity="0.32" stroke-dasharray="60 10 30 10 60 0" />
+      <!-- 手繪抽象多洛米堤湖山景致 -->
+      <div class="art-illustration-wrapper">
+        <svg class="art-svg" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 四季漸變天空與暖陽 -->
+          <circle cx="255" cy="40" r="14" fill="var(--art-dot)" opacity="0.4" />
+          <path d="M10,135 Q120,65 240,110 T305,100" stroke="var(--art-mountain-shade)" stroke-width="1.2" stroke-linecap="round" fill="none" />
+          <path d="M10,135 L310,135" stroke="var(--art-mountain-shade)" stroke-width="0.8" opacity="0.6" stroke-linecap="round" />
           
-          <text x="160" y="161" font-size="22" font-weight="600" text-anchor="middle" fill="var(--text-main)" letter-spacing="1.5">遠行與日常</text>
-          <text x="160" y="179" font-size="11.5" text-anchor="middle" fill="var(--text-muted)" letter-spacing="0.5">隨手記錄帳目 · 時間留予旅途</text>
-
-          <path d="M 32 154 C 92 149 172 149 252 154 C 275 153 285 155 292 156" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.28" stroke-dasharray="80 30 80 0" />
-          <path d="M 18 162 C 65 157 135 157 195 162 C 220 161 242 163 268 162" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.25" stroke-dasharray="40 5 90 5 40 0" />
-          <path d="M 52 170 C 112 165 182 165 242 170 C 255 169 270 171 282 171" stroke="var(--art-stroke)" stroke-width="0.45" opacity="0.2" />
-          <path d="M 32 178 C 75 173 135 173 185 178 C 205 177 225 179 248 178" stroke="var(--art-stroke)" stroke-width="0.4" opacity="0.18" stroke-dasharray="30 8 70 8 30 0" />
-          <path d="M 72 184 Q 155 180 238 184" stroke="var(--art-stroke)" stroke-width="0.4" opacity="0.15" stroke-dasharray="40 10 60 0" />
-          <path d="M 45 190 C 88 186 148 186 190 190" stroke="var(--art-stroke)" stroke-width="0.35" opacity="0.1" />
-          <path d="M 105 196 Q 160 193 215 196" stroke="var(--art-stroke)" stroke-width="0.35" opacity="0.08" stroke-dasharray="20 5 40 0" />
-          <path d="M 78 202 C 118 199 158 199 198 202" stroke="var(--art-stroke)" stroke-width="0.3" opacity="0.06" />
+          <!-- 大地基底與柔和漸層 (純向量) -->
+          <path d="M15,135 C50,95 140,55 245,78 C255,80 290,105 305,105 L305,135 Z" fill="var(--art-sky-glow)" opacity="0.4" />
+          
+          <!-- 義大利多洛米堤經典鋸齒狀、刀鋒抽象山脈 (線條極簡，避免繁雜) -->
+          <path d="M22,125 L45,100 L75,115 L120,68 L155,90 L210,48 L240,78 L265,58 L292,85 L305,75" stroke="var(--art-mountain-shade)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="var(--art-mountain-base)" opacity="0.85" />
+          <path d="M45,100 L58,118 M120,68 L138,98 M210,48 L224,85 M265,58 L275,76" stroke="var(--art-mountain-shade)" stroke-width="0.7" stroke-linecap="round" opacity="0.5" />
+          
+          <!-- 湖泊與倒影 (水平抽象波浪) -->
+          <ellipse cx="165" cy="155" rx="140" ry="16" fill="var(--art-lake-glow)" opacity="0.6" />
+          <path d="M55,150 C110,147 210,147 265,150 M75,158 C120,155 190,155 245,158" stroke="var(--art-mountain-shade)" stroke-width="0.8" stroke-linecap="round" opacity="0.4" />
+          <path d="M115,164 Q160,162 205,164" stroke="var(--art-mountain-shade)" stroke-width="0.5" stroke-linecap="round" opacity="0.3" />
+          
+          <!-- 手繪抽象樹影與湖邊小船 -->
+          <path d="M25,128 L23,135 M29,129 L28,135 M34,127 L33,135 M42,128 L42,135 M275,125 L272,135 M282,123 L280,135 M294,124 L294,135 M301,126 L302,135" stroke="var(--art-forest-shade)" stroke-width="1.2" stroke-linecap="round" />
+          <path d="M125,145 L135,145 M135,145 C132,148 128,148 125,145 Z M185,148 L197,148 M197,148 C194,151 188,151 185,148 Z" fill="var(--art-forest-shade)" opacity="0.75" />
         </svg>
       </div>
+
+      <h2 class="room-lobby-title">遠行與日常</h2>
+      <p class="room-lobby-sub">隨手記錄帳目 · 時間留予旅途</p>
 
       <!-- 1. 開啟一段新旅程 (摺疊卡片) -->
       <button type="button" class="lobby-accordion-btn" onclick="toggleLobbyAccordion('create')">
@@ -1034,13 +925,13 @@
         <span class="lobby-accordion-arrow" id="arrow-create">▾</span>
       </button>
       <div id="drawer-create" class="lobby-accordion-drawer">
-        <span class="lobby-box-title">提示：設定一組原創的旅程代碼與 4 碼數字管理密碼。</span>
+        <span class="lobby-box-title">提示：設定一組原創的旅程代碼與密碼，建立並管理這趟旅程的帳目。</span>
         <div class="lobby-form-row">
           <input type="text" id="customRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
           <button type="button" class="btn-add" style="font-size:11px; padding:0 12px;" onclick="generateRandomRoomCode()">隨機</button>
         </div>
         <div>
-          <input type="password" maxlength="4" id="customRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (4碼數字)">
+          <input type="password" id="customRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (例如 4 碼數字)">
         </div>
         <button type="button" class="lobby-btn-sub" onclick="createNewTripRoom()">建立並以總務身分進入</button>
       </div>
@@ -1051,12 +942,12 @@
         <span class="lobby-accordion-arrow" id="arrow-join">▾</span>
       </button>
       <div id="drawer-join" class="lobby-accordion-drawer">
-        <span class="lobby-box-title">提示：輸入旅伴分享的旅程代碼。若您是總務，需填入 4 碼數字密碼進行認證。</span>
+        <span class="lobby-box-title">提示：輸入旅伴分享的旅程代碼。若您是總務並持有密碼，可填入密碼以管理身分登入。</span>
         <div class="lobby-form-row" style="margin-bottom:6px;">
           <input type="text" id="joinRoomCodeInput" class="input-text" placeholder="旅程代碼 (例如 tokyo2026)" style="font-family:monospace; text-transform:lowercase;">
         </div>
         <div>
-          <input type="password" maxlength="4" id="joinRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (4碼數字，一般旅伴免填)">
+          <input type="password" id="joinRoomPassInput" class="input-text" style="width:100%; font-family:monospace;" placeholder="管理密碼 (一般旅伴免填，僅總務需要)">
         </div>
         <button type="button" class="lobby-btn-sub" onclick="joinExistingRoom()">加入這趟旅程</button>
       </div>
@@ -1227,20 +1118,6 @@
 
   <script>
     // ==========================================
-    // 0. 自訂優雅 Toast (無網址外框、精簡且避免孤字)
-    // ==========================================
-    let toastTimer = null;
-    function showToast(msg) {
-      const toast = document.getElementById('appToast');
-      toast.innerText = msg;
-      toast.classList.add('show');
-      if (toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2600);
-    }
-
-    // ==========================================
     // 1. Firebase 連線設定 (固定專案金鑰)
     // ==========================================
     const firebaseConfig = {
@@ -1272,8 +1149,7 @@
     // ==========================================
     let state = {
       createdAt: null,
-      adminPin: "",
-      password: "",
+      password: "",         // 儲存總務的管理密碼
       members: [],          
       custodian: "",        
       memberBanks: {},      
@@ -1313,6 +1189,7 @@
         btnCreate.classList.toggle('active', !isCurrentlyOpen);
         arrowCreate.innerText = isCurrentlyOpen ? '▾' : '▴';
 
+        // 強制關閉另一個
         drawerJoin.style.display = 'none';
         btnJoin.classList.remove('active');
         arrowJoin.innerText = '▾';
@@ -1322,6 +1199,7 @@
         btnJoin.classList.toggle('active', !isCurrentlyOpen);
         arrowJoin.innerText = isCurrentlyOpen ? '▾' : '▴';
 
+        // 強制關閉另一個
         drawerCreate.style.display = 'none';
         btnCreate.classList.remove('active');
         arrowCreate.innerText = '▾';
@@ -1340,35 +1218,31 @@
       document.getElementById('customRoomCodeInput').value = code;
     }
 
-    // 建立旅程：重複時精簡提示並自動引導切換
     function createNewTripRoom() {
-      const code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
-      const password = document.getElementById('customRoomPassInput').value.trim();
+      let code = document.getElementById('customRoomCodeInput').value.trim().toLowerCase();
+      let password = document.getElementById('customRoomPassInput').value.trim();
       
       if (!code) {
-        showToast('請填寫自訂旅程代碼');
+        alert('請填寫自訂旅程代碼，或點選「隨機」');
         return;
       }
       if (!/^[a-z0-9_-]+$/.test(code)) {
-        showToast('代碼限英數字或連字號');
+        alert('代碼僅限英文、數字、連字號（-）或底線（_），不含空格與中文。');
         return;
       }
-      if (!/^\d{4}$/.test(password)) {
-        showToast('密碼請填正好4碼數字');
+      if (!password) {
+        alert('請填寫總務管理密碼（日後以管理身分登入的憑證）');
         return;
       }
 
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (snap.exists() && snap.val() && snap.val().createdAt) {
-            showToast('此代碼已存在，請由下方加入旅程');
-            document.getElementById('joinRoomCodeInput').value = code;
-            toggleLobbyAccordion('join');
+            alert(`旅程代碼「${code}」已被使用，請重新設定代碼。`);
             return;
           } else {
             db.ref('trips/' + code).set({
               createdAt: Date.now(),
-              adminPin: password,
               password: password,
               members: [],
               custodian: "",
@@ -1385,48 +1259,32 @@
       }
     }
 
-    // 加入既有旅程：精簡提示，相容 adminPin 與 password
     function joinExistingRoom() {
       const code = document.getElementById('joinRoomCodeInput').value.trim().toLowerCase();
       const inputPass = document.getElementById('joinRoomPassInput').value.trim();
 
       if (!code) {
-        showToast('請輸入旅程代碼');
+        alert('請輸入旅程代碼');
         return;
       }
 
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
-            showToast('查無此旅程，請確認代碼');
+            alert(`找不到代碼為「${code}」的旅程，請確認代碼是否輸入正確。`);
             return;
           }
           
           const roomData = snap.val();
           if (inputPass) {
-            if (!/^\d{4}$/.test(inputPass)) {
-              showToast('管理密碼需為4碼數字');
-              return;
-            }
-
-            const rawDbPass = (roomData.adminPin !== undefined && roomData.adminPin !== "") 
-                              ? roomData.adminPin 
-                              : roomData.password;
-
-            if (rawDbPass === undefined || rawDbPass === null || rawDbPass === "") {
-              showToast('此旅程無密碼，請直接加入');
-              return;
-            }
-
-            const dbPass = String(rawDbPass).trim();
-            const userPass = String(inputPass).trim();
-
-            if (dbPass === userPass) {
+            // 如果填了密碼，要驗證
+            if (roomData.password === inputPass) {
               window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
             } else {
-              showToast('密碼錯誤，一般旅伴免填密碼');
+              alert('管理密碼錯誤，請確認，或不填密碼以旅伴檢視身分進入');
             }
           } else {
+            // 沒填密碼，一般旅伴身分
             window.location.href = `${window.location.pathname}?trip=${code}`;
           }
         });
@@ -1461,10 +1319,8 @@
         db.ref('trips/' + currentTripId).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
             if (!isAdmin) {
-              showToast('查無此旅程，返回大廳');
-              setTimeout(() => {
-                window.location.href = window.location.pathname;
-              }, 1200);
+              alert(`找不到代碼為「${currentTripId}」的旅程，將返回大廳。`);
+              window.location.href = window.location.pathname;
               return;
             }
           }
@@ -1499,15 +1355,14 @@
           const val = snapshot.val();
           if (val) {
             state.createdAt = val.createdAt || Date.now();
-            state.adminPin = val.adminPin || val.password || "";
-            state.password = val.password || val.adminPin || "";
+            state.password = val.password || "";
             state.members = Array.isArray(val.members) ? val.members : [];
             state.custodian = val.custodian || "";
             state.memberBanks = val.memberBanks || {};
             state.kittyDeposits = Array.isArray(val.kittyDeposits) ? val.kittyDeposits : [];
             state.expenses = Array.isArray(val.expenses) ? val.expenses : [];
           } else {
-            state = { createdAt: Date.now(), adminPin: "", password: "", members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
+            state = { createdAt: Date.now(), password: "", members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
           }
           selectedSplitters = state.members.slice();
           renderAll();
@@ -1570,7 +1425,7 @@
     function openKittyModal() {
       if (!isAdmin) return;
       if (state.members.length === 0) {
-        showToast('請先加入同行旅伴');
+        alert('請先在下方加入同行旅伴');
         return;
       }
       document.getElementById('kittyAmountInput').value = '';
@@ -1605,7 +1460,7 @@
       const type = document.getElementById('kittyDepositType').value;
       const amount = parseFloat(document.getElementById('kittyAmountInput').value);
       if (isNaN(amount) || amount <= 0) {
-        showToast('請填寫有效金額');
+        alert('請輸入有效金額');
         return;
       }
 
@@ -1648,8 +1503,8 @@
       if (!isAdmin) return;
       const input = document.getElementById('memberNameInput');
       const name = input.value ? input.value.trim() : '';
-      if (!name) return showToast('請填寫旅伴姓名');
-      if (state.members.includes(name)) return showToast('旅伴姓名已重複');
+      if (!name) return alert('請輸入旅伴姓名');
+      if (state.members.includes(name)) return alert('旅伴姓名重複');
 
       state.members.push(name);
       selectedSplitters.push(name);
@@ -1661,7 +1516,7 @@
     function removeMember(name) {
       if (!isAdmin) return;
       const inUse = state.expenses.some(e => e.payer === name || (e.splitWith && e.splitWith.includes(name)));
-      if (inUse) return showToast(`「${name}」已有帳目，請先刪除花費`);
+      if (inUse) return alert(`「${name}」在紀錄中已有帳目，請先刪除該項花費。`);
 
       state.members = state.members.filter(m => m !== name);
       selectedSplitters = selectedSplitters.filter(n => n !== name);
@@ -1672,13 +1527,14 @@
 
     function clearAllMembers() {
       if (!isAdmin) return;
-      if (state.expenses.length > 0) return showToast('已有消費紀錄，請先清空花費');
-      state.members = [];
-      state.custodian = "";
-      state.memberBanks = {};
-      selectedSplitters = [];
-      syncState();
-      showToast('已清空同行旅伴');
+      if (state.expenses.length > 0) return alert('已有消費紀錄，請先清空花費');
+      if (confirm('確定清空所有同行旅伴？')) {
+        state.members = [];
+        state.custodian = "";
+        state.memberBanks = {};
+        selectedSplitters = [];
+        syncState();
+      }
     }
 
     // ==========================================
@@ -1688,7 +1544,7 @@
       const area = document.getElementById('customArea');
       const btn = document.getElementById('customToggleBtn');
       if (area.style.display === 'none') {
-        if (state.members.length === 0) return showToast('請先加入同行旅伴');
+        if (state.members.length === 0) return alert('請先加入同行旅伴');
         area.style.display = 'block';
         btn.innerText = '取消自費';
         if (customSplits.length === 0) addCustomRow();
@@ -1770,7 +1626,7 @@
 
     function addExpense() {
       if (!isAdmin) return;
-      if (state.members.length === 0) return showToast('請先加入同行旅伴');
+      if (state.members.length === 0) return alert('請先加入同行旅伴');
 
       const titleInput = document.getElementById('itemTitle');
       const amountInput = document.getElementById('itemAmount');
@@ -1780,13 +1636,13 @@
       const amount = parseFloat(amountInput.value);
       const payer = payerSelect.value;
 
-      if (!title) return showToast('請填寫支出品項');
-      if (isNaN(amount) || amount <= 0) return showToast('請填寫有效金額');
-      if (!payer) return showToast('請選擇付款人');
+      if (!title) return alert('請填寫支出品項');
+      if (isNaN(amount) || amount <= 0) return alert('請輸入有效金額');
+      if (!payer) return alert('請選擇付款人');
 
       const customSum = customSplits.reduce((acc, c) => acc + (Number(c.amount) || 0), 0);
-      if (customSum > amount) return showToast('自費金額大於總支出');
-      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return showToast('請選擇分攤旅伴');
+      if (customSum > amount) return alert('自費總和不能大於支出金額');
+      if (selectedSplitters.length === 0 && (amount - customSum) > 0) return alert('請至少勾選一位分攤旅伴');
 
       let kittyDeduction = 0;
       let personalPaid = amount;
@@ -1812,22 +1668,21 @@
 
       clearExpenseForm();
       syncState();
-      showToast('花費記錄完成');
     }
 
     function deleteExpense(id) {
       if (!isAdmin) return;
       state.expenses = state.expenses.filter(e => e.id !== String(id));
       syncState();
-      showToast('已刪除花費紀錄');
     }
 
     function clearAllExpenses() {
       if (!isAdmin) return;
       if (state.expenses.length === 0) return;
-      state.expenses = [];
-      syncState();
-      showToast('已清空花費紀錄');
+      if (confirm('確定清空所有花費紀錄？')) {
+        state.expenses = [];
+        syncState();
+      }
     }
 
     // ==========================================
@@ -2101,7 +1956,7 @@
     }
 
     function copyPureAccount(acc, name) {
-      if (!acc) return showToast(`請先填寫 ${name} 的帳號`);
+      if (!acc) return alert(`請先填寫 ${name} 的帳號`);
       copyToClipboard(acc.replace(/[^0-9]/g, ''), `已複製 ${name} 的銀行帳號`);
     }
 
@@ -2113,16 +1968,16 @@
       input.select();
       try {
         document.execCommand('copy');
-        showToast(msg || '已成功複製');
+        alert(msg || '已複製');
       } catch (err) {
-        showToast('複製失敗，請手動長按');
+        prompt('請長按複製：', txt);
       }
       document.body.removeChild(input);
     }
 
     function copySettlementSummary() {
       const { transactions, creditors, kittyLeftover } = computeSettlement();
-      if (transactions.length === 0) return showToast('目前帳目平衡，無須轉帳');
+      if (transactions.length === 0) return alert('目前無須轉帳');
 
       let out = '🌾【旅途結算清單】\n';
       transactions.forEach(t => {
@@ -2139,16 +1994,17 @@
         out += `🏦 ${c.person}：銀行代碼 ${b.code || '未填'} 帳號 ${b.account || '未填'}\n`;
       });
 
-      copyToClipboard(out, '已複製結算清單至剪貼簿');
+      copyToClipboard(out, '已複製結算清單，可直接貼至 LINE 群組！');
     }
 
     function resetEntireTrip() {
       if (!isAdmin) return;
-      state = { createdAt: Date.now(), adminPin: "", password: "", members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
-      selectedSplitters = [];
-      customSplits = [];
-      syncState();
-      showToast('已清空旅程所有紀錄');
+      if (confirm('確定要清空這趟旅程的所有紀錄（人員、公費、帳目）嗎？')) {
+        state = { createdAt: Date.now(), password: "", members: [], custodian: "", memberBanks: {}, kittyDeposits: [], expenses: [] };
+        selectedSplitters = [];
+        customSplits = [];
+        syncState();
+      }
     }
 
     // 啟動初始化
