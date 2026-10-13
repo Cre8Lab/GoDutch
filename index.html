@@ -33,13 +33,11 @@
       --radius-md: 14px;
       --radius-lg: 20px;
       
-      /* 抽象多洛米堤 SVG 季節著色 */
-      --art-sky-glow: rgba(230, 192, 160, 0.25);
-      --art-mountain-base: #EDE6DF;
-      --art-mountain-shade: #8C6751;
-      --art-lake-glow: rgba(140, 103, 81, 0.15);
-      --art-forest-shade: #6E4F3B;
-      --art-dot: #A67C5E;
+      /* 極簡手繪湖山：秋天專屬四季調色 */
+      --art-stroke: #8C6751;
+      --art-mountain-fill: #EFE6DF;
+      --art-sun: #C49767;
+      --art-lake-fill: rgba(140, 103, 81, 0.08);
     }
 
     /* 春天「初融櫻桃粉調」 */
@@ -53,13 +51,11 @@
       --border-soft: #F2EBEB;
       --rose-subtle: #BD6060;
       
-      /* 插畫春天著色 */
-      --art-sky-glow: rgba(248, 204, 204, 0.28);
-      --art-mountain-base: #F2EAE9;
-      --art-mountain-shade: #9E6161;
-      --art-lake-glow: rgba(158, 97, 97, 0.14);
-      --art-forest-shade: #7A4242;
-      --art-dot: #B87C7C;
+      /* 極簡手繪湖山：春天專屬四季調色 */
+      --art-stroke: #9E6161;
+      --art-mountain-fill: #F4EAE9;
+      --art-sun: #D99B9B;
+      --art-lake-fill: rgba(158, 97, 97, 0.08);
     }
 
     /* 夏天「茂密森活綠調」 */
@@ -73,13 +69,11 @@
       --border-soft: #E5EDE7;
       --rose-subtle: #BD6060;
       
-      /* 插畫夏天著色 */
-      --art-sky-glow: rgba(180, 215, 195, 0.28);
-      --art-mountain-base: #EAECE9;
-      --art-mountain-shade: #4F6E5C;
-      --art-lake-glow: rgba(79, 110, 92, 0.16);
-      --art-forest-shade: #375243;
-      --art-dot: #6A8D77;
+      /* 極簡手繪湖山：夏天專屬四季調色 */
+      --art-stroke: #4F6E5C;
+      --art-mountain-fill: #E7EFEA;
+      --art-sun: #88B29A;
+      --art-lake-fill: rgba(79, 110, 92, 0.08);
     }
 
     /* 冬天「靜謐雪霽藍調」 */
@@ -93,13 +87,11 @@
       --border-soft: #E2EBF0;
       --rose-subtle: #BD6060;
       
-      /* 插畫冬天著色 */
-      --art-sky-glow: rgba(190, 215, 225, 0.3);
-      --art-mountain-base: #EAEFF2;
-      --art-mountain-shade: #4D6D7A;
-      --art-lake-glow: rgba(77, 109, 122, 0.14);
-      --art-forest-shade: #38535F;
-      --art-dot: #688C9B;
+      /* 極簡手繪湖山：冬天專屬四季調色 */
+      --art-stroke: #4D6D7A;
+      --art-mountain-fill: #E8EFF3;
+      --art-sun: #96B4C2;
+      --art-lake-fill: rgba(77, 109, 122, 0.08);
     }
 
     * {
@@ -171,7 +163,7 @@
       border: 1px solid var(--border-soft);
     }
 
-    /* 季切切換點點 (Theme Selector) */
+    /* 季節切換點點 */
     .header-actions {
       display: flex;
       gap: 12px;
@@ -199,7 +191,6 @@
     .dot.autumn { background-color: #C49767; }
     .dot.winter { background-color: #829DA7; }
 
-    /* 選中狀態 border 加粗，使用對應的深色點點 */
     [data-theme="spring"] .dot.spring { border-color: #5E2A2A; transform: scale(1.1); }
     [data-theme="summer"] .dot.summer { border-color: #2F4238; transform: scale(1.1); }
     [data-theme="autumn"] .dot.autumn { border-color: #4D3321; transform: scale(1.1); }
@@ -241,18 +232,46 @@
       gap: 13px;
     }
 
-    /* 抽象多洛米堤 輕盈手繪景致 */
-    .art-illustration-wrapper {
+    /* ==========================================
+       極簡湖山與「遠行與日常」交融設計區塊
+       ========================================== */
+    .lake-scene-container {
+      position: relative;
       width: 100%;
+      margin-bottom: 12px;
       display: flex;
-      justify-content: center;
-      margin-bottom: 6px;
-      padding-top: 10px;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
     }
-    .art-svg {
+    .lake-scene-svg {
       width: 100%;
-      max-width: 290px;
+      max-width: 320px;
       height: auto;
+      display: block;
+    }
+    /* 讓文字直接浮於湖泊水波之上 */
+    .lake-title-wrapper {
+      position: absolute;
+      bottom: 6px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      pointer-events: none;
+    }
+    .room-lobby-title {
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--text-main);
+      margin-bottom: 2px;
+      text-shadow: 0 1px 4px rgba(255, 255, 255, 0.85);
+    }
+    .room-lobby-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+      text-shadow: 0 1px 3px rgba(255, 255, 255, 0.85);
     }
 
     /* 首頁：啟程大廳 */
@@ -260,27 +279,14 @@
       background: var(--card-bg);
       border-radius: var(--radius-lg);
       border: 1px solid var(--border-soft);
-      padding: 24px 20px 32px 20px;
+      padding: 16px 18px 28px 18px;
       box-shadow: 0 4px 20px rgba(61, 53, 47, 0.02);
       text-align: center;
-      margin-top: 8px;
+      margin-top: 4px;
       transition: all 0.4s ease;
     }
-    .room-lobby-title {
-      font-size: 19px;
-      font-weight: 600;
-      letter-spacing: 1.2px;
-      color: var(--text-main);
-      margin-bottom: 4px;
-    }
-    .room-lobby-sub {
-      font-size: 12px;
-      color: var(--text-muted);
-      letter-spacing: 0.6px;
-      margin-bottom: 24px;
-    }
 
-    /* 2026 手風琴摺疊大按鈕 (Accordion) */
+    /* 手風琴摺疊大按鈕 (Accordion) */
     .lobby-accordion-btn {
       width: 100%;
       background: var(--bg-warm);
@@ -311,7 +317,6 @@
       transition: transform 0.3s ease;
     }
     
-    /* 展開時狀態 */
     .lobby-accordion-btn.active {
       background: var(--theme-light);
       border-color: var(--warm-border);
@@ -323,7 +328,6 @@
       transform: rotate(180deg);
     }
 
-    /* 摺疊內容抽屜 */
     .lobby-accordion-drawer {
       display: none;
       background: var(--card-bg);
@@ -346,7 +350,6 @@
       margin-bottom: 14px;
     }
 
-    /* 填寫區樣式與防呆 */
     .lobby-form-row {
       display: flex;
       gap: 6px;
@@ -408,7 +411,7 @@
       color: var(--rose-subtle);
     }
 
-    /* 溫和公費卡片 (與主題色彩完全聯動的漸層) */
+    /* 溫和公費卡片 */
     .kitty-compact-card {
       background: linear-gradient(135deg, var(--theme-soft), var(--theme-dark));
       color: #FFFFFF;
@@ -890,34 +893,50 @@
     <!-- 0. 首頁大廳 (當網址未帶 trip 參數時呈現) -->
     <div id="roomLobbySection" class="room-lobby-card" style="display:none;">
       
-      <!-- 手繪抽象多洛米堤湖山景致 -->
-      <div class="art-illustration-wrapper">
-        <svg class="art-svg" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- 四季漸變天空與暖陽 -->
-          <circle cx="255" cy="40" r="14" fill="var(--art-dot)" opacity="0.4" />
-          <path d="M10,135 Q120,65 240,110 T305,100" stroke="var(--art-mountain-shade)" stroke-width="1.2" stroke-linecap="round" fill="none" />
-          <path d="M10,135 L310,135" stroke="var(--art-mountain-shade)" stroke-width="0.8" opacity="0.6" stroke-linecap="round" />
-          
-          <!-- 大地基底與柔和漸層 (純向量) -->
-          <path d="M15,135 C50,95 140,55 245,78 C255,80 290,105 305,105 L305,135 Z" fill="var(--art-sky-glow)" opacity="0.4" />
-          
-          <!-- 義大利多洛米堤經典鋸齒狀、刀鋒抽象山脈 (線條極簡，避免繁雜) -->
-          <path d="M22,125 L45,100 L75,115 L120,68 L155,90 L210,48 L240,78 L265,58 L292,85 L305,75" stroke="var(--art-mountain-shade)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="var(--art-mountain-base)" opacity="0.85" />
-          <path d="M45,100 L58,118 M120,68 L138,98 M210,48 L224,85 M265,58 L275,76" stroke="var(--art-mountain-shade)" stroke-width="0.7" stroke-linecap="round" opacity="0.5" />
-          
-          <!-- 湖泊與倒影 (水平抽象波浪) -->
-          <ellipse cx="165" cy="155" rx="140" ry="16" fill="var(--art-lake-glow)" opacity="0.6" />
-          <path d="M55,150 C110,147 210,147 265,150 M75,158 C120,155 190,155 245,158" stroke="var(--art-mountain-shade)" stroke-width="0.8" stroke-linecap="round" opacity="0.4" />
-          <path d="M115,164 Q160,162 205,164" stroke="var(--art-mountain-shade)" stroke-width="0.5" stroke-linecap="round" opacity="0.3" />
-          
-          <!-- 手繪抽象樹影與湖邊小船 -->
-          <path d="M25,128 L23,135 M29,129 L28,135 M34,127 L33,135 M42,128 L42,135 M275,125 L272,135 M282,123 L280,135 M294,124 L294,135 M301,126 L302,135" stroke="var(--art-forest-shade)" stroke-width="1.2" stroke-linecap="round" />
-          <path d="M125,145 L135,145 M135,145 C132,148 128,148 125,145 Z M185,148 L197,148 M197,148 C194,151 188,151 185,148 Z" fill="var(--art-forest-shade)" opacity="0.75" />
-        </svg>
-      </div>
+      <!-- 極簡手繪湖山與標題交融區塊 -->
+      <div class="lake-scene-container">
+        <svg class="lake-scene-svg" viewBox="0 0 320 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 溫暖高山日光 -->
+          <circle cx="236" cy="38" r="14" fill="var(--art-sun)" opacity="0.45" />
 
-      <h2 class="room-lobby-title">遠行與日常</h2>
-      <p class="room-lobby-sub">隨手記錄帳目 · 時間留予旅途</p>
+          <!-- 多洛米堤極簡寫意山脈：柔和的有機山嵐輪廓 (手繪有機線條) -->
+          <path d="M 18,110 C 35,95 55,80 80,82 C 105,84 125,58 148,46 C 172,34 190,62 215,48 C 240,34 256,62 305,96" 
+                stroke="var(--art-stroke)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" opacity="0.88" />
+          
+          <!-- 山峰背影層次淡彩 (留白且通透) -->
+          <path d="M 38,108 C 70,80 115,62 145,66 C 175,70 205,54 238,62 C 268,70 292,88 305,96 L 305,116 L 18,116 Z" 
+                fill="var(--art-mountain-fill)" opacity="0.75" />
+
+          <!-- 寫意山脈肌理 (極簡2筆，勾勒峭拔神韻) -->
+          <path d="M 148,46 C 145,70 148,92 152,110 M 215,48 C 210,72 214,92 218,110" 
+                stroke="var(--art-stroke)" stroke-width="0.8" stroke-linecap="round" opacity="0.38" />
+
+          <!-- 湖水基底柔和水色 (廣闊平靜的高山湖泊，向下延伸) -->
+          <path d="M 8,114 Q 160,108 312,114 L 312,185 Q 160,192 8,185 Z" 
+                fill="var(--art-lake-fill)" />
+
+          <!-- 岸邊與自然水際線 -->
+          <path d="M 8,114 Q 160,108 312,114" 
+                stroke="var(--art-stroke)" stroke-width="1.1" stroke-linecap="round" opacity="0.6" />
+
+          <!-- 湖水細膩水波 (層層舒展，向下方擴展並交融標題) -->
+          <path d="M 35,125 Q 105,120 175,125 T 285,123" stroke="var(--art-stroke)" stroke-width="0.8" stroke-linecap="round" opacity="0.45" />
+          <path d="M 15,138 Q 95,133 165,137 T 305,135" stroke="var(--art-stroke)" stroke-width="0.7" stroke-linecap="round" opacity="0.35" />
+          <path d="M 45,155 Q 125,150 205,155 T 275,153" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" opacity="0.25" />
+          <path d="M 25,172 Q 115,168 195,172 T 295,170" stroke="var(--art-stroke)" stroke-width="0.5" stroke-linecap="round" opacity="0.2" />
+          <path d="M 65,185 Q 160,181 255,185" stroke="var(--art-stroke)" stroke-width="0.5" stroke-linecap="round" opacity="0.18" />
+
+          <!-- 湖面上一葉靈動手繪小木舟 (安靜漂浮) -->
+          <path d="M 180,128 Q 192,133 205,128 Q 192,130 180,128 Z" fill="var(--art-stroke)" opacity="0.5" />
+          <path d="M 179,128 Q 192,133 205,128" stroke="var(--art-stroke)" stroke-width="1" stroke-linecap="round" opacity="0.8" />
+        </svg>
+
+        <!-- 主副標題：自然重疊於湖泊下緣 -->
+        <div class="lake-title-wrapper">
+          <h2 class="room-lobby-title">遠行與日常</h2>
+          <p class="room-lobby-sub">隨手記錄帳目 · 時間留予旅途</p>
+        </div>
+      </div>
 
       <!-- 1. 開啟一段新旅程 (摺疊卡片) -->
       <button type="button" class="lobby-accordion-btn" onclick="toggleLobbyAccordion('create')">
@@ -1189,7 +1208,6 @@
         btnCreate.classList.toggle('active', !isCurrentlyOpen);
         arrowCreate.innerText = isCurrentlyOpen ? '▾' : '▴';
 
-        // 強制關閉另一個
         drawerJoin.style.display = 'none';
         btnJoin.classList.remove('active');
         arrowJoin.innerText = '▾';
@@ -1199,7 +1217,6 @@
         btnJoin.classList.toggle('active', !isCurrentlyOpen);
         arrowJoin.innerText = isCurrentlyOpen ? '▾' : '▴';
 
-        // 強制關閉另一個
         drawerCreate.style.display = 'none';
         btnCreate.classList.remove('active');
         arrowCreate.innerText = '▾';
@@ -1277,14 +1294,12 @@
           
           const roomData = snap.val();
           if (inputPass) {
-            // 如果填了密碼，要驗證
             if (roomData.password === inputPass) {
               window.location.href = `${window.location.pathname}?trip=${code}&admin=1`;
             } else {
               alert('管理密碼錯誤，請確認，或不填密碼以旅伴檢視身分進入');
             }
           } else {
-            // 沒填密碼，一般旅伴身分
             window.location.href = `${window.location.pathname}?trip=${code}`;
           }
         });
