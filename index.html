@@ -37,7 +37,7 @@
       --art-stroke: #8C6751;
       --art-mountain-fill: #EFE6DF;
       --art-sun: #C49767;
-      --art-lake-fill: rgba(140, 103, 81, 0.05);
+      --art-ink-blur: #EFE6DF;
     }
 
     /* 春天「初融櫻桃粉調」 */
@@ -55,7 +55,7 @@
       --art-stroke: #9E6161;
       --art-mountain-fill: #F4EAE9;
       --art-sun: #D99B9B;
-      --art-lake-fill: rgba(158, 97, 97, 0.05);
+      --art-ink-blur: #F4EAE9;
     }
 
     /* 夏天「茂密森活綠調」 */
@@ -73,7 +73,7 @@
       --art-stroke: #4F6E5C;
       --art-mountain-fill: #E7EFEA;
       --art-sun: #88B29A;
-      --art-lake-fill: rgba(79, 110, 92, 0.05);
+      --art-ink-blur: #E7EFEA;
     }
 
     /* 冬天「靜謐雪霽藍調」 */
@@ -91,7 +91,7 @@
       --art-stroke: #4D6D7A;
       --art-mountain-fill: #E8EFF3;
       --art-sun: #96B4C2;
-      --art-lake-fill: rgba(77, 109, 122, 0.05);
+      --art-ink-blur: #E8EFF3;
     }
 
     * {
@@ -870,10 +870,58 @@
     <!-- 0. 首頁大廳 (當網址未帶 trip 參數時呈現) -->
     <div id="roomLobbySection" class="room-lobby-card" style="display:none;">
       
-      <!-- 100% 來自 image_23.png 的極簡寫意手繪湖山與標題交融區塊 -->
+      <!-- 100% 來自 image_25.png 的極簡寫意手繪湖山與標題交融區塊 -->
       <div class="lake-scene-container">
         <svg class="lake-scene-svg" viewBox="0 0 320 215" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- 1. 手寫感雙圓太陽 (Sun Sketch) -->
+          <!-- 定義 SVG 不規則水墨暈染濾鏡 (Blur + Turbule) -->
+          <defs>
+            <filter id="naturalBleed" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="7" result="blur" />
+              <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+              <feDisplacementMap in="blur" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+          </defs>
+
+          <!-- 1. 不規則洗墨與墨暈效果 (Bleeding wash layers, 完全拋棄直角直線底色色塊) -->
+          <g filter="url(#naturalBleed)" opacity="0.45">
+            <!-- 運用多個不規則曲型疊加，不打直線，不寫死下框 -->
+            <path d="M 20,110 Q 55,95 85,115 T 140,90 T 195,110 T 250,95 T 300,110 T 270,165 T 210,180 T 130,170 T 70,185 T 15,145 Z" fill="var(--art-ink-blur)" />
+            <path d="M 45,100 Q 95,85 155,105 T 255,90 T 290,120 T 240,150 T 160,155 T 80,145 T 35,120 Z" fill="var(--art-ink-blur)" opacity="0.6" />
+            <!-- 山麓下方的自然深暈 -->
+            <path d="M 12,120 Q 50,115 90,122 T 180,118 T 260,124 T 308,120 T 250,135 T 150,138 T 60,135 Z" fill="var(--art-stroke)" opacity="0.12" />
+          </g>
+
+          <!-- 2. 手繪感潑墨與飛濺墨點點 (Natural Splotches & Splatters) -->
+          <g fill="var(--art-stroke)" opacity="0.22">
+            <!-- 底部與兩側的邊界，全部碎裂化為顆粒狀，消散至背景 -->
+            <circle cx="12" cy="135" r="1.5" />
+            <circle cx="28" cy="122" r="0.8" />
+            <circle cx="45" cy="142" r="1.2" />
+            <circle cx="15" cy="155" r="0.6" />
+            <circle cx="38" cy="165" r="1.4" />
+            <circle cx="58" cy="172" r="0.8" />
+            <circle cx="82" cy="182" r="2.0" />
+            <circle cx="95" cy="168" r="0.6" />
+            <circle cx="112" cy="188" r="1.1" />
+            <circle cx="128" cy="195" r="0.8" />
+            <circle cx="145" cy="185" r="0.5" />
+            <circle cx="168" cy="202" r="1.6" />
+            <circle cx="188" cy="182" r="0.7" />
+            <circle cx="212" cy="195" r="1.5" />
+            <circle cx="230" cy="180" r="0.8" />
+            <circle cx="248" cy="188" r="1.3" />
+            <circle cx="262" cy="172" r="0.9" />
+            <circle cx="278" cy="185" r="1.8" />
+            <circle cx="295" cy="158" r="0.5" />
+            <circle cx="308" cy="165" r="1.4" />
+            <circle cx="314" cy="145" r="0.7" />
+            <!-- 小細濺點 -->
+            <circle cx="22" cy="148" r="0.4" /><circle cx="32" cy="152" r="0.4" /><circle cx="50" cy="158" r="0.5" />
+            <circle cx="72" cy="175" r="0.4" /><circle cx="120" cy="192" r="0.4" /><circle cx="158" cy="192" r="0.5" />
+            <circle cx="198" cy="190" r="0.4" /><circle cx="255" cy="182" r="0.4" /><circle cx="288" cy="175" r="0.5" />
+          </g>
+
+          <!-- 3. 手寫感雙圓太陽 (Sun Sketch) -->
           <g stroke="var(--art-stroke)" stroke-width="0.8" fill="none" opacity="0.85">
             <circle cx="118" cy="38" r="12" stroke="var(--art-stroke)" stroke-width="1.1" />
             <circle cx="119" cy="37" r="13.5" stroke="var(--art-stroke)" stroke-width="0.75" opacity="0.8" />
@@ -881,58 +929,50 @@
             <path d="M118 21 L118 18 M118 53 L118 56 M101 38 L104 38 M132 38 L135 38 M106 25 L108 27 M129 25 L127 27 M106 49 L108 47 M129 49 L127 47 M109 20 L110 22 M126 20 L125 22 M102 31 L104 32 M134 31 L132 32 M102 44 L104 43 M134 44 L132 43 M109 54 L110 52 M126 54 L125 52" />
           </g>
 
-          <!-- 2. 多洛米堤山脈淡彩 (不封邊 Fills) -->
-          <path d="M 10 120 Q 25 102 45 82 T 80 50 T 115 85 T 145 106 T 180 120" fill="var(--art-mountain-fill)" opacity="0.38" />
-          <path d="M 120 120 Q 155 75 195 44 T 240 68 T 275 92 T 310 118 L 310 120 Z" fill="var(--art-mountain-fill)" opacity="0.45" />
-
-          <!-- 3. 極簡寫意山峰線條 (鋼筆抖動手感 contour lines) -->
+          <!-- 4. 極簡寫意山峰線條 (鋼筆手抖感起伏，漸漸細碎) -->
           <path d="M 12 118 Q 28 92 46 72 T 80 50 L 82 52 T 108 86 T 138 104" stroke="var(--art-stroke)" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.85" />
           <path d="M 80 50 Q 105 78 135 94 T 172 110" stroke="var(--art-stroke)" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4" />
           <path d="M 106 86 Q 138 65 174 54 T 212 40 L 214 42 T 245 72 T 282 86" stroke="var(--art-stroke)" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.9" />
           <path d="M 174 54 Q 195 76 225 90 T 260 102" stroke="var(--art-stroke)" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4" />
           <path d="M 212 40 Q 235 62 262 76 T 298 90 T 312 112" stroke="var(--art-stroke)" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.8" />
 
-          <!-- 4. 山脈細密陰影與層次肌理 -->
+          <!-- 5. 山脈細密陰影與層次肌理 -->
           <path d="M 46 72 L 44 76 M 52 82 L 50 87 M 58 94 L 54 100 M 64 105 L 61 112 M 140 104 L 138 112 M 148 98 L 145 106" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.45" />
           <path d="M 245 72 L 243 78 M 252 84 L 248 91 M 262 92 L 257 101" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.45" />
           <path d="M 195 62 L 191 69 M 202 75 L 198 83 M 209 88 L 204 97 M 218 92 L 214 102" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.4" />
           <path d="M 132 80 L 129 86 M 120 90 L 117 96" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.4" />
           <path d="M 285 75 L 282 82 M 292 86 L 289 94" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.4" />
 
-          <!-- 5. 飄逸寫意雲霧 -->
+          <!-- 6. 飄逸寫意雲霧 -->
           <path d="M 85 85 Q 98 75 112 80" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
           <path d="M 125 72 Q 138 65 152 70 Q 165 72 175 66" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.4" />
           <path d="M 242 66 Q 255 58 268 62" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.4" />
 
-          <!-- 6. 飛鳥與自然點綴 -->
+          <!-- 7. 飛鳥與自然點綴 -->
           <path d="M 160 52 Q 163 49 166 52 Q 169 49 172 52" stroke="var(--art-stroke)" stroke-width="0.75" stroke-linecap="round" fill="none" opacity="0.6" />
           <path d="M 180 44 Q 182 42 184 44 Q 186 42 188 44" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
           <path d="M 275 66 Q 277 64 279 66 Q 281 64 283 66" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
           <path d="M 288 56 Q 290 54 292 56 Q 294 54 296 56" stroke="var(--art-stroke)" stroke-width="0.6" stroke-linecap="round" fill="none" opacity="0.5" />
 
-          <!-- 7. 廣闊高山湖泊基底 -->
-          <path d="M 8,118 Q 160,111 312,118 L 312,210 Q 160,215 8,210 Z" fill="var(--art-lake-fill)" />
-
-          <!-- 8. 自然淡出的水際與岸線 (100% 無直線直線收邊) -->
+          <!-- 8. 水際與岸線 (長短不齊、散落式 Fading，解決直線死板問題) -->
           <path d="M 12 118 C 40 115 80 113 130 115 C 180 117 240 114 272 113 C 285 113 302 115 311 116" stroke="var(--art-stroke)" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.7" />
-          
           <path d="M 10 119 C 15 123 18 130 15 134 C 12 137 8 139 6 141" stroke="var(--art-stroke)" stroke-width="0.8" fill="none" opacity="0.6" />
-          <path d="M 12 118 C 25 120 38 123 55 129 C 70 134 85 137 94 139 C 102 141 108 139 111 137" stroke="var(--art-stroke)" stroke-width="0.85" fill="none" opacity="0.6" />
+          <path d="M 12 118 C 25 120 38 123 55 129 C 70 134 85 137 94 139" stroke="var(--art-stroke)" stroke-width="0.85" fill="none" opacity="0.6" stroke-dasharray="40 12" />
           <path d="M 252 114 C 258 118 268 124 282 129 C 295 134 308 132 314 129" stroke="var(--art-stroke)" stroke-width="0.8" fill="none" opacity="0.5" />
-          <path d="M 280 113 C 285 117 290 122 298 127 T 312 130" stroke="var(--art-stroke)" stroke-width="0.6" fill="none" opacity="0.4" />
+          <path d="M 280 113 C 285 117 290 122 298 127" stroke="var(--art-stroke)" stroke-width="0.6" fill="none" opacity="0.4" stroke-dasharray="10 6" />
 
           <!-- 9. 兩側手繪柵欄與三角形松林 -->
           <path d="M 222 115 L 225 111 M 227 115 L 230 110 M 232 115 L 235 111 M 238 115 L 241 110 M 245 115 L 248 111 M 253 115 L 256 110 M 259 115 L 262 111" stroke="var(--art-stroke)" stroke-width="0.6" opacity="0.5" />
           <path d="M 221 114 Q 240 113 261 113" stroke="var(--art-stroke)" stroke-width="0.5" fill="none" opacity="0.5" />
 
-          <path d="M 12 108 L 14 119 M 10 115 L 16 115 M 12 111 L 15 111 M 13 108 L 14 108" stroke="var(--art-stroke)" stroke-width="0.9" opacity="0.75" />
-          <path d="M 18 103 L 20 119 M 15 114 L 23 114 M 17 108 L 21 108 M 18 104 L 20 104" stroke="var(--art-stroke)" stroke-width="1.1" opacity="0.8" />
-          <path d="M 24 110 L 25 119 M 22 116 L 27 116 M 23 113 L 26 113 M 24 110 L 25 110" stroke="var(--art-stroke)" stroke-width="0.8" opacity="0.7" />
-          <path d="M 32 116 L 33 122 M 30 120 L 35 120 M 31 118 L 34 118" stroke="var(--art-stroke)" stroke-width="0.7" opacity="0.6" />
+          <path d="M 12 108 L 14 119 M 10 115 L 16 115 M 12 111 L 15 111" stroke="var(--art-stroke)" stroke-width="0.9" opacity="0.75" />
+          <path d="M 18 103 L 20 119 M 15 114 L 23 114 M 17 108 L 21 108" stroke="var(--art-stroke)" stroke-width="1.1" opacity="0.8" />
+          <path d="M 24 110 L 25 119 M 22 116 L 27 116 M 23 113 L 26 113" stroke="var(--art-stroke)" stroke-width="0.8" opacity="0.7" />
+          <path d="M 32 116 L 33 122 M 30 120 L 35 120" stroke="var(--art-stroke)" stroke-width="0.7" opacity="0.6" />
 
-          <path d="M 288 102 L 290 119 M 285 114 L 293 114 M 287 108 L 291 108 M 288 104 L 290 104" stroke="var(--art-stroke)" stroke-width="1" opacity="0.7" />
-          <path d="M 296 99 L 298 119 M 291 113 L 303 113 M 294 106 L 300 106 M 296 101 L 298 101" stroke="var(--art-stroke)" stroke-width="1.2" opacity="0.8" />
-          <path d="M 305 107 L 306 119 M 302 115 L 308 115 M 304 111 L 307 111 T 306 107" stroke="var(--art-stroke)" stroke-width="0.8" opacity="0.65" />
+          <path d="M 288 102 L 290 119 M 285 114 L 293 114 M 287 108 L 291 108" stroke="var(--art-stroke)" stroke-width="1" opacity="0.7" />
+          <path d="M 296 99 L 298 119 M 291 113 L 303 113 M 294 106 L 300 106" stroke="var(--art-stroke)" stroke-width="1.2" opacity="0.8" />
+          <path d="M 305 107 L 306 119 M 302 115 L 308 115" stroke="var(--art-stroke)" stroke-width="0.8" opacity="0.65" />
 
           <!-- 10. 湖中盪漾的兩艘小木舟 -->
           <g opacity="0.75" stroke="var(--art-stroke)" fill="none" stroke-linecap="round">
@@ -946,24 +986,24 @@
             <path d="M 189 135 C 199 137 209 137 219 135" stroke-dasharray="1 2" stroke-width="0.6" />
           </g>
 
-          <!-- 11. 自然漸隱的手繪水波紋 -->
+          <!-- 11. 自然漸隱、不封口的水波紋 (參差不一、極力消除左右及底部直線收邊) -->
           <path d="M 40 126 C 100 123 180 123 280 126" stroke="var(--art-stroke)" stroke-width="0.7" opacity="0.45" />
-          <path d="M 18 132 C 80 128 160 128 240 132" stroke="var(--art-stroke)" stroke-width="0.65" opacity="0.4" />
-          <path d="M 45 139 C 110 135 190 135 295 139" stroke="var(--art-stroke)" stroke-width="0.6" opacity="0.38" />
-          <path d="M 10 146 C 70 141 150 141 230 146 Q 268 145 298 147" stroke="var(--art-stroke)" stroke-width="0.55" opacity="0.32" stroke-dasharray="80 10 40 10 80 0" />
+          <path d="M 28 132 C 80 128 160 128 240 132" stroke="var(--art-stroke)" stroke-width="0.65" opacity="0.4" stroke-dasharray="120 40 60 0" />
+          <path d="M 55 139 C 110 135 190 135 275 139" stroke="var(--art-stroke)" stroke-width="0.6" opacity="0.38" />
+          <path d="M 18 146 C 70 141 150 141 210 146 Q 248 145 282 147" stroke="var(--art-stroke)" stroke-width="0.55" opacity="0.32" stroke-dasharray="60 10 30 10 60 0" />
           
-          <!-- 主標題與副標題：SVG 內生字體，100% 融合於水波之中 (與 CSS 變數無縫聯動) -->
+          <!-- 主標題與副標題：與波紋無縫交融 -->
           <text x="160" y="161" font-size="22" font-weight="600" text-anchor="middle" fill="var(--text-main)" letter-spacing="1.5">遠行與日常</text>
           <text x="160" y="179" font-size="11.5" text-anchor="middle" fill="var(--text-muted)" letter-spacing="0.5">隨手記錄帳目 · 時間留予旅途</text>
 
-          <path d="M 32 154 C 92 149 172 149 252 154 C 275 153 292 155 310 156" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.28" />
-          <path d="M 8 162 C 65 157 135 157 195 162 C 220 161 252 163 282 162" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.25" stroke-dasharray="40 5 120 5 40 0" />
-          <path d="M 52 170 C 112 165 182 165 242 170 C 265 169 285 171 300 171" stroke="var(--art-stroke)" stroke-width="0.45" opacity="0.2" />
-          <path d="M 22 178 C 75 173 135 173 185 178 C 215 177 245 179 275 178" stroke="var(--art-stroke)" stroke-width="0.4" opacity="0.18" stroke-dasharray="30 8 100 8 30 0" />
-          <path d="M 68 186 Q 158 182 248 186" stroke="var(--art-stroke)" stroke-width="0.4" opacity="0.15" />
-          <path d="M 38 193 C 88 189 148 189 198 193" stroke="var(--art-stroke)" stroke-width="0.35" opacity="0.1" />
-          <path d="M 98 200 Q 160 197 222 200" stroke="var(--art-stroke)" stroke-width="0.35" opacity="0.08" />
-          <path d="M 58 206 C 108 203 168 203 218 206" stroke="var(--art-stroke)" stroke-width="0.3" opacity="0.06" stroke-dasharray="20 4 60 4 20 0" />
+          <path d="M 32 154 C 92 149 172 149 252 154 C 275 153 285 155 292 156" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.28" stroke-dasharray="80 30 80 0" />
+          <path d="M 18 162 C 65 157 135 157 195 162 C 220 161 242 163 268 162" stroke="var(--art-stroke)" stroke-width="0.5" opacity="0.25" stroke-dasharray="40 5 90 5 40 0" />
+          <path d="M 52 170 C 112 165 182 165 242 170 C 255 169 270 171 282 171" stroke="var(--art-stroke)" stroke-width="0.45" opacity="0.2" />
+          <path d="M 32 178 C 75 173 135 173 185 178 C 205 177 225 179 248 178" stroke="var(--art-stroke)" stroke-width="0.4" opacity="0.18" stroke-dasharray="30 8 70 8 30 0" />
+          <path d="M 72 184 Q 155 180 238 184" stroke="var(--art-stroke)" stroke-width="0.4" opacity="0.15" stroke-dasharray="40 10 60 0" />
+          <path d="M 45 190 C 88 186 148 186 190 190" stroke="var(--art-stroke)" stroke-width="0.35" opacity="0.1" />
+          <path d="M 105 196 Q 160 193 215 196" stroke="var(--art-stroke)" stroke-width="0.35" opacity="0.08" stroke-dasharray="20 5 40 0" />
+          <path d="M 78 202 C 118 199 158 199 198 202" stroke="var(--art-stroke)" stroke-width="0.3" opacity="0.06" />
         </svg>
       </div>
 
@@ -1316,7 +1356,7 @@
       if (db) {
         db.ref('trips/' + code).once('value', (snap) => {
           if (!snap.exists() || !snap.val()) {
-            alert(`找不到代碼為「${code}」的旅程，請確認代碼是否輸入正確。`);
+            alert(`找不到代碼為「${code}」的旅程，將返回大廳。`);
             return;
           }
           
