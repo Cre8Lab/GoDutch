@@ -499,7 +499,7 @@
       color: var(--text-main);
     }
 
-    /* 逐筆公基金記錄刪除按鈕 (顯眼清晰) */
+    /* 逐筆公基金記錄刪除按鈕 */
     .btn-del-kitty {
       background: rgba(255, 255, 255, 0.28);
       border: 1px solid rgba(255, 255, 255, 0.45);
@@ -1944,7 +1944,7 @@
     }
 
     // ==========================================
-    // 7. 收支統計與精確結算演算法 (修復公基金代墊)
+    // 7. 收支統計與精確結算演算法
     // ==========================================
     function computeMemberStatistics() {
       const stats = {};
@@ -1953,8 +1953,13 @@
       });
 
       state.expenses.forEach(exp => {
+        // 若公基金關閉，全部視為付款人自付代墊
+        const paidAmt = state.kittyEnabled 
+          ? (Number(exp.personalPaid) || 0) 
+          : (Number(exp.amount) || 0);
+
         if (stats[exp.payer]) {
-          stats[exp.payer].totalPaid += (Number(exp.personalPaid) || 0);
+          stats[exp.payer].totalPaid += paidAmt;
         }
 
         let rest = exp.amount;
@@ -1982,7 +1987,7 @@
       const balance = {};
       state.members.forEach(m => balance[m] = 0);
 
-      // A. 將個人預繳的公基金記入個人資產池
+      // A. 公基金啟用時：將個人預繳的公基金記入個人資產池
       if (state.kittyEnabled && Array.isArray(state.kittyDeposits)) {
         state.kittyDeposits.forEach(d => {
           if (d.type === 'all') {
@@ -1999,10 +2004,15 @@
         });
       }
 
-      // B. 納入個人自掏腰包代墊款，並扣除個人實際消費額
+      // B. 納入付款人代墊款，並扣除個人實際消費額
       state.expenses.forEach(exp => {
+        // 若公基金關閉，該筆支出全額計為付款人自付代墊
+        const effectivePaid = state.kittyEnabled 
+          ? (Number(exp.personalPaid) || 0) 
+          : (Number(exp.amount) || 0);
+
         if (balance[exp.payer] !== undefined) {
-          balance[exp.payer] += (Number(exp.personalPaid) || 0);
+          balance[exp.payer] += effectivePaid;
         }
 
         let rest = exp.amount;
@@ -2023,7 +2033,7 @@
         }
       });
 
-      // C. 總務持有之剩餘現鈔沖銷抵扣
+      // C. 公基金啟用時：總務持有之剩餘現鈔沖銷抵扣
       const kittyBal = getKittyBalance();
       if (state.kittyEnabled && state.custodian && balance[state.custodian] !== undefined) {
         balance[state.custodian] -= kittyBal;
@@ -2093,7 +2103,7 @@
         `<option value="${m}" ${state.custodian === m ? 'selected' : ''}>${m}</option>`
       ).join('');
 
-      // 公基金紀錄抽屜 (採用顯眼圓形按鈕)
+      // 公基金紀錄抽屜
       const kLogs = document.getElementById('kittyDepositLogs');
       if (!state.kittyDeposits || state.kittyDeposits.length === 0) {
         kLogs.innerHTML = '<span style="opacity:0.75;">尚無公基金收款紀錄</span>';
@@ -2159,7 +2169,7 @@
         expList.innerHTML = state.expenses.slice().reverse().map(e => {
           total += Number(e.amount) || 0;
           const isExpanded = expandedExpenseId === e.id;
-          const hasKitty = e.kittyDeduction > 0;
+          const hasKitty = state.kittyEnabled && (e.kittyDeduction > 0);
 
           return `
             <div class="expense-item">
