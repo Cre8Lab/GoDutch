@@ -147,7 +147,7 @@
       text-overflow: ellipsis;
     }
     
-    /* 純文字身分標示（無外框，避免誤認為按鈕） */
+    /* 純文字身分標示（無外框，隨四季主題色連動） */
     .role-badge {
       font-size: 11px;
       letter-spacing: 0.5px;
@@ -162,7 +162,7 @@
       color: var(--theme-dark);
     }
     .role-viewer {
-      color: var(--text-muted);
+      color: var(--theme-dark);
     }
 
     /* 頂部四季切換小圓球 (右上角) */
@@ -901,7 +901,7 @@
         <span class="brand-leaf"></span>
         <h1 id="tripTitleDisplay">遠行時光</h1>
         
-        <!-- 純文字身分標示 (無橢圓外框) -->
+        <!-- 純文字身分標示 (無橢圓外框，顏色隨四季聯動) -->
         <span id="roleBadge" class="role-badge role-viewer">旅伴檢視</span>
       </div>
 
