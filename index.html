@@ -147,7 +147,7 @@
       text-overflow: ellipsis;
     }
     
-    /* 1 & 5. 標籤移除橢圓外框，改為純文字 */
+    /* 純文字身分標示（無外框，避免誤認為按鈕） */
     .role-badge {
       font-size: 11px;
       letter-spacing: 0.5px;
@@ -165,7 +165,7 @@
       color: var(--text-muted);
     }
 
-    /* 2 & 4. 頂部四季切換小圓球 (右上角) */
+    /* 頂部四季切換小圓球 (右上角) */
     .theme-picker-group {
       display: flex;
       gap: 6px;
@@ -195,6 +195,7 @@
     .theme-dot-autumn { background-color: #C9AD7F; }
     .theme-dot-winter { background-color: #8CAAB3; }
 
+    /* 第二排按鈕列 */
     .header-actions-row {
       display: flex;
       gap: 8px;
@@ -205,22 +206,7 @@
       overflow-x: auto;
     }
     
-    /* 7. 按鈕樣式維持原始 5px 12px 規格 */
-    .btn-header-link {
-      font-size: 11px;
-      color: var(--theme-dark);
-      background: var(--theme-light);
-      border: 1px solid var(--theme-border);
-      padding: 5px 12px;
-      border-radius: 16px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s;
-      flex-shrink: 0;
-    }
-    .btn-header-link:hover {
-      opacity: 0.88;
-    }
+    /* 泡泡按鈕樣式 */
     .btn-header-sub {
       font-size: 11px;
       color: var(--text-muted);
@@ -238,7 +224,7 @@
       color: var(--text-main);
     }
 
-    /* 6. 清空旅程改為與移交總務同款的泡泡樣式 */
+    /* 清空旅程（右側泡泡按鈕） */
     .btn-reset-all {
       font-size: 11px;
       color: var(--text-muted);
@@ -915,17 +901,11 @@
         <span class="brand-leaf"></span>
         <h1 id="tripTitleDisplay">遠行時光</h1>
         
-        <!-- 1 & 5. 純文字身分標示 (無橢圓外框) -->
+        <!-- 純文字身分標示 (無橢圓外框) -->
         <span id="roleBadge" class="role-badge role-viewer">旅伴檢視</span>
-        
-        <!-- 5. 旅伴模式專用：切換回總務按鈕 (泡泡樣式) -->
-        <button type="button" id="btnLoginAdmin" class="btn-header-link" onclick="promptLoginAdmin()" style="display:none;">總務登入</button>
-        
-        <!-- 3 & 5. 分享旅程按鈕 (泡泡樣式，位於身分/總務登入後方) -->
-        <button type="button" id="btnShareTrip" class="btn-header-link" onclick="shareTripLinks()" style="display:none;">分享旅程</button>
       </div>
 
-      <!-- 2 & 4. 四季色盤小圓球 (改在右上角) -->
+      <!-- 四季色盤小圓球 (右上角) -->
       <div class="theme-picker-group">
         <button type="button" class="theme-dot theme-dot-spring active" title="春・櫻落粉" onclick="setAppTheme('spring')"></button>
         <button type="button" class="theme-dot theme-dot-summer" title="夏・夏木綠" onclick="setAppTheme('summer')"></button>
@@ -934,11 +914,19 @@
       </div>
     </div>
 
-    <!-- 總務專用次功能列 -->
-    <div class="header-actions-row admin-only" id="adminHeaderBar" style="display:none;">
-      <button type="button" class="btn-header-sub" onclick="shareAdminAccess()">移交總務</button>
-      <!-- 6. 清空旅程改為與移交總務相同的泡泡按鈕 -->
-      <button type="button" class="btn-reset-all" onclick="resetEntireTrip()">清空旅程</button>
+    <!-- 頂部次功能列（第二排，總務/旅伴通用） -->
+    <div class="header-actions-row" id="subHeaderBar" style="display:none;">
+      <!-- 總務專用按鈕 -->
+      <button type="button" id="btnAdminHandover" class="btn-header-sub admin-only" onclick="shareAdminAccess()">移交總務</button>
+      
+      <!-- 旅伴專用按鈕（第二排靠左，泡泡樣式） -->
+      <button type="button" id="btnLoginAdmin" class="btn-header-sub" onclick="promptLoginAdmin()" style="display:none;">總務登入</button>
+      
+      <!-- 共有：分享旅程（第二排靠左，泡泡樣式） -->
+      <button type="button" id="btnShareTrip" class="btn-header-sub" onclick="shareTripLinks()">分享旅程</button>
+      
+      <!-- 總務專用：清空旅程（靠右泡泡） -->
+      <button type="button" id="btnResetTrip" class="btn-reset-all admin-only" onclick="resetEntireTrip()">清空旅程</button>
     </div>
   </header>
 
@@ -1129,10 +1117,10 @@
         </div>
       </div>
 
-      <!-- (2) 全員名冊（含總務本人） -->
+      <!-- (2) 全員名冊-含總務 -->
       <div class="card admin-only" id="memberManageCard">
         <div class="card-header">
-          <span class="card-title">全員名冊（含總務本人） (<span id="memberCountBadge">0</span>)</span>
+          <span class="card-title">全員名冊-含總務 (<span id="memberCountBadge">0</span>)</span>
           <button type="button" class="card-action-btn" onclick="clearAllMembers()">清空名冊</button>
         </div>
         <div class="input-row">
@@ -1533,7 +1521,7 @@
       copyToClipboard(msg, '已複製總務管理連結與密碼');
     }
 
-    // 5. 旅伴檢視模式下點擊「總務登入」輸入密碼跳轉
+    // 旅伴點擊「總務登入」按鈕輸入密碼
     async function promptLoginAdmin() {
       if (!db || !currentTripId) {
         window.location.href = `${window.location.pathname}?trip=${currentTripId}&admin=1`;
@@ -1588,9 +1576,7 @@
       if (!currentTripId) {
         document.getElementById('roomLobbySection').style.display = 'block';
         document.getElementById('mainAppSection').style.display = 'none';
-        document.getElementById('btnShareTrip').style.display = 'none';
-        document.getElementById('btnLoginAdmin').style.display = 'none';
-        document.getElementById('adminHeaderBar').style.display = 'none';
+        document.getElementById('subHeaderBar').style.display = 'none';
         document.getElementById('roleBadge').style.display = 'none';
         return;
       }
@@ -1625,7 +1611,8 @@
       document.getElementById('roomLobbySection').style.display = 'none';
       document.getElementById('mainAppSection').style.display = 'flex';
       document.getElementById('tripTitleDisplay').innerText = `${currentTripId}`;
-      document.getElementById('btnShareTrip').style.display = 'block';
+      document.getElementById('roleBadge').style.display = 'inline';
+      document.getElementById('subHeaderBar').style.display = 'flex';
 
       updateRoleUI();
 
@@ -1667,16 +1654,14 @@
       if (isAdmin) {
         roleBadge.innerText = '總務管理';
         roleBadge.className = 'role-badge role-admin';
-        btnLoginAdmin.style.display = 'none';
+        if (btnLoginAdmin) btnLoginAdmin.style.display = 'none';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
-        document.getElementById('adminHeaderBar').style.display = 'flex';
         document.getElementById('custodianSelect').disabled = false;
       } else {
         roleBadge.innerText = '旅伴檢視';
         roleBadge.className = 'role-badge role-viewer';
-        btnLoginAdmin.style.display = 'inline-block';
+        if (btnLoginAdmin) btnLoginAdmin.style.display = 'inline-block';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-        document.getElementById('adminHeaderBar').style.display = 'none';
         document.getElementById('custodianSelect').disabled = true;
       }
     }
