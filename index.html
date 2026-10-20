@@ -916,13 +916,16 @@
 
     <!-- 頂部次功能列（第二排，總務/旅伴通用） -->
     <div class="header-actions-row" id="subHeaderBar" style="display:none;">
-      <!-- 總務專用按鈕 -->
+      <!-- 總務專用按鈕：移交總務 -->
       <button type="button" id="btnAdminHandover" class="btn-header-sub admin-only" onclick="shareAdminAccess()">移交總務</button>
       
-      <!-- 旅伴專用按鈕（第二排靠左，泡泡樣式） -->
+      <!-- 總務專用按鈕：旅伴視角（位於移交總務與分享旅程之間） -->
+      <button type="button" id="btnViewAsGuest" class="btn-header-sub admin-only" onclick="switchToViewerMode()">旅伴視角</button>
+      
+      <!-- 旅伴專用按鈕：總務登入（泡泡樣式） -->
       <button type="button" id="btnLoginAdmin" class="btn-header-sub" onclick="promptLoginAdmin()" style="display:none;">總務登入</button>
       
-      <!-- 共有：分享旅程（第二排靠左，泡泡樣式） -->
+      <!-- 共有：分享旅程（泡泡樣式） -->
       <button type="button" id="btnShareTrip" class="btn-header-sub" onclick="shareTripLinks()">分享旅程</button>
       
       <!-- 總務專用：清空旅程（靠右泡泡） -->
@@ -1519,6 +1522,15 @@
       const pin = state.adminPin || state.password || '未設定';
       const msg = `【遠行時光・旅程分帳】\n旅程代碼：${currentTripId}\n總務密碼：${pin}\n\n👉 總務管理連結：\n${adminUrl}`;
       copyToClipboard(msg, '已複製總務管理連結與密碼');
+    }
+
+    // 總務切換至旅伴視角
+    function switchToViewerMode() {
+      isAdmin = false;
+      window.history.replaceState({}, '', `${window.location.pathname}?trip=${currentTripId}`);
+      updateRoleUI();
+      renderAll();
+      showToast('已切換至旅伴視角');
     }
 
     // 旅伴點擊「總務登入」按鈕輸入密碼
