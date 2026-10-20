@@ -146,33 +146,33 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    
+    /* 1 & 5. 標籤移除橢圓外框，改為純文字 */
     .role-badge {
-      font-size: 10px;
-      padding: 2px 7px;
-      border-radius: 12px;
+      font-size: 11px;
       letter-spacing: 0.5px;
       font-weight: 500;
       white-space: nowrap;
       flex-shrink: 0;
+      background: none;
+      border: none;
+      padding: 0 1px;
     }
     .role-admin {
-      background: var(--theme-light);
       color: var(--theme-dark);
-      border: 1px solid var(--theme-border);
     }
     .role-viewer {
-      background: #F4F1EE;
       color: var(--text-muted);
-      border: 1px solid var(--border-soft);
     }
 
-    /* 頂部四季切換小圓球 */
+    /* 2 & 4. 頂部四季切換小圓球 (右上角) */
     .theme-picker-group {
       display: flex;
       gap: 6px;
       align-items: center;
       flex-shrink: 0;
       padding: 2px 4px;
+      margin-left: auto;
     }
     .theme-dot {
       width: 14px;
@@ -204,6 +204,8 @@
       border-top: 1px dashed var(--border-soft);
       overflow-x: auto;
     }
+    
+    /* 7. 按鈕樣式維持原始 5px 12px 規格 */
     .btn-header-link {
       font-size: 11px;
       color: var(--theme-dark);
@@ -216,6 +218,9 @@
       transition: all 0.2s;
       flex-shrink: 0;
     }
+    .btn-header-link:hover {
+      opacity: 0.88;
+    }
     .btn-header-sub {
       font-size: 11px;
       color: var(--text-muted);
@@ -226,24 +231,31 @@
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s;
+      flex-shrink: 0;
     }
     .btn-header-sub:hover {
       background: var(--bg-warm);
       color: var(--text-main);
     }
+
+    /* 6. 清空旅程改為與移交總務同款的泡泡樣式 */
     .btn-reset-all {
       font-size: 11px;
-      color: var(--text-light);
-      background: none;
-      border: none;
+      color: var(--text-muted);
+      background: #FFFFFF;
+      border: 1px solid var(--border-soft);
+      padding: 5px 12px;
+      border-radius: 16px;
       cursor: pointer;
       white-space: nowrap;
+      transition: all 0.2s;
       margin-left: auto;
-      padding: 4px 6px;
-      transition: color 0.2s;
+      flex-shrink: 0;
     }
     .btn-reset-all:hover {
+      background: var(--bg-warm);
       color: #BA7C7C;
+      border-color: #BA7C7C;
     }
 
     .container {
@@ -902,23 +914,30 @@
       <div class="header-brand">
         <span class="brand-leaf"></span>
         <h1 id="tripTitleDisplay">遠行時光</h1>
+        
+        <!-- 1 & 5. 純文字身分標示 (無橢圓外框) -->
         <span id="roleBadge" class="role-badge role-viewer">旅伴檢視</span>
+        
+        <!-- 5. 旅伴模式專用：切換回總務按鈕 (泡泡樣式) -->
+        <button type="button" id="btnLoginAdmin" class="btn-header-link" onclick="promptLoginAdmin()" style="display:none;">總務登入</button>
+        
+        <!-- 3 & 5. 分享旅程按鈕 (泡泡樣式，位於身分/總務登入後方) -->
+        <button type="button" id="btnShareTrip" class="btn-header-link" onclick="shareTripLinks()" style="display:none;">分享旅程</button>
       </div>
 
-      <!-- 四季色盤小圓球 (春・夏・秋・冬) -->
+      <!-- 2 & 4. 四季色盤小圓球 (改在右上角) -->
       <div class="theme-picker-group">
         <button type="button" class="theme-dot theme-dot-spring active" title="春・櫻落粉" onclick="setAppTheme('spring')"></button>
         <button type="button" class="theme-dot theme-dot-summer" title="夏・夏木綠" onclick="setAppTheme('summer')"></button>
         <button type="button" class="theme-dot theme-dot-autumn" title="秋・銀杏黃" onclick="setAppTheme('autumn')"></button>
         <button type="button" class="theme-dot theme-dot-winter" title="冬・暮雪藍" onclick="setAppTheme('winter')"></button>
       </div>
-
-      <button type="button" id="btnShareTrip" class="btn-header-link" onclick="shareTripLinks()" style="display:none;">分享旅程</button>
     </div>
 
     <!-- 總務專用次功能列 -->
     <div class="header-actions-row admin-only" id="adminHeaderBar" style="display:none;">
       <button type="button" class="btn-header-sub" onclick="shareAdminAccess()">移交總務</button>
+      <!-- 6. 清空旅程改為與移交總務相同的泡泡按鈕 -->
       <button type="button" class="btn-reset-all" onclick="resetEntireTrip()">清空旅程</button>
     </div>
   </header>
@@ -1091,7 +1110,7 @@
 
     </div>
 
-    <!-- 主功能區 (已依新順序排列) -->
+    <!-- 主功能區 -->
     <div id="mainAppSection" style="display:flex; flex-direction:column; gap:13px;">
 
       <!-- (1) 旅伴收支小記 (預設收合) -->
@@ -1514,6 +1533,32 @@
       copyToClipboard(msg, '已複製總務管理連結與密碼');
     }
 
+    // 5. 旅伴檢視模式下點擊「總務登入」輸入密碼跳轉
+    async function promptLoginAdmin() {
+      if (!db || !currentTripId) {
+        window.location.href = `${window.location.pathname}?trip=${currentTripId}&admin=1`;
+        return;
+      }
+
+      const snap = await db.ref('trips/' + currentTripId).once('value');
+      const data = snap.val() || {};
+      const activePin = String(data.adminPin || data.password || "").trim();
+
+      if (!activePin) {
+        sessionStorage.setItem('godutch_auth_' + currentTripId, '1');
+        window.location.href = `${window.location.pathname}?trip=${currentTripId}&admin=1`;
+        return;
+      }
+
+      const entered = await requestPinFromModal();
+      if (entered && String(entered).trim() === activePin) {
+        sessionStorage.setItem('godutch_auth_' + currentTripId, entered);
+        window.location.href = `${window.location.pathname}?trip=${currentTripId}&admin=1`;
+      } else if (entered) {
+        showToast('管理密碼錯誤');
+      }
+    }
+
     // ==========================================
     // 4. 資料同步與嚴格驗證
     // ==========================================
@@ -1544,6 +1589,7 @@
         document.getElementById('roomLobbySection').style.display = 'block';
         document.getElementById('mainAppSection').style.display = 'none';
         document.getElementById('btnShareTrip').style.display = 'none';
+        document.getElementById('btnLoginAdmin').style.display = 'none';
         document.getElementById('adminHeaderBar').style.display = 'none';
         document.getElementById('roleBadge').style.display = 'none';
         return;
@@ -1616,15 +1662,19 @@
 
     function updateRoleUI() {
       const roleBadge = document.getElementById('roleBadge');
+      const btnLoginAdmin = document.getElementById('btnLoginAdmin');
+      
       if (isAdmin) {
         roleBadge.innerText = '總務管理';
         roleBadge.className = 'role-badge role-admin';
+        btnLoginAdmin.style.display = 'none';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
         document.getElementById('adminHeaderBar').style.display = 'flex';
         document.getElementById('custodianSelect').disabled = false;
       } else {
         roleBadge.innerText = '旅伴檢視';
         roleBadge.className = 'role-badge role-viewer';
+        btnLoginAdmin.style.display = 'inline-block';
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
         document.getElementById('adminHeaderBar').style.display = 'none';
         document.getElementById('custodianSelect').disabled = true;
@@ -1953,7 +2003,6 @@
       });
 
       state.expenses.forEach(exp => {
-        // 若公基金關閉，全部視為付款人自付代墊
         const paidAmt = state.kittyEnabled 
           ? (Number(exp.personalPaid) || 0) 
           : (Number(exp.amount) || 0);
@@ -2006,7 +2055,6 @@
 
       // B. 納入付款人代墊款，並扣除個人實際消費額
       state.expenses.forEach(exp => {
-        // 若公基金關閉，該筆支出全額計為付款人自付代墊
         const effectivePaid = state.kittyEnabled 
           ? (Number(exp.personalPaid) || 0) 
           : (Number(exp.amount) || 0);
